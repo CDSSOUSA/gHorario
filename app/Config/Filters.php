@@ -21,8 +21,8 @@ class Filters extends BaseConfig
         'csrf'     => CSRF::class,
         'toolbar'  => DebugToolbar::class,
         'honeypot' => Honeypot::class,
-        'authFilter'    => AuthFilter::class,
-        'accessFilter'    => AccessFilter::class,
+        //'authFilter'    => AuthFilter::class,
+        //'accessFilter'    => AccessFilter::class,
     ];
 
     /**
@@ -63,16 +63,16 @@ class Filters extends BaseConfig
      * @var array
      */
     public $filters = [
-        'authFilter' => [
-            'before' => [
-                '/'
-            ]
-        ],
-        'accessFilter' => [
-            'before' => [
-                '/horario/*',
-                '/alocacao/*'
-            ]
-        ]
+        // 'authFilter' => [
+        //     'before' => [
+        //         '/'
+        //     ]
+        // ],
+        // 'accessFilter' => [
+        //     'before' => [
+        //         '/horario/*',
+        //         '/alocacao/*'
+        //     ]
+        // ]
     ];
 }
