@@ -29,6 +29,9 @@ class TeacDisc extends BaseController
             $this->erros = session('erro');
             $msgs = $this->messageErro;
         }
+        if (session()->has('success')) {
+            $msgs = session('success');
+        }
 
         $data = [
             'title' => 'Editar Professor/Disciplina',

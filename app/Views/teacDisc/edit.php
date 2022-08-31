@@ -6,6 +6,14 @@ echo $this->extend('layouts2/default');
 echo $this->section('content'); ?>
 <div class="row">
     <div class="col-12">
+    <?php if ($msgs['alert']) : ?>
+                <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle"></i><?= $msgs['message']; ?>
+                    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                </div>
+            <?php endif; ?>
         <div class="card card-secondary">
             <div class="card-header">
                 <h3 class="card-title"><?=$title;?> </h3>

@@ -53,7 +53,7 @@ class BaseController extends Controller
      * @var array
      */
     protected $messageSuccess = [
-        'message' => '<i class="bi bi-check-circle me-1"></i>Parabéns! Operação realizada com sucesso!',
+        'message' => '<i class="bi bi-check-circle me-1"></i> Parabéns! Operação realizada com sucesso!',
         'alert' => 'success'
     ];
 

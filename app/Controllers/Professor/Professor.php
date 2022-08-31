@@ -32,9 +32,12 @@ class Professor extends BaseController
             $this->erros = session('erro');
             $msgs = $this->messageErro;
         }
+        if (session()->has('success')) {
+            $msgs = $this->messageSuccess;
+        }
 
         $data = [
-            'title' => 'Adicionar Professor',
+            'title' => 'Cadastrar Professor (a) ::',
             'msgs' => $msgs,
             'erro' => $this->erros,
             'disciplinas' => $this->disciplinaModel->findAll()
@@ -56,7 +59,7 @@ class Professor extends BaseController
             [
                 'nNome' => 'required|min_length[3]',
                 'nNumeroAulas' => 'required',
-                'nCorDestaque' => 'required',
+                'nCorDestaque' => 'required|is_unique[tb_teacher.color]',
                 'nDisciplinas' => 'required',
             ],
             [
@@ -69,6 +72,7 @@ class Professor extends BaseController
                 ],
                 'nCorDestaque' => [
                     'required' => 'Preenchimento obrigatório!',
+                    'is_unique' => 'Cor utilizada por outro professor(a)!',
                 ],
                 'nDisciplinas' => [
                     'required' => 'Preenchimento obrigatório!',
@@ -102,8 +106,13 @@ class Professor extends BaseController
                 //return view('professor/add-professor', $data);
                 session()->remove('dado');
                 session()->set('dado', $data);
+                session()->set('success', $data);
                 return redirect()->to('/professor');
             }
+            session()->set('success', [
+                'message' => '<i class="bi bi-check-circle me-1"></i> Parabéns! Operação realizada com sucesso!',
+                'alert' => 'success'
+            ]);
             return redirect()->to('/teacDisc/list/'.$this->professorModel->getInsertID());
         }
     }
