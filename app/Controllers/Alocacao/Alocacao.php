@@ -79,7 +79,7 @@ class Alocacao extends BaseController
         session()->remove('success');
 
         $data = array(
-            'title' => 'Alocar Professor',
+            'title' => 'Alocar Professor :: ',
             'msgs' => $msgs,
             'erro' => $this->erros,
             'professor' => $this->professor->find($idTeacher),

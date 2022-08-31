@@ -34,12 +34,12 @@ class TeacDisc extends BaseController
         }
 
         $data = [
-            'title' => 'Editar Professor/Disciplina',
+            'title' => 'Editar Professor/Disciplina :: ',
             'msgs' => $msgs,
             'erro' => $this->erros,
             'teacDisc' => $this->teacDiscModel->getTeacherDisciplineByIdTeacher($idTeacher),
             'dataTeacher' => $this->teacherModel->find($idTeacher),
-            'disciplines' => $this->disciplineModel->findAll(),
+            'disciplines' => $this->disciplineModel,
 
             //'series' => $this->series->getSeries()
             //'erro' => $this->erros

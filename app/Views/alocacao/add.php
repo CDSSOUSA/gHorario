@@ -14,27 +14,27 @@ endforeach;
 
 ?>
 
-<section class="content">
   <div class="container-fluid">
     <div class="row">
 
       <div class="col-md-6">
         <?php if ($msgs['alert']) : ?>
           <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
-            <?= $msgs['message']; ?>
+            <i class="fa fa-exclamation-triangle"></i><?= $msgs['message']; ?>
             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">×</span>
-
             </button>
           </div>
         <?php endif; ?>
-        <div class="card card-secondary">
+        <div class="card card-dark">
 
           <div class="card-header">
-            <h3 class="card-title"><?= $title ?></h3>
+            <h3 class="card-title font-weight-bold"><?= $title ?></h3>
           </div>
 
-          <?php echo form_open('alocacao/create', ['class' => '']) ?>
+          <?php echo form_open('alocacao/create', ['class' => '']);
+          echo csrf_field();
+          ?>
 
 
 
@@ -42,10 +42,8 @@ endforeach;
             <div class="form-group col-12">
               <label for="inputEmail3" class="col-form-label">Professor :: </label>
 
-              <input type="text" disabled="true" name="" class="form-control" value="<?= $professor->name . '  -  ' . $professor->amount . ' hora-aula'; ?>">
-              <input type="hidden" name="nNome" alue="<?= $professor->name; ?>">
-              <input type="text" name="nIdProfessor" value="<?= $professor->id; ?>">
-              <span style="color:red" class="font-italic font-weight-bold"><?php echo $erro !== '' ? $erro->getError('nIdAlocacao') : ''; ?></span>
+              <input type="text" disabled="true" name="" class="form-control" value="<?= $professor->name; ?>">
+              <input type="hidden" name="nIdProfessor" value="<?= $professor->id; ?>">
 
 
             </div>
@@ -55,13 +53,15 @@ endforeach;
                 <?php for ($i = 2; $i <= 6; $i++) : ?>
 
                   <div class="form-check form-switch">
-                    <input class="form-check-input" name="nDayWeek[]" value="<?= $i; ?>" <?= set_checkbox('nDayWeek', $i); ?> type="checkbox" role="switch" id="flexSwitchCheckDefault<?= $i; ?>">
-                    <label class="form-check-label" for="flexSwitchCheckDefault<?= $i; ?>"><?= diaSemanaExtenso($i); ?></label>
+                    <input class="form-check-input" name="nDayWeek[]" value="<?= $i; ?>" <?= set_checkbox('nDayWeek', $i); ?> type="checkbox" role="switch" id="dayWeek<?= $i; ?>">
+                    <label class="form-check-label" for="dayWeek<?= $i; ?>"><?= diaSemanaExtenso($i); ?></label>
 
                   </div>
 
                 <?php endfor; ?>
-                <span class="invalid-feedback"><?php echo $erro !== '' ? $erro->getError('nDayWeek') : ''; ?></span>
+                <?php if ($erro !== '')
+                  echo generateAlertFieldErro($erro->getError('nDayWeek')); ?>
+
 
 
               </div>
@@ -77,7 +77,9 @@ endforeach;
                   </div>
                 <?php
                 endfor; ?>
-                <span class="invalid-feedback"><?php echo $erro !== '' ? $erro->getError('nPosition') : ''; ?></span>
+                <?php if ($erro !== '')
+                  echo generateAlertFieldErro($erro->getError('nPosition')); ?>
+
               </div>
             </div>
 
@@ -93,14 +95,17 @@ endforeach;
                 </div>
 
               <?php endforeach ?>
-              <span class="invalid-feedback"><?php echo $erro !== '' ? $erro->getError('nDisciplines') : ''; ?></span>
+              <?php if ($erro !== '')
+                echo generateAlertFieldErro($erro->getError('nDisciplines')); ?>
+
 
             </div>
 
           </div>
+          <hr>
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            <button type="reset" class="btn btn-secondary">Limpar</button>
+            <?= generationButtonSave(); ?>
+            <?= generateButtonClear(); ?>
             <?= generateButtonRetro('/professor/list'); ?>
 
           </div>
@@ -108,10 +113,10 @@ endforeach;
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card card-secondary">
+        <div class="card card-dark">
 
           <div class="card-header">
-            <h5 class="card-title">Alocações Realizadas</h5>
+            <h5 class="card-title font-weight-bold">Alocação(ões) Realizada(s) :: </h5>
           </div>
 
 
@@ -121,11 +126,11 @@ endforeach;
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Dia semana </th>
-                  <th scope="col">Disciplina </th>
-                  <th scope="col">Posição</th>
-                  <th scope="col">Situação</th>
-                  <th scope="col">Ação</th>
+                  <th scope="col">Dia semana :: </th>
+                  <th scope="col">Disciplina :: </th>
+                  <th scope="col">Posição ::</th>
+                  <th scope="col">Situação ::</th>
+                  <th scope="col">Ação :: </th>
                 </tr>
               </thead>
               <tbody>
@@ -144,8 +149,7 @@ endforeach;
                       <?php
                       if ($data->situation === 'O') {
                         $schedule = $scheduleModel->getScheduleByIdAllocation($data->id);
-                        echo '<span style="display:block" class="badge bg-secondary">'.$schedule->id_series.'ª Série</span>';
-                        
+                        echo '<span style="display:block" class="badge bg-secondary">' . $schedule->id_series . 'ª Série</span>';
                       }
                       ?>
                     </td>
@@ -163,11 +167,12 @@ endforeach;
                     <div class="modal fade" id="basicModal<?= $data->id; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
                       <div class="modal-dialog modal-sm">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Excluir Alocação:: <?= $data->id; ?> </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+                          <div class="modal-header bg-danger">
+                            <h5 class="modal-title">Excluir Alocação :: </h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
                           </div>
-                          <div class="modal-body">
                             <?php
                             $atributos_formulario = array(
                               'role' => 'form',
@@ -175,15 +180,19 @@ endforeach;
                             );
                             echo form_open('alocacao/delete', $atributos_formulario);
 
-                            echo form_input('id', $data->id);
+                            echo form_hidden('id', $data->id);
                             ?>
-                            <p>Confirmar exclusão?</p>
+                          <div class="modal-body">
+                            <div class="form-group col-12">
+                              <h5>Confirmar a exclusão?</h5>
+                            </div>
 
                           </div>
                           <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-danger">Confirmar</button>
+                            <?= generationButtonSave('Confirmar'); ?>
+                            <?= generateButtonCloseModal(); ?>
                           </div>
+                          </form>
                         </div>
                       </div>
                     </div>
@@ -197,6 +206,4 @@ endforeach;
       </div>
     </div>
   </div>
-</section>
-
 <?= $this->endSection(); ?>

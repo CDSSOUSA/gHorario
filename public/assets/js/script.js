@@ -4,37 +4,51 @@ $("input[type=checkbox]").bootstrapSwitch(
         offText: "NÃO",
         size: "mini",
     }
-);
-
-const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
-const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
-
-const URL = 'http://localhost/gerenciador-horario/public';
-
-async function addTeacherDiscipline(id) {
-    document.getElementById('msgAlertError').innerHTML = '';
-    document.getElementById('fieldlertError').textContent = '';
-
-    addModal.show();
-    document.getElementById('id').value = id
-    const addForm = document.getElementById('addTeacherDisciplineForm');
-    console.log(addForm);
-
-    if (addForm) {
-        addForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const dataForm = new FormData(addForm);
-            await axios.post(`${URL}/teacDisc/create`, dataForm, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
+    );
+    $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
+        document.getElementById('qtdeAulas').value = '';
+        document.getElementById('color').value = '';
+        const a = document.querySelectorAll('input[type=checkbox]');
+        //$("input[type=checkbox]").prop('checked', false);
+        a.forEach((element) => {
+            //element.style.setProperty("border", "1px solid #dc3545");
+            
+            console.log(element);
+        } )
+        // Faça algo, aqui...
+    })
+    
+    const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
+    const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
+    
+    const URL = 'http://localhost/gerenciador-horario/public';
+    
+    async function addTeacherDiscipline(id) {   
+        document.getElementById('msgAlertError').innerHTML = '';
+        document.getElementById('fieldlertError').textContent = '';
+        
+        const addForm = document.getElementById('addTeacherDisciplineForm');
+        
+        addModal.show();
+        document.getElementById('id').value = id
+        console.log(addForm);
+        
+        if (addForm) {
+            addForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const dataForm = new FormData(addForm);
+                await axios.post(`${URL}/teacDisc/create`, dataForm, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
                 .then(response => {
                     console.log(response.data.id_teacher);
                     if (response.data.error) {                     
                         console.log(response.data)
                         document.getElementById('msgAlertError').innerHTML = response.data.msg                      
                         document.getElementById("msgAlertSuccess").innerHTML = "";
+                        addForm.reset()
                     } else {
                         document.getElementById('msgAlertError').innerHTML = '';                       
                         addModal.hide();
@@ -53,15 +67,7 @@ async function addTeacherDiscipline(id) {
 async function editTeacherDiscipline(id) {
     document.getElementById('msgAlertError').innerHTML = '';
     document.getElementById('fieldlertError').textContent = '';
-    // const dados  = await fetch('https://viacep.com.br/ws/01001000/json/', {
-    //     method: "get",
-    //     headers: {
-    //       "Content-Type": "application/json",          
-    //     }
-    // });
-    // //const dados = await fetch(URL + '/teacDisc/edit/'+id)
-    // const resposta = dados;
-    // console.log(dados);
+    
     axios.get(URL + '/teacDisc/edit/' + id)
         .then(response => {
             const data = response.data;
@@ -121,7 +127,6 @@ async function delTeacherDiscipline(id) {
                
                 deleteModal.show();
                 document.getElementById('idDelete').value = data[0].id
-
 
             }
         })

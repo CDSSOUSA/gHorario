@@ -71,7 +71,7 @@ function generateButtonRetro(string $adress): string
 {
     return anchor($adress, '<i class="icons fas fa-arrow-circle-left"></i> Voltar', ['class' => 'btn btn-warning']);
 }
-function generationButtonCloseModal(): string
+function generateButtonCloseModal(): string
 {
     return '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>';
 }
@@ -100,4 +100,18 @@ function convertSituation(string $situation): string
     if ($situation === 'O')
         return 'OCUPADO';
     return 'BLOQUEADO';
+}
+
+function generateAlertFieldErro(string $field)
+{
+    if($field === '')
+    return;
+    return '<span class="invalid-feedback"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> '.$field.'</span>';
+
+}
+
+function generateButtonClear()
+{
+    return '<button type="reset" class="btn btn-secondary"><i class="fa fa-minus-circle" aria-hidden="true"></i> Limpar</button>
+    ';
 }

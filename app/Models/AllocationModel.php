@@ -123,10 +123,17 @@ class AllocationModel extends Model
         return false;
     }
 
-    public function getCountByIdTeacDisc(int $id_teacher_discipline)
+    public function getCountByIdTeacDiscOcupation(int $id_teacher_discipline)
     {
         return $this->where('id_teacher_discipline', $id_teacher_discipline)
                     ->where('situation','O')
+                    ->where('status', 'A')
+                    ->countAllResults();
+    }
+    public function getCountByIdTeacDisc(int $id_teacher_discipline)
+    {
+        return $this->where('id_teacher_discipline', $id_teacher_discipline)
+                    //->where('situation','O')
                     ->where('status', 'A')
                     ->countAllResults();
     }

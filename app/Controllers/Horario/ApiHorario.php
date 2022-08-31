@@ -100,7 +100,7 @@ class ApiHorario extends ResourceController
                 ->update();
 
             //TOTAL DE ALOCACAO
-            $totalAllocation = $this->allocation->getCountByIdTeacDisc($teacherDiscipline[0]->id_teacher_discipline);
+            $totalAllocation = $this->allocation->getCountByIdTeacDiscOcupation($teacherDiscipline[0]->id_teacher_discipline);
             if ($total <= $totalAllocation) {
 
                 $this->allocation->set('situation', 'B')
@@ -147,7 +147,7 @@ class ApiHorario extends ResourceController
                     // $total = $teacDisc->amount;
 
                     // //TOTAL DE ALOCACAO
-                    // $totalAllocation = $this->allocation->getCountByIdTeacDisc($teacherDiscipline[0]->id_teacher_discipline);
+                    // $totalAllocation = $this->allocation->getCountByIdTeacDiscOcupation($teacherDiscipline[0]->id_teacher_discipline);
                     // if ($total <= $totalAllocation) {
 
                         $this->allocation->set('situation', 'L')

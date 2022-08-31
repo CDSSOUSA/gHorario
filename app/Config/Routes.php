@@ -69,7 +69,7 @@ $routes->group('/teacDisc',['namespace'=>'App\Controllers\TeacDisc'],function ($
 });
 
 /* ROUTES ALOCAÇÃO */
-$routes->group('/alocacao',['namespace'=>'App\Controllers\Alocacao','filter'=>'accessFilter'],function ($routes){
+$routes->group('/alocacao',['namespace'=>'App\Controllers\Alocacao',/*'filter'=>'accessFilter'*/],function ($routes){
     $routes->get('/','Alocacao::index');
     
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   

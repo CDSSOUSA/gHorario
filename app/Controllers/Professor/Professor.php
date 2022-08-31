@@ -37,7 +37,7 @@ class Professor extends BaseController
         }
 
         $data = [
-            'title' => 'Cadastrar Professor (a) ::',
+            'title' => 'Cadastrar Professor(a) ::',
             'msgs' => $msgs,
             'erro' => $this->erros,
             'disciplinas' => $this->disciplinaModel->findAll()
@@ -72,7 +72,7 @@ class Professor extends BaseController
                 ],
                 'nCorDestaque' => [
                     'required' => 'Preenchimento obrigatório!',
-                    'is_unique' => 'Cor utilizada por outro professor(a)!',
+                    'is_unique' => 'Cor utilizada por outro (a) professor (a)!',
                 ],
                 'nDisciplinas' => [
                     'required' => 'Preenchimento obrigatório!',
@@ -110,7 +110,9 @@ class Professor extends BaseController
                 return redirect()->to('/professor');
             }
             session()->set('success', [
-                'message' => '<i class="bi bi-check-circle me-1"></i> Parabéns! Operação realizada com sucesso!',
+                'salutation' => '<h4 class="alert-heading">Parabéns!</h4>',
+                'message' => '<p> Operação realizada com sucesso!</p><hr>
+                              <p class="mb-0"><i class="fa fa-exclamation-triangle"></i> Defina uma nova cor e a quantidade de horas para cada disciplina!</p>',
                 'alert' => 'success'
             ]);
             return redirect()->to('/teacDisc/list/'.$this->professorModel->getInsertID());

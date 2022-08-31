@@ -170,7 +170,7 @@ echo $this->section('content');
             </div>
             <div class="modal-footer">
                 <?= generationButtonSave(); ?>
-                <?= generationButtonCloseModal(); ?>
+                <?= generateButtonCloseModal(); ?>
 
             </div>
             <?= form_close(); ?>
@@ -202,7 +202,7 @@ echo $this->section('content');
             </div>
             <div class="modal-footer">
                 <?= generationButtonSave('Confirmar'); ?>
-                <?= generationButtonCloseModal(); ?>
+                <?= generateButtonCloseModal(); ?>
 
             </div>
             <?= form_close(); ?>
