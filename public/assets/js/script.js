@@ -4,56 +4,87 @@ $("input[type=checkbox]").bootstrapSwitch(
         offText: "NÃO",
         size: "mini",
     }
-    );
-    $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
-        document.getElementById('qtdeAulas').value = '';
-        document.getElementById('color').value = '';
-        const a = document.querySelectorAll('input[type=checkbox]');
-        //$("input[type=checkbox]").prop('checked', false);
-        a.forEach((element) => {
-            //element.style.setProperty("border", "1px solid #dc3545");
-            
-            console.log(element);
-        } )
-        // Faça algo, aqui...
+);
+var divLoad = document.querySelector('#load');
+var divLoader = document.querySelector('#loader');
+var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
+var bodySuccess = ' Operação realizada com sucesso';
+var success = 'success';
+
+$('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
+    document.getElementById('qtdeAulas').value = '';
+    document.getElementById('color').value = '';
+    const a = document.querySelectorAll('input[type=checkbox]');
+    //$("input[type=checkbox]").prop('checked', false);
+    a.forEach((element) => {
+        //element.style.setProperty("border", "1px solid #dc3545");
+        //$(element.currentTarget).remove();
+        console.log(element);
     })
-    
+    // Faça algo, aqui...
+})
+
+const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
+
+const URL = 'http://localhost/gerenciador-horario/public';
+
+async function addTeacherDiscipline(id) {
     const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
-    const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
-    
-    const URL = 'http://localhost/gerenciador-horario/public';
-    
-    async function addTeacherDiscipline(id) {   
-        document.getElementById('msgAlertError').innerHTML = '';
-        document.getElementById('fieldlertError').textContent = '';
-        
-        const addForm = document.getElementById('addTeacherDisciplineForm');
-        
-        addModal.show();
-        document.getElementById('id').value = id
-        console.log(addForm);
-        
-        if (addForm) {
-            addForm.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const dataForm = new FormData(addForm);
-                await axios.post(`${URL}/teacDisc/create`, dataForm, {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
+    document.getElementById('msgAlertError').innerHTML = '';
+    document.getElementById('fieldlertError').textContent = '';
+
+    const addForm = document.getElementById('addTeacherDisciplineForm');
+
+    addModal.show();
+    document.getElementById('id').value = id
+    console.log(addForm);
+
+    if (addForm) {
+        addForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            // adicionar o toast
+            /*$('#toast-place').append(`
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                <div class="toast-header">
+                  <strong class="me-auto">Bootstrap</strong>
+                  <small>11 mins ago</small>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
+                  <span aria-hidden">&time</span>;
+                  </button>
+                </div>
+                <div class="toast-body">
+                  Hello, world! This is a toast message.
+                </div>
+              </div>
+                `);*/
+
+            $('.toast').toast('show');
+
+
+
+            const dataForm = new FormData(addForm);
+            await axios.post(`${URL}/teacDisc/create`, dataForm, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
                 .then(response => {
                     console.log(response.data.id_teacher);
-                    if (response.data.error) {                     
+                    if (response.data.error) {
                         console.log(response.data)
-                        document.getElementById('msgAlertError').innerHTML = response.data.msg                      
+                        document.getElementById('msgAlertError').innerHTML = response.data.msg
                         document.getElementById("msgAlertSuccess").innerHTML = "";
+                        //loadToast('oi','oila','danger');
                         addForm.reset()
+                        
+
                     } else {
-                        document.getElementById('msgAlertError').innerHTML = '';                       
+                        document.getElementById('msgAlertError').innerHTML = '';
                         addModal.hide();
-                        document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                        location.reload();
+                        //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                       
+                        loadToast(titleSuccess, bodySuccess, success);                        
+                        loada(); 
 
                     }
                 })
@@ -67,7 +98,7 @@ $("input[type=checkbox]").bootstrapSwitch(
 async function editTeacherDiscipline(id) {
     document.getElementById('msgAlertError').innerHTML = '';
     document.getElementById('fieldlertError').textContent = '';
-    
+
     axios.get(URL + '/teacDisc/edit/' + id)
         .then(response => {
             const data = response.data;
@@ -107,9 +138,12 @@ if (editForm) {
 
                     document.getElementById('msgAlertError').innerHTML = '';
                     document.getElementById('fieldlertError').textContent = '';
-                    //editModal.hide();
-                    document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                    location.reload();
+                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                    //location.reload();
+                    editModal.hide();
+                    
+                    loadToast(titleSuccess, bodySuccess, success);                        
+                    loada(); 
 
                 }
             })
@@ -117,14 +151,14 @@ if (editForm) {
     })
 }
 
+const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
 async function delTeacherDiscipline(id) {
     await axios.get(URL + '/teacDisc/delete/' + id)
         .then(response => {
             const data = response.data;
             console.log(data);
             if (data) {
-                const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
-               
+
                 deleteModal.show();
                 document.getElementById('idDelete').value = data[0].id
 
@@ -159,9 +193,11 @@ if (deleteForm) {
 
                     document.getElementById('msgAlertError').innerHTML = '';
                     document.getElementById('fieldlertError').textContent = '';
-                    //editModal.hide();
-                    document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                    location.reload();
+                    deleteModal.hide();
+                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                    //location.reload();
+                    loadToast(titleSuccess, bodySuccess, success);                        
+                    loada(); 
 
                 }
             })
@@ -170,13 +206,33 @@ if (deleteForm) {
 }
 
 
-function list(id) {
-    const a = axios.get(`${URL}/teacDisc/list/${id}`).then(response => {
-        response.data;
+function loadToast(title, body, bg) {
+
+    $(document).Toasts('create', {
+        title: title,
+        icon: 'fas fa-exclamation-triangle',
+        class: `bg-${bg} m-1 width-500 toast`,
+        autohide: true,
+        delay: 1000,
+        body: body,
+        close: false,
+        subtitle: new Date().toLocaleDateString(),        
+        autoremove: true
     });
 
-    console.log(a);
+    
+
+    $('.toast').on('hidden.bs.toast', e => {
+        $(e.currentTarget).remove();
+        location.reload();
+    });
 }
 
-
-
+function loada() {
+    divLoad.classList.add("loada");
+    divLoader.classList.add("loader");
+    $('.toast').append(`
+    <div class="text-center bg-success p-1"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Atualizando</div>
+  `);
+ }

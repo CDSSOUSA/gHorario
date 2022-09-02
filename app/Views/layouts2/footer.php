@@ -20,7 +20,7 @@
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 
-<script src="<?= base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.bundle.min_.js"></script>
+<script src="<?= base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?= base_url(); ?>/assets/plugins/moment/moment.min.js"></script>
 
@@ -48,7 +48,7 @@
       $(".alert-close").fadeOut("slow", function() {
         $(this).alert('close');
       });
-    }, 5000);
+    }, 1000);
   });
 
   $(document).ready(function() {

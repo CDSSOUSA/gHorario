@@ -5,8 +5,10 @@ use App\Models\HorarioModel;
 echo $this->extend('layouts2/default');
 echo $this->section('content');
 ?>
-
-
+<div id="load">
+    <div id="loader">
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <div class="card card-secondary">
@@ -52,24 +54,24 @@ echo $this->section('content');
                                     <?php foreach ($series as $serie) :
                                         $allocationDisponivel = $allocation->getAllocationByDayWeek($serie->id, $dw, $ps);
 
-                                       
+
                                         //dd($allocationDisponivel);
                                         $horarioSegundas = $horario->getTimeDayWeek($dw, $serie->id, $ps);
 
                                         //$qtde = $teacherDiscipline->getTeacherDisciplineByIdTeacher($allocationDisponivel['id_teacher']);
 
-                                       //dd(count($qtde));
-                                       if(!empty($horarioSegundas['id_allocation'])){
+                                        //dd(count($qtde));
+                                        if (!empty($horarioSegundas['id_allocation'])) {
 
-                                           $a = $allocation->getTeacherByIdAllocation($horarioSegundas['id_allocation']);
-                                           //dd($a);
-                                       }
+                                            $a = $allocation->getTeacherByIdAllocation($horarioSegundas['id_allocation']);
+                                            //dd($a);
+                                        }
 
                                     ?>
                                         <td class="text-left"><?php
                                                                 if ($allocationDisponivel != null && empty($horarioSegundas['id_allocation'])) {
                                                                     echo anchor('#', '<div class="rotulo"><span><i class="icons fas fa-book"></i> </span>
-                                                                    <span class="icon-delete"><i class="fa fa-plus"></i></span></div><p>DISPONÍVEL</p>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ')', 'data-bs-toggle' => 'modal', 'class' => 'btn btn-dark btn-sm ticket text-left']);
+                                                                    <span class="icon-delete"><i class="fa fa-plus"></i></span></div><p>DISPONÍVEL</p>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark btn-sm ticket text-left']);
 
                                                                     //echo anchor('horario/add_profissional_horario/' . $serie->id . '/' . $dw . '/' . $ps, "DISPONÍVEL", array('type' => 'button', 'class' => 'btn btn-success btn-sm ticket text-center'));
                                                                 } else 
@@ -93,16 +95,16 @@ echo $this->section('content');
                                                                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
                                                                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
                                                 <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
-                                                                        array('type' => 'button', 'class' => 'text-white', 'onclick' => 'deleteSchedule(' . $horarioSegundas['id'].')', 'data-bs-toggle' => 'modal','title'=>'Remover do horário?')
+                                                                        array('type' => 'button', 'class' => 'text-white', 'onclick' => 'deleteSchedule(' . $horarioSegundas['id'] . ')', 'data-toggle' => 'modal', 'title' => 'Remover do horário?')
                                                                     );
-                                                //                     echo anchor(
-                                                //                         'horario/api/delete/' . $serie->id . '/' . $dw . '/' . $ps,
-                                                //                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
-                                                //                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
-                                                // <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
-                                                //                         array('type' => 'button', 'class' => 'text-white')
-                                                //                     );
-                                                                    ?>
+                                                                    //                     echo anchor(
+                                                                    //                         'horario/api/delete/' . $serie->id . '/' . $dw . '/' . $ps,
+                                                                    //                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
+                                                                    //                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
+                                                                    // <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
+                                                                    //                         array('type' => 'button', 'class' => 'text-white')
+                                                                    //                     );
+                                                    ?>
                                                 </div>
 
                                             <?php } ?>
@@ -128,12 +130,9 @@ echo $this->section('content');
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div id="load">
-                <div id="loader"></div>
-            </div>
             <div class="modal-header bg-secondary">
                 <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Adicionar horário</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -143,7 +142,6 @@ echo $this->section('content');
                 <div class="form-group col-12">
                     <label for="exampleInputFile">Escolha um(a) professor(a) :: </label>
                     <div id="divOpcao">
-
                     </div>
                     <span class="error invalid-feedback" id="fieldlertError"></span>
                 </div>
@@ -186,17 +184,17 @@ echo $this->section('content');
             </div>
             <div class="modal-header bg-danger">
                 <h5 class="modal-title" id="deleteScheduleModalLabel">Remover horário</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <span id="msgAlertError"></span>
                 <?php echo form_open('horario/api/del', ['id' => 'deleteScheduleForm']) ?>
-                            
+
                 <div class="form-group col-12">
-                    <input type="text" id="idDelete" name="id"/>
-<p>Confirmar remoção?</p>
+                    <input type="text" id="idDelete" name="id" />
+                    <p>Confirmar remoção?</p>
                 </div>
 
             </div>

@@ -73,7 +73,7 @@ function generateButtonRetro(string $adress): string
 }
 function generateButtonCloseModal(): string
 {
-    return '<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>';
+    return '<button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>';
 }
 function generationButtonSave(string $title = null): string
 {

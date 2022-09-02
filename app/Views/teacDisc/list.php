@@ -1,10 +1,13 @@
 <?php
 
 use App\Models\AllocationModel;
-use App\Models\ProfessorDisciplinaModel;
-
 echo $this->extend('layouts2/default');
 echo $this->section('content'); ?>
+<div id="load">
+    <div id="loader">
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-12">
@@ -12,14 +15,14 @@ echo $this->section('content'); ?>
             <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
                 <?= $msgs['salutation']; ?>
                 <?= $msgs['message']; ?>
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         <?php
         endif;
         session()->remove('success'); ?>
-        <span id="msgAlertSuccess"></span>
+
         <div class="card card-dark">
             <div class="card-header">
                 <h3 class="card-title font-weight-bold"><?= $title ?></h3>
@@ -29,7 +32,7 @@ echo $this->section('content'); ?>
                         $total = count($disciplines->findAll());
                         $totalTeacDisc = count($teacDisc);
                         if ($total > $totalTeacDisc)
-                            echo anchor('#', '<i class="icons fas fa-plus"></i> Nova Disciplina', ['onclick' => 'addTeacherDiscipline(' . $dataTeacher->id . ')', 'data-bs-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
+                            echo anchor('#', '<i class="icons fas fa-plus"></i> Nova Disciplina', ['onclick' => 'addTeacherDiscipline(' . $dataTeacher->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
                     </div>
                 </div>
             </div>
@@ -64,19 +67,19 @@ echo $this->section('content'); ?>
                                 <td class="text-center">
                                     <!-- Button trigger modal -->
 
-                                    <?= anchor('#', '<i class="icons fas fa-pen"></i> Editar', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-bs-toggle' => 'modal', 'class' => 'btn btn-dark']); ?>
-                                    <?php  
-                                     $allacation = new AllocationModel();
-                                     $total = $allacation->getCountByIdTeacDisc($data->id);
-                                     //dd($total);
-                                    if($total <= 0){
+                                    <?= anchor('#', '<i class="icons fas fa-pen"></i> Editar', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark']); ?>
+                                    <?php
+                                    $allacation = new AllocationModel();
+                                    $total = $allacation->getCountByIdTeacDisc($data->id);
+                                    //dd($total);
+                                    if ($total <= 0) {
 
-                                        echo anchor('#', '<i class="icons fas fa-trash"></i> Excluir', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-bs-toggle' => 'modal', 'class' => 'btn btn-dark']);
+                                        echo anchor('#', '<i class="icons fas fa-trash"></i> Excluir', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark']);
                                     } else { ?>
                                         <button type="buttton" class="btn btn-dark disabled"><i class="icons fas fa-trash"></i> Excluir</button>
-                                        
+
                                     <?php } ?>
-                                    
+
                                     <?php echo anchor('alocacao/add/' . $data->id_teacher, '<i class="icons fas fa-plus"></i> Alocação', ['class' => 'btn btn-dark']); ?>
                                 </td>
                             </tr>
@@ -97,7 +100,7 @@ echo $this->section('content'); ?>
         <div class="modal-content">
             <div class="modal-header bg-dark font-weight-bold">
                 <h5 class="modal-title" id="addTeacherDisciplineModal">Cadastrar Professor/Disciplina :: </h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -159,12 +162,12 @@ echo $this->section('content'); ?>
     </div>
 </div>
 <!-- Modal edit-->
-<div class="modal fade" id="editTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherDisciplineModalLabel" aria-hidden="true">
+<div class="modal fade" id="editTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherDisciplineModalLabel" aria-hidden="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Editar Professor/Disciplina ::</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -228,7 +231,7 @@ echo $this->section('content'); ?>
         <div class="modal-content">
             <div class="modal-header bg-danger">
                 <h5 class="modal-title" id="deleteTeacherDisciplineModalLabel">Excluir Professor/Disciplina ::</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -248,7 +251,7 @@ echo $this->section('content'); ?>
             </div>
             <div class="modal-footer">
                 <?= generationButtonSave('Confirmar'); ?>
-                <?= generateButtonCloseModal(); ?>              
+                <?= generateButtonCloseModal(); ?>
             </div>
             </form>
 

@@ -1,6 +1,7 @@
 var divLoad = document.querySelector('#load');
 var divLoader = document.querySelector('#loader');
 
+
 const addScheduleModal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
 
 const URL_BASE = 'http://localhost/gerenciador-horario/public';
@@ -21,11 +22,12 @@ async function addSchedule(idSerie, position, dayWeek) {
         .then(response => {
             const data = response.data;
             data.forEach(element => {
-                divOpcao.innerHTML += `<div class="form-check form-check-inline radio-toolbar text-white" style="background-color:${element.color}">
+                divOpcao.innerHTML += `<div class="form-check-inline radio-toolbar text-white" style="background-color:${element.color}; border-radius: 5px">
              <input class="form-check-input" type="radio" id="gridCheck1${element.id}" name= "nIdAlocacao" value="${element.id}"/>
-            <label class="" for="gridCheck1${element.id}">
-            <span class="font-size-12">${element.abbreviation}</span>
-            <br><span class="font-size-10">${element.name.split(" ", 1)}</span>
+            <label class="form-check-label" for="gridCheck1${element.id}">
+            <div class="rotulo"><span class="abbreviation font-weight-bold">${element.abbreviation}</span>
+            <span class="icon-delete"><i class="fa fa-unlock" aria-hidden="true"></i>
+            </span></div><p>${element.name.split(" ", 1)}</p>
             </label></div>`
                 //console.log(element);
             });
@@ -54,9 +56,12 @@ if (addScheduleForm) {
                     document.getElementById('fieldlertError').textContent = 'Escolha obrigatória!'
 
                 } else {
-                    load();
-                    //console.log(response.data)
-                    location.reload();
+                    // load();
+                    // //console.log(response.data)
+                    // location.reload();
+                    addScheduleModal.hide();
+                    loadToast(titleSuccess, bodySuccess, success);                        
+                    loada(); 
                 }
             })
             .catch(error => console.log(error))
@@ -104,8 +109,9 @@ if(deleteScheduleForm) {
                 // document.getElementById('fieldlertError').textContent = '';
                 // //editModal.hide();
                 // document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                load();
-                location.reload();
+                deleteScheduleModal.hide();
+                loadToast(titleSuccess, bodySuccess, success);                        
+                loada(); 
 
             }
         })
@@ -116,8 +122,6 @@ if(deleteScheduleForm) {
 
 
 }
-
-
 
 function load() {
     divLoad.classList.add("load");

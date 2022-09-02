@@ -65,7 +65,7 @@ class ApiHorario extends ResourceController
                 'code' => 400,
                 'msg' => '<div class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong>Ops!</strong> Erro(s) no preenchimento do formulário! 
-  <button type="button" class="close" data-bs-dismiss="alert" aria-bs-label="Close">
+  <button type="button" class="close" data-dismiss="alert" aria-bs-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
 </div>'

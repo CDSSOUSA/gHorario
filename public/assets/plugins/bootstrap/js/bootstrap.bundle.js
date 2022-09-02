@@ -6763,7 +6763,7 @@
   var Default = {
     animation: true,
     autohide: true,
-    delay: 500
+    delay: 100
   };
   var DefaultType = {
     animation: 'boolean',
