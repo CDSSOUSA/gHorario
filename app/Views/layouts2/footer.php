@@ -37,10 +37,9 @@
 
 
 <script src="<?= base_url(); ?>/assets/js/jquery.maskMoney.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="<?= base_url(); ?>/assets/js/script.js"></script>
+<script src="<?= base_url(); ?>/assets/js/axios.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
+<script src="<?= base_url(); ?>/assets/js/script.js"></script>
 <script>
 
   $(document).ready(function() {

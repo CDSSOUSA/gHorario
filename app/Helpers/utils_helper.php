@@ -44,7 +44,10 @@ function diaSemanaExtenso(int $diaSemana): string
             return null;
     }
 }
-
+function generationColor()
+{
+    return '#'.sprintf("%02X%02X%02X", mt_rand(0,255), mt_rand(0,255), mt_rand(0,255));
+}
 function turno($turno): string
 {
     if (empty($turno)) {

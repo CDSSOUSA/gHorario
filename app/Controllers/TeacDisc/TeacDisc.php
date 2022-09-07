@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\DisciplineModel;
 use App\Models\TeacDiscModel;
 use App\Models\TeacherModel;
+use App\Models\AllocationModel;
 
 class TeacDisc extends BaseController
 {
@@ -13,11 +14,13 @@ class TeacDisc extends BaseController
     public $erros = '';
     private $teacherModel;
     private $disciplineModel;
+    private $allocation;
     public function __construct()
     {
         $this->teacDiscModel = new TeacDiscModel();
         $this->teacherModel = new TeacherModel();
         $this->disciplineModel = new DisciplineModel();
+        $this->allocation = new AllocationModel();
     }
     public function list(int $idTeacher)
     {
@@ -264,6 +267,12 @@ class TeacDisc extends BaseController
                 ->update();
 
             if ($update) {
+
+                $this->allocation->set('situation', 'L')
+                ->where('id_teacher_discipline', $id)
+                ->where('situation', 'B')
+                ->update();
+
                 $response = [
                     'status' => 'OK',
                     'error' => false,

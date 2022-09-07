@@ -1,15 +1,33 @@
 $("input[type=checkbox]").bootstrapSwitch(
     {
-        onText: 'SIM',
-        offText: "NÃO",
+        onText: '<i class="fa fa-check"></i>',
+        offText: '',
         size: "mini",
+        onColor: "success"
     }
 );
+
+const checkAll = document.getElementById('checkAll');
+
+checkAll.addEventListener('click', () => {   
+    $(":checkbox").each(
+        function() {
+            if ($(this).bootstrapSwitch('state')) {
+                $(this).bootstrapSwitch('state', false);
+            } else {
+                $(this).bootstrapSwitch('state',true)
+            }            
+        }
+    );
+});
+
+
 var divLoad = document.querySelector('#load');
 var divLoader = document.querySelector('#loader');
 var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
 var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
+const URL = 'http://localhost/gerenciador-horario/public';
 
 $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
     document.getElementById('qtdeAulas').value = '';
@@ -26,7 +44,6 @@ $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
 
 const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
 
-const URL = 'http://localhost/gerenciador-horario/public';
 
 async function addTeacherDiscipline(id) {
     const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));

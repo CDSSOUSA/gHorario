@@ -41,7 +41,7 @@ echo $this->section('content');
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                        <?php                        
                         for ($dw = 2; $dw < 7; $dw++) :
                             for ($ps = 1; $ps < 7; $ps++) : ?>
                                 <tr>
@@ -52,8 +52,8 @@ echo $this->section('content');
                                     </th>
                                     <th><?= $ps . 'º'; ?></th>
                                     <?php foreach ($series as $serie) :
-                                        $allocationDisponivel = $allocation->getAllocationByDayWeek($serie->id, $dw, $ps);
-
+                                        $allocationDisponivel = $allocation->getAllocationByDayWeek($serie->id, $dw, $ps, $shift);
+                                       
 
                                         //dd($allocationDisponivel);
                                         $horarioSegundas = $horario->getTimeDayWeek($dw, $serie->id, $ps);
@@ -70,8 +70,8 @@ echo $this->section('content');
                                     ?>
                                         <td class="text-left"><?php
                                                                 if ($allocationDisponivel != null && empty($horarioSegundas['id_allocation'])) {
-                                                                    echo anchor('#', '<div class="rotulo"><span><i class="icons fas fa-book"></i> </span>
-                                                                    <span class="icon-delete"><i class="fa fa-plus"></i></span></div><p>DISPONÍVEL</p>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark btn-sm ticket text-left']);
+                                                                    echo anchor('#', '<div class="rotulo"><span class="abbreviation"><i class="icons fas fa-book"></i> </span>
+                                                                    <span class="icon-delete"><i class="fa fa-plus"></i></span></div><p>DISPONÍVEL</p>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ',"'.$shift.'")', 'data-toggle' => 'modal', 'class' => 'btn btn-dark btn-sm ticket text-left']);
 
                                                                     //echo anchor('horario/add_profissional_horario/' . $serie->id . '/' . $dw . '/' . $ps, "DISPONÍVEL", array('type' => 'button', 'class' => 'btn btn-success btn-sm ticket text-center'));
                                                                 } else 
@@ -131,7 +131,7 @@ echo $this->section('content');
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-secondary">
-                <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Adicionar horário</h5>
+                <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Adicionar horário ::  <?=turno($shift);?></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -162,6 +162,12 @@ echo $this->section('content');
 
                     <label for="exampleInputFile">Dia semana :: </label>
                     <input type="text" name="nDayWeek" id="dayWeek" class="form-control">
+
+                </div>
+                <div class="form-group col-4">
+
+                    <label for="exampleInputFile">Turno :: </label>
+                    <input type="text" name="nShift" id="shift" class="form-control">
 
                 </div>
 

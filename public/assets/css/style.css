@@ -87,8 +87,11 @@
   font-size: 14px;
   color: #fff;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
+  width: 50px;
+  
+  
 }
 
 .icon-delete {
@@ -98,7 +101,8 @@
   align-items: center;
   justify-content: right;
   text-align: right;
-  width: 60px;
+  width: 40px;
+  
 }
 .icon-vaguo {
   font-size: 10px;
@@ -117,6 +121,9 @@
 }
 .radio-toolbar p{
   font-size: 10px;
+  width: 40px;
+  border: 1px solid red;
+  
 }
 .radio-toolbar span{
   font-size: 12px;
@@ -203,7 +210,20 @@
   /* display: flex; */
 
 }
-
+#checkAll{
+  color:blue;
+  cursor: pointer;
+}
+#checkAll :hover{
+  color: green
+}
+#checkAll :active{
+  color: gold
+}
+.buttonDelete :hover:after {    
+   content: " Excluir ";    
+    transition: 0.5s; 
+}
 /* @keyframes is-rotating {
   to {
      transform: rotate(1turn);

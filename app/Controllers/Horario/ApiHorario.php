@@ -20,12 +20,16 @@ class ApiHorario extends ResourceController
         $this->teacDisc = new TeacDiscModel();
     }
 
-    public function getAllocation(int $idSerie, int $dayWeek, int $position)
+    public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)
     {
         try {
 
-            $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position);
+            $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift);
+            
             if ($data != null) {
+                return $this->response->setJSON($data);
+            } else {
+                $data = [];
                 return $this->response->setJSON($data);
             }
         } catch (Exception $e) {

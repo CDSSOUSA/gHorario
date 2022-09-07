@@ -40,9 +40,10 @@ class SeriesModel extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
-    public function getSeries(): array
+    public function getSeries(string $shift): array
     {
-        $this->orderBy('description');
+        $this->where('shift',$shift)
+        ->orderBy('description');
         $result = $this->findAll();        
         return !is_null($result) ? $result : [];
     }

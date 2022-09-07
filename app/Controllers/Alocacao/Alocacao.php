@@ -79,11 +79,11 @@ class Alocacao extends BaseController
         session()->remove('success');
 
         $data = array(
-            'title' => 'Alocar Professor :: ',
+            'title' => 'Alocar Professor(a) :: ',
             'msgs' => $msgs,
             'erro' => $this->erros,
             'professor' => $this->professor->find($idTeacher),
-            'series' => $this->series->getSeries(),
+            //'series' => $this->series->getSeries(),
             //'professoresDisciplinas' => $this->professorDisciplina->getAllProfessorDisciplina(),
             'alocacao' => $this->alocacao->getAllAlocacaoProfessor($idTeacher),
             'teacDisc' => $this->teacDiscModel->getTeacherDisciplineByIdTeacher($idTeacher),
@@ -144,6 +144,7 @@ class Alocacao extends BaseController
                 'nDisciplines' => 'required',
                 'nPosition' => 'required',
                 'nDayWeek' => 'required',
+                'nShift' => 'required',
             ],
             [
                 'nIdProfessor' => [
@@ -156,6 +157,9 @@ class Alocacao extends BaseController
                     'required' => 'Preenchimento Obrigatório!',
                 ],
                 'nDayWeek' => [
+                    'required' => 'Preenchimento Obrigatório!',
+                ],
+                'nShift' => [
                     'required' => 'Preenchimento Obrigatório!',
                 ]
 
@@ -171,6 +175,7 @@ class Alocacao extends BaseController
         $data['dayWeek'] = $this->request->getPost('nDayWeek[]');
         $data['disciplines'] = $this->request->getPost('nDisciplines[]');
         $data['position'] = $this->request->getPost('nPosition[]');
+        $data['shift'] = $this->request->getPost('nShift[]');
        
 
         $save = $this->alocacao->saveAllocation($data);

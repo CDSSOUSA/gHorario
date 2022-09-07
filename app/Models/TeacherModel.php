@@ -55,7 +55,7 @@ class TeacherModel extends Model
             $teacherDiscipline['id_teacher'] = $lastId;
             $teacherDiscipline['id_discipline'] = $item;
             $teacherDiscipline['amount'] = $data['amount'];
-            $teacherDiscipline['color'] = $data['color'];
+            $teacherDiscipline['color'] = $data['color'] == '#000000' ? generationColor() : $data['color'] ;
             $teacDisc->save($teacherDiscipline);
         }
         if(count($data['disciplines']) > 1){

@@ -4,17 +4,19 @@ USE bd_sisHorario;
 CREATE TABLE IF NOT EXISTS tb_discipline (
     id SMALLINT AUTO_INCREMENT NOT NULL,
     description VARCHAR(100),
-    abbreviation VARCHAR(5),
+    abbreviation VARCHAR(8),
     amount SMALLINT,
     CONSTRAINT id_pk PRIMARY KEY (id)
 ) ENGINE = INNODB;
 INSERT INTO tb_discipline (description, abbreviation, amount)
 VALUES ('GEOGRAFIA', 'GEO', 4),
-    ('HISTÓRIA', 'HIS', 3),
-    ('PORTUGUÊS', 'POR', 5),
+    ('HISTÓRIA', 'HIST', 3),
+    ('PORTUGUÊS', 'PORT', 5),
     ('INGLÊS', 'ING', 3),
     ('MATEMÁTICA', 'MAT', 5),
     ('ARTES', 'ART', 3),
+    ('FILOSOFIA', 'FILO', 3),
+    ('EDUCAÇÃO FÍSICA', 'ED FÍS', 3),
     ('CIÊNCIAS', 'CIÊ', 3);
 CREATE TABLE tb_teacher (
     id SMALLINT AUTO_INCREMENT NOT NULL,
@@ -25,11 +27,27 @@ CREATE TABLE tb_teacher (
     CONSTRAINT id_pk PRIMARY KEY (id)
 ) ENGINE = INNODB;
 INSERT INTO tb_teacher (name, color, status, amount)
-VALUES ('TIBÉRIO MENDONÇA DE LIMA', '#3C0BF3', 'A', 4),
-    ('PENHA DA SILVA SOUSA', '#A00E2A', 'A', 3),
-    ('JOSILÂNDIA DA SILVA SANTOS', '#0481D7', 'A', 4),
-    ('MICHELLI CARLA MARIA', '#CC4567', 'A', 4),
-    ('ARMÊNIO JOSE COSTA', '#FF1400', 'A', 2);
+VALUES ('LÍBIO', '#3C0BF3', 'A', 4),
+    ('MARIA', '#A00E2A', 'A', 3),
+    ('MICHELLE', '#0481D7', 'A', 4),
+    ('SILVANA', '#CC4567', 'A', 4),
+    ('ARMÊNIO', '#FF1400', 'A', 2),
+    ('MICHILLYS', '#FF1400', 'A', 2),
+    ('ROSILENE', '#FF1400', 'A', 2),
+    ('MARCIO', '#FF1400', 'A', 2),
+    ('JOSILÂNDIA', '#FF1400', 'A', 2),
+    ('MÁRCIO', '#FF1400', 'A', 2),
+    ('ALEX', '#FF1400', 'A', 2),
+    ('TESSÁLIA', '#FF1400', 'A', 2),
+    ('LUÍS', '#FF1400', 'A', 2),
+    ('MARCELA', '#FF1400', 'A', 2),
+    ('LYUSKA', '#FF1400', 'A', 2),
+    ('DANIELY', '#FF1400', 'A', 2),
+    ('VANDA', '#FF1400', 'A', 2),
+    ('JOSIELMA', '#FF1400', 'A', 2),
+    ('ISRAEL', '#FF1400', 'A', 2),
+    ('JOSMARA', '#FF1400', 'A', 2);
+    
 
 CREATE TABLE tb_teacher_discipline(
     id INT AUTO_INCREMENT NOT NULL,
@@ -55,6 +73,7 @@ CREATE TABLE tb_allocation(
     position CHAR(1),
     situation CHAR(1) COMMENT 'L-LIVRE E O-OCUPADO',
     status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
+    shift CHAR(1) COMMENT 'M-MANHA T-TARDE',
     CONSTRAINT id_pk PRIMARY KEY (id),
     CONSTRAINT id_teacher_discipline_fk FOREIGN KEY (id_teacher_discipline) REFERENCES tb_teacher_discipline(id)
 ) ENGINE = INNODB;
@@ -81,14 +100,18 @@ INSERT INTO tb_series(description,classification,shift) VALUES
 ('6','A','M'),
 ('6','B','M'),
 ('6','C','M'),
+('6','D','M'),
 ('7','A','M'),
 ('7','B','M'),
 ('7','C','M'),
-('8','A','M'),
-('8','B','M'),
-('8','C','M'),
+('7','D','M'),
 ('9','A','M'),
-('9','B','M');
+('9','B','M'),
+('9','C','M'),
+('8','A','T'),
+('8','B','T'),
+('8','C','T'),
+('8','D','T');
 
 CREATE TABLE tb_school_schedule(
     id INT AUTO_INCREMENT NOT NULL,

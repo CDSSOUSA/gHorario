@@ -16,8 +16,8 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * Router Setup
  * --------------------------------------------------------------------
  */
-$routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultNamespace('App\Controllers\Horario');
+$routes->setDefaultController('Horario');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -31,11 +31,13 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-//$routes->get('/', 'Home::index');
+//$routes->get('/(:any)', 'Horario::index/$1');
 
 /* ROUTES HORARIO */
 $routes->group('/horario',['namespace'=>'App\Controllers\Horario'],function ($routes){
     $routes->get('/','Horario::index');
+    $routes->get('shift/(:any)','Horario::index/$1');
+    //$routes->get('shift/','Horario::index');
     $routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('add', 'Horario::add');     
 });
@@ -59,6 +61,7 @@ $routes->group('/professor',['namespace'=>'App\Controllers\Professor'],function 
 /* ROUTES PROFESSOR DISCIPLINA */
 $routes->group('/teacDisc',['namespace'=>'App\Controllers\TeacDisc'],function ($routes){
     $routes->get('list/(:any)','TeacDisc::list/$1');
+    $routes->get('show/(:any)','TeacDisc::show/$1');
     $routes->get('edit/(:any)','TeacDisc::edit/$1');
     $routes->get('delete/(:any)','TeacDisc::delete/$1');
     $routes->post('create','TeacDisc::create');

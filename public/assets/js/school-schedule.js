@@ -4,10 +4,10 @@ var divLoader = document.querySelector('#loader');
 
 const addScheduleModal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
 
-const URL_BASE = 'http://localhost/gerenciador-horario/public';
+var URL_BASE = 'http://localhost/gerenciador-horario/public';
 console.log(URL_BASE);
 
-async function addSchedule(idSerie, position, dayWeek) {
+async function addSchedule(idSerie, position, dayWeek, shift) {
     document.getElementById('msgAlertError').innerHTML = ''
     document.getElementById('fieldlertError').textContent = ''
 
@@ -15,14 +15,15 @@ async function addSchedule(idSerie, position, dayWeek) {
     document.getElementById('idSerie').value = idSerie
     document.getElementById('position').value = position
     document.getElementById('dayWeek').value = dayWeek
+    document.getElementById('shift').value = shift
     const divOpcao = document.getElementById('divOpcao')
     divOpcao.innerHTML = ''
 
-    await axios.get(`${URL_BASE}/horario/api/getAllocation/${idSerie}/${dayWeek}/${position}`)
+    await axios.get(`${URL_BASE}/horario/api/getAllocation/${idSerie}/${dayWeek}/${position}/${shift}`)
         .then(response => {
             const data = response.data;
             data.forEach(element => {
-                divOpcao.innerHTML += `<div class="form-check-inline radio-toolbar text-white" style="background-color:${element.color}; border-radius: 5px">
+                divOpcao.innerHTML += `<div class="form-check-inline radio-toolbar text-white" style="background-color:${element.color}; border-radius: 5px; margin: 5px;">
              <input class="form-check-input" type="radio" id="gridCheck1${element.id}" name= "nIdAlocacao" value="${element.id}"/>
             <label class="form-check-label" for="gridCheck1${element.id}">
             <div class="rotulo"><span class="abbreviation font-weight-bold">${element.abbreviation}</span>

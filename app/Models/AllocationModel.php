@@ -14,7 +14,7 @@ class AllocationModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['id_teacher_discipline', 'dayWeek', 'position', 'situation', 'status'];
+    protected $allowedFields        = ['id_teacher_discipline', 'dayWeek', 'position', 'situation', 'status','shift'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -40,10 +40,10 @@ class AllocationModel extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
-    public function getAllocationByDayWeek(int $id_serie, int $diaSemana, int $posicao)
+    public function getAllocationByDayWeek(int $id_serie, int $diaSemana, int $posicao, string $shift)
     {
 
-        return $result = $this->select('tb_allocation.id,
+        $result = $this->select('tb_allocation.id,
          p.name, d.abbreviation, pd.color, pd.id_teacher')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
@@ -51,9 +51,11 @@ class AllocationModel extends Model
             ->where('tb_allocation.dayWeek', $diaSemana)
             ->where('tb_allocation.status', 'A')
             ->where('tb_allocation.position', $posicao)
-            //->where('pd.id_serie', $id_serie)
+            ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')
             ->get()->getResultArray();
+           
+            return $result;
 
 
 
@@ -71,7 +73,7 @@ class AllocationModel extends Model
 
     public function getAllAlocacaoProfessor(int $idTeacher)
     {
-        return $this->select('tb_allocation.id, tb_allocation.dayWeek, tb_allocation.position, tb_allocation.situation, d.abbreviation, pd.color')
+        return $this->select('tb_allocation.id, tb_allocation.dayWeek, tb_allocation.position, tb_allocation.situation, d.abbreviation, pd.color, tb_allocation.shift')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('pd.id_teacher', $idTeacher)
@@ -89,28 +91,29 @@ class AllocationModel extends Model
 
     public function saveAllocation(array $data)
     {
+        $shift = $data['shift'];
         $allocation = $data['disciplines'];
         $dayWeek = $data['dayWeek'];
         $position = $data['position'];
 
-        $cont = 0;
+        $cont = 0;       
 
-       
-
-        foreach ($allocation as $item) {
-            foreach ($dayWeek as $day) {
-                foreach ($position as $posit) {
-                    
-                    $dataAllocation['id_teacher_discipline'] = $item;
-                    $dataAllocation['dayWeek'] = $day;
-                    $dataAllocation['position'] = $posit;
-                    $dataAllocation['situation'] = 'L';
-                    $dataAllocation['status'] = 'A';
-                    if($this->validateAllocation($item,$day,$posit) <= 0 ){
-                        $save = $this->save($dataAllocation);
-                        if ($save) {
-                           $cont++;
-                       }                       
+        foreach($shift as $sh){           
+            foreach ($allocation as $item) {
+                foreach ($dayWeek as $day) {
+                    foreach ($position as $posit) {                    
+                        $dataAllocation['id_teacher_discipline'] = $item;
+                        $dataAllocation['dayWeek'] = $day;
+                        $dataAllocation['position'] = $posit;
+                        $dataAllocation['situation'] = 'L';
+                        $dataAllocation['status'] = 'A';
+                        $dataAllocation['shift'] = $sh;
+                        if($this->validateAllocation($item,$day,$posit, $sh) <= 0 ){
+                            $save = $this->save($dataAllocation);
+                            if ($save) {
+                               $cont++;
+                           }                       
+                        }
                     }
                 }
             }
@@ -138,12 +141,13 @@ class AllocationModel extends Model
                     ->countAllResults();
     }
 
-    private function validateAllocation(int $idTeacherDiscipline, int $dayWeek, int $position) : int
+    private function validateAllocation(int $idTeacherDiscipline, int $dayWeek, int $position, string $shift) : int
     {
        
             return $this->where('id_teacher_discipline', $idTeacherDiscipline)
             ->where('dayWeek', $dayWeek)
             ->where('position', $position)
+            ->where('shift', $shift)
             ->where('status', 'A')
             ->countAllResults();
             

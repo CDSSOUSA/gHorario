@@ -38,11 +38,12 @@ echo $this->section('content'); ?>
             </div>
 
             <div class="card-body table-responsive p-0">
-                <table class="table table-head-fixed text-nowrap table-striped">
+                <table id="tableC" class="table table-head-fixed text-nowrap table-striped">
                     <thead>
                         <tr>
                             <th colspan="5">
                                 <h5>Nome:: <?= $dataTeacher->name; ?></h5>
+                                <h6 id="idTeacDisc"><?=$dataTeacher->id;?></h6>
                             </th>
                         </tr>
                         <tr>
@@ -53,37 +54,7 @@ echo $this->section('content'); ?>
                             <th class="text-center">Ação :: </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php $contador = 1;
-                        foreach ($teacDisc as $data) : ?>
-                            <tr>
-                                <td><?= $contador++; ?></td>
-                                <td>
-                                    <div style="background-color:<?= $data->color; ?>; color:transparent">.</div>
-                                </td>
-                                <td><?= $data->description; ?></td>
-                                <td class="text-center"><?= $data->amount; ?></td>
-
-                                <td class="text-center">
-                                    <!-- Button trigger modal -->
-
-                                    <?= anchor('#', '<i class="icons fas fa-pen"></i>', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark','title'=>'Editar']); ?>
-                                    <?php
-                                    $allacation = new AllocationModel();
-                                    $total = $allacation->getCountByIdTeacDisc($data->id);
-                                    //dd($total);
-                                    if ($total <= 0) {
-
-                                        echo anchor('#', '<i class="icons fas fa-trash"></i>', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-danger buttonDelete']);
-                                    } else { ?>
-                                        <button type="buttton" class="btn btn-danger disabled"><i class="icons fas fa-trash"></i></button>
-
-                                    <?php } ?>
-
-                                    <?php echo anchor('alocacao/add/' . $data->id_teacher, '<i class="icons fas fa-plus"></i> Alocação', ['class' => 'btn btn-dark']); ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                    <tbody>                        
                     </tbody>
                 </table>
             </div>
@@ -118,8 +89,7 @@ echo $this->section('content'); ?>
                 echo csrf_field()
                 ?>
                 <div class="form-group col-6">
-                
-                    <label for="exampleColorInput" class="form-label">Disciplinas :: <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span> </label>
+                    <label for="exampleColorInput" class="form-label">Disciplinas :: </label>
 
                     <?php
                     $myDiscipline = [];
@@ -143,7 +113,7 @@ echo $this->section('content'); ?>
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
-                        <input type="number" min="1" max="45" name="nNumeroAulas" class="form-control" id="qtdeAulas" placeholder="" value="<?= set_value('nNumeroAulas') ?>">
+                        <input type="number" min="1" max="40" name="nNumeroAulas" class="form-control" id="qtdeAulas" placeholder="" value="<?= set_value('nNumeroAulas') ?>">
                         <span class="error invalid-feedback" id="fieldlertError"></span>
                     </div>
                     <div class="form-group col-6">
@@ -202,7 +172,7 @@ echo $this->section('content'); ?>
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
-                        <input type="number" min="1" max="45" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
+                        <input type="number" min="1" max="40" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
                                                                                                                                                             ?>">
                         <span class="error invalid-feedback" id="fieldlertError"></span>
 

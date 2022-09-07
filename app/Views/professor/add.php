@@ -11,7 +11,7 @@ echo $this->section('content'); ?>
                 <?php if ($msgs['alert']) : ?>
                     <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
                         <i class="fa fa-exclamation-triangle"></i><?= $msgs['message']; ?>
-                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -46,7 +46,7 @@ echo $this->section('content'); ?>
                         <div class="row">
                             <div class="form-group col-4">
                                 <label for="exampleColorInput" class="form-label">Cor Destaque ::</label>
-                                <input type="color" name="nCorDestaque" class="form-control form-control-color" id="exampleColorInput" value="<?= set_value('nCorDestaque', '#CCCCCC') ?>" title="Escolha uma cor">
+                                <input type="color" name="nCorDestaque" class="form-control form-control-color" id="exampleColorInput" value="<?= set_value('nCorDestaque', '#000000') ?>" title="Escolha uma cor">
                                 <?php if($erro !== '')                              
                                 echo generateAlertFieldErro($erro->getError('nCorDestaque'));?>
 
