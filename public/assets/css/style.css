@@ -224,6 +224,14 @@
    content: " Excluir ";    
     transition: 0.5s; 
 }
+
+/* Ensure that the demo table scrolls */
+th, td { white-space: nowrap; }
+div.dataTables_wrapper {
+    width: 800px;
+    margin: 0 auto;
+}
+
 /* @keyframes is-rotating {
   to {
      transform: rotate(1turn);

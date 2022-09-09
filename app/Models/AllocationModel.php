@@ -40,7 +40,7 @@ class AllocationModel extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
-    public function getAllocationByDayWeek(int $id_serie, int $diaSemana, int $posicao, string $shift)
+    public function getAllocationByDayWeek(int $id_serie, int $diaSemana, int $posicao, string $shift, $disciplines)
     {
 
         $result = $this->select('tb_allocation.id,
@@ -53,6 +53,37 @@ class AllocationModel extends Model
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')
+            ->whereIn('pd.id_discipline', $disciplines)
+            ->get()->getResultArray();
+           
+            return $result;
+
+
+
+        /*SELECT tp.nome FROM tb_teacher_discipline tpd 
+            join tb_allocation tap on tpd.id = tap.id_professor
+            join tb_professor tp on tp.id = tpd.id_professor
+            where tap.dayWeek = 2 AND 
+            tap.position = 3 AND 
+            tpd.id_serie = 1 AND 
+            tap.status = 'A' AND 
+            tap.situation = 'L';*/
+
+        //return !is_null($result) ? $result : [];
+    }
+    public function getAllocationByDayWeekA(int $id_serie, int $diaSemana, int $posicao, string $shift)
+    {
+
+        $result = $this->select('tb_allocation.id,
+         p.name, d.abbreviation, pd.color, pd.id_teacher')
+            ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+            ->join('tb_teacher p', 'p.id = pd.id_teacher')
+            ->join('tb_discipline d', 'pd.id_discipline = d.id')
+            ->where('tb_allocation.dayWeek', $diaSemana)
+            ->where('tb_allocation.status', 'A')
+            ->where('tb_allocation.position', $posicao)
+            ->where('tb_allocation.shift', $shift)
+            ->where('tb_allocation.situation', 'L')           
             ->get()->getResultArray();
            
             return $result;

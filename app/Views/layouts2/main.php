@@ -82,19 +82,12 @@
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Tarde</p>
                                     </a>
-                                </li>
-
-                               
-                            </ul>
-                      
+                                </li>                               
+                            </ul>                      
                         </li>
-                        
-                       
                     </ul>
                 </nav>
-
             </div>
-
         </aside>
         <div class="content-wrapper">
             <hr>

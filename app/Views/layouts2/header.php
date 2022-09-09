@@ -25,5 +25,7 @@
     
     <link rel="stylesheet" href="<?=base_url();?>/assets/plugins/toastr/toastr.css">
     <link rel="stylesheet" href="<?=base_url();?>/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.1.0/css/fixedColumns.dataTables.min.css">
     
 </head>

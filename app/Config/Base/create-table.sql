@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS tb_discipline (
     CONSTRAINT id_pk PRIMARY KEY (id)
 ) ENGINE = INNODB;
 INSERT INTO tb_discipline (description, abbreviation, amount)
-VALUES ('GEOGRAFIA', 'GEO', 4),
-    ('HISTÓRIA', 'HIST', 3),
+VALUES ('GEOGRAFIA', 'GEO', 3),
+    ('HISTÓRIA', 'HIST', 4),
     ('PORTUGUÊS', 'PORT', 5),
-    ('INGLÊS', 'ING', 3),
+    ('INGLÊS', 'ING', 2),
     ('MATEMÁTICA', 'MAT', 5),
-    ('ARTES', 'ART', 3),
-    ('FILOSOFIA', 'FILO', 3),
-    ('EDUCAÇÃO FÍSICA', 'ED FÍS', 3),
+    ('ARTES', 'ART', 2),
+    ('FILOSOFIA', 'FILO', 2),
+    ('EDUCAÇÃO FÍSICA', 'ED FÍS', 2),
     ('CIÊNCIAS', 'CIÊ', 3);
 CREATE TABLE tb_teacher (
     id SMALLINT AUTO_INCREMENT NOT NULL,

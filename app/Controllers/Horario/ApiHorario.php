@@ -7,30 +7,51 @@ use App\Models\SchoolScheduleModel;
 use App\Models\TeacDiscModel;
 use CodeIgniter\RESTful\ResourceController;
 use Exception;
+use App\Models\DisciplineModel;
 
 class ApiHorario extends ResourceController
 {
     private $allocation;
     private $schedule;
     private $teacDisc;
+    private $discipline; 
     public function __construct()
     {
         $this->allocation = new AllocationModel();
         $this->schedule = new SchoolScheduleModel();
         $this->teacDisc = new TeacDiscModel();
+        $this->discipline = new DisciplineModel();
     }
 
     public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)
     {
         try {
+            $datas = $this->schedule->getTotalDiscBySerie($idSerie);
+            $ar = 0;
+            $limits = [];
+            if($datas !=null){
 
-            $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift);
+                foreach ($datas as $d){
+    
+                    $limit = $this->discipline->getLimitClassroom($d->id);
+                    if($limit->amount > $d->total){
+                        $limits [] = $d->id;
+                    }
+                }
+                // criar um metodo para chamar a quantidade da disciplina,
+                // depois passa para busca alocacao
+                            
+                $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift, $limits);
+            } else{
+
+                $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+            }
             
             if ($data != null) {
                 return $this->response->setJSON($data);
             } else {
-                $data = [];
-                return $this->response->setJSON($data);
+                $data = ['err'=>'cpcp'];
+                return $this->response->setJSON($datas);
             }
         } catch (Exception $e) {
             return $this->response->setJSON([

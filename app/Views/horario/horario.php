@@ -52,7 +52,7 @@ echo $this->section('content');
                                     </th>
                                     <th><?= $ps . 'º'; ?></th>
                                     <?php foreach ($series as $serie) :
-                                        $allocationDisponivel = $allocation->getAllocationByDayWeek($serie->id, $dw, $ps, $shift);
+                                        $allocationDisponivel = $allocation->getAllocationByDayWeekA($serie->id, $dw, $ps, $shift);
                                        
 
                                         //dd($allocationDisponivel);

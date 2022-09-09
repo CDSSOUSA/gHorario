@@ -253,3 +253,4 @@ function loada() {
     Atualizando</div>
   `);
  }
+

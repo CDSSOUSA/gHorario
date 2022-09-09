@@ -267,11 +267,15 @@ class TeacDisc extends BaseController
                 ->update();
 
             if ($update) {
-
-                $this->allocation->set('situation', 'L')
-                ->where('id_teacher_discipline', $id)
-                ->where('situation', 'B')
-                ->update();
+                $totalAllocationOcupation = $this->allocation->getCountByIdTeacDiscOcupation($id);
+                
+                if($amount > $totalAllocationOcupation) {
+                
+                    $this->allocation->set('situation', 'L')
+                    ->where('id_teacher_discipline', $id)
+                    ->where('situation', 'B')
+                    ->update();                        
+                }
 
                 $response = [
                     'status' => 'OK',

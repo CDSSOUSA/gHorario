@@ -13,6 +13,7 @@
 </div>
 
 
+
 <script src="<?= base_url(); ?>/assets/js/jquery.min.js"></script>
 <script src="<?= base_url(); ?>/assets/plugins/jquery-ui/jquery-ui.js"></script>
 
@@ -38,8 +39,9 @@
 
 <script src="<?= base_url(); ?>/assets/js/jquery.maskMoney.js"></script>
 <script src="<?= base_url(); ?>/assets/js/axios.min.js"></script>
-<script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
 <script src="<?= base_url(); ?>/assets/js/script.js"></script>
+<script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
+
 <script>
 
   $(document).ready(function() {
@@ -51,7 +53,12 @@
   });
 
   $(document).ready(function() {
-    $(".moeda").maskMoney({showSymbol: true, thousands: '.', decimal: ',', symbolStay: true});
+    $(".moeda").maskMoney({
+      showSymbol: true,
+      thousands: '.',
+      decimal: ',',
+      symbolStay: true
+    });
     $('.number_account').mask('9999999999-A');
     $('.date').mask('00/00/0000');
     $('.time').mask('00:00:00');
@@ -112,7 +119,7 @@
     rightArrow: '<i class="fa fa-long-arrow-right"></i>',
     prevText: "&#x3C;Anterior",
     nextText: "Próximo&#x3E;",
-    minDate: new Date(<?=getenv('YEAR_START');?>, <?=getenv('MONTH_START');?>-1, <?=getenv('DAY_START');?>),
+    minDate: new Date(<?= getenv('YEAR_START'); ?>, <?= getenv('MONTH_START'); ?> - 1, <?= getenv('DAY_START'); ?>),
     maxDate: "+0d",
     selectOtherMonths: true,
     currentText: "Hoje",

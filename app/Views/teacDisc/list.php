@@ -43,6 +43,12 @@ echo $this->section('content'); ?>
                         <tr>
                             <th colspan="5">
                                 <h5>Nome:: <?= $dataTeacher->name; ?></h5>
+                                <?php $allocation = new AllocationModel();
+                                    $totalAllocationOcupation = 1;
+                                    if($allocation->getCountByIdTeacDiscOcupation($dataTeacher->id) > 1){
+                                       $totalAllocationOcupation = $allocation->getCountByIdTeacDiscOcupation($dataTeacher->id);
+                                    }
+                                    ?>
                             </th>
                         </tr>
                         <tr>
@@ -69,9 +75,9 @@ echo $this->section('content'); ?>
 
                                     <?= anchor('#', '<i class="icons fas fa-pen"></i>', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark','title'=>'Editar']); ?>
                                     <?php
-                                    $allacation = new AllocationModel();
-                                    $total = $allacation->getCountByIdTeacDisc($data->id);
+                                   $total = $allocation->getCountByIdTeacDisc($data->id);
                                     //dd($total);
+                                   
                                     if ($total <= 0) {
 
                                         echo anchor('#', '<i class="icons fas fa-trash"></i>', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-danger buttonDelete']);
@@ -201,8 +207,9 @@ echo $this->section('content'); ?>
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
+                       
                         <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
-                        <input type="number" min="1" max="45" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
+                        <input type="number" min="<?=$totalAllocationOcupation;?>" max="45" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
                                                                                                                                                             ?>">
                         <span class="error invalid-feedback" id="fieldlertError"></span>
 
