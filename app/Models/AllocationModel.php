@@ -53,7 +53,7 @@ class AllocationModel extends Model
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')
-            ->whereIn('pd.id_discipline', $disciplines)
+            ->whereNotIn('pd.id_discipline', $disciplines)
             ->get()->getResultArray();
            
             return $result;

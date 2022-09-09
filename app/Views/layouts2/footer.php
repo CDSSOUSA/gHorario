@@ -41,8 +41,27 @@
 <script src="<?= base_url(); ?>/assets/js/axios.min.js"></script>
 <script src="<?= base_url(); ?>/assets/js/script.js"></script>
 <script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
 
 <script>
+$(document).ready(function() {
+    var table = $('#example').DataTable( {
+        scrollY:        "480px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging: false,
+        ordering: false,
+        info: false,    
+        searching: false,
+        stateSave: true,
+        fixedHeader: true,    
+        fixedColumns:   {
+            left: 2,
+            //right: 1
+        }
+    } );
+} );
 
   $(document).ready(function() {
     setTimeout(function() {
@@ -119,7 +138,7 @@
     rightArrow: '<i class="fa fa-long-arrow-right"></i>',
     prevText: "&#x3C;Anterior",
     nextText: "Próximo&#x3E;",
-    minDate: new Date(<?= getenv('YEAR_START'); ?>, <?= getenv('MONTH_START'); ?> - 1, <?= getenv('DAY_START'); ?>),
+    //minDate: new Date(<?= getenv('YEAR_START'); ?>, <?= getenv('MONTH_START'); ?> - 1, <?= getenv('DAY_START'); ?>),
     maxDate: "+0d",
     selectOtherMonths: true,
     currentText: "Hoje",

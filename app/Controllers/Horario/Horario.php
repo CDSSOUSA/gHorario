@@ -90,7 +90,7 @@ class Horario extends BaseController
             'diaSemana' => $dia_semana,
             'idSerie' => $this->series->find($id_serie),
             'posicao' => $posicao,
-            'professores' => $this->alocacaoProfessor->getAllocationByDayWeek($id_serie, $dia_semana, $posicao, $shift),
+            'professores' => $this->alocacaoProfessor->getAllocationByDayWeekA($id_serie, $dia_semana, $posicao, $shift),
             'msgs' => $msg,
             'erro' => $this->erros,
             'shift' => $shift

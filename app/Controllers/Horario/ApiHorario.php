@@ -14,7 +14,7 @@ class ApiHorario extends ResourceController
     private $allocation;
     private $schedule;
     private $teacDisc;
-    private $discipline; 
+    private $discipline;
     public function __construct()
     {
         $this->allocation = new AllocationModel();
@@ -29,29 +29,38 @@ class ApiHorario extends ResourceController
             $datas = $this->schedule->getTotalDiscBySerie($idSerie);
             $ar = 0;
             $limits = [];
-            if($datas !=null){
+            if ($datas != null) {
 
-                foreach ($datas as $d){
-    
+                foreach ($datas as $d) {
+
                     $limit = $this->discipline->getLimitClassroom($d->id);
-                    if($limit->amount > $d->total){
-                        $limits [] = $d->id;
+                    if ($limit->amount <= $d->total) {
+                        $limits[] = $d->id;
                     }
                 }
-                // criar um metodo para chamar a quantidade da disciplina,
-                // depois passa para busca alocacao
-                            
-                $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift, $limits);
-            } else{
+                if ($limits != null) {
+
+                    $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift, $limits);
+                } else {
+
+                    $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+                }
+            } else {
 
                 $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
             }
-            
+
             if ($data != null) {
                 return $this->response->setJSON($data);
             } else {
-                $data = ['err'=>'cpcp'];
-                return $this->response->setJSON($datas);
+                $data = [[
+                    'id'=> "0",
+                    'name'=> "SEM PROFESSOR",
+                    'abbreviation'=> "SH",
+                    'color'=> "#000000", 
+                    'id_teacher'=> "0"
+                ]];
+                return $this->response->setJSON($data);
             }
         } catch (Exception $e) {
             return $this->response->setJSON([
@@ -175,10 +184,10 @@ class ApiHorario extends ResourceController
                     // $totalAllocation = $this->allocation->getCountByIdTeacDiscOcupation($teacherDiscipline[0]->id_teacher_discipline);
                     // if ($total <= $totalAllocation) {
 
-                        $this->allocation->set('situation', 'L')
-                            ->where('id_teacher_discipline', $teacherDiscipline[0]->id_teacher_discipline)
-                            ->where('situation', 'B')
-                            ->update();
+                    $this->allocation->set('situation', 'L')
+                        ->where('id_teacher_discipline', $teacherDiscipline[0]->id_teacher_discipline)
+                        ->where('situation', 'B')
+                        ->update();
                     //}
 
 

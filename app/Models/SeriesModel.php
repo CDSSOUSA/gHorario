@@ -47,4 +47,14 @@ class SeriesModel extends Model
         $result = $this->findAll();        
         return !is_null($result) ? $result : [];
     }
+
+    public function getDescription(int $id)
+    {
+        $return = $this->select('description,classification,shift')
+        ->where('id',$id)
+        ->get()
+        ->getResult();
+        return $return;
+
+    }
 }

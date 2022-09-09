@@ -1,6 +1,8 @@
 var divLoad = document.querySelector('#load');
 var divLoader = document.querySelector('#loader');
-
+var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
+var bodySuccess = ' Operação realizada com sucesso';
+var success = 'success';
 
 const addScheduleModal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
 
@@ -12,12 +14,20 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
     document.getElementById('fieldlertError').textContent = ''
 
     addScheduleModal.show();
-    document.getElementById('idSerie').value = idSerie
+    document.getElementById('idSerie').value = idSerie    
     document.getElementById('position').value = position
     document.getElementById('dayWeek').value = dayWeek
+    document.getElementById('dayWeekFake').value = diaSemana(dayWeek)
     document.getElementById('shift').value = shift
     const divOpcao = document.getElementById('divOpcao')
     divOpcao.innerHTML = ''
+
+    await axios.get(`${URL_BASE}/series/show/${idSerie}`)
+    .then(response => {
+        console.log(response.data)
+        document.getElementById('idSerieFake').value = `${response.data[0].description}º ${response.data[0].classification}`
+    })
+    .catch(error => console.log(error))
 
     await axios.get(`${URL_BASE}/horario/api/getAllocation/${idSerie}/${dayWeek}/${position}/${shift}`)
         .then(response => {
@@ -125,10 +135,27 @@ if(deleteScheduleForm) {
 }
 
 function load() {
-    divLoad.classList.add("load");
+    divLoad.classList.add("loada");
     divLoader.classList.add("loader");
+    $('.toast').append(`
+    <div class="text-center bg-success p-1"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Atualizando</div>
+  `);
  }
  const stopLoad = ()=>{
     divLoad.classList.remove("load");
     divLoader.classList.remove("loader");
+ }
+
+ function diaSemana(dia)
+ {
+    var dayWeek = [
+        'SEG','TER','QUA','QUI','SEX'
+    ];
+
+    dayWeek.forEach(e => {
+        console.log(e)
+    })
+    // if(dia == 2) 
+    // return 'SEG'
  }

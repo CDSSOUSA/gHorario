@@ -83,6 +83,12 @@ $routes->group('/alocacao',['namespace'=>'App\Controllers\Alocacao',/*'filter'=>
     $routes->get('add/(:any)', 'Alocacao::add/$1'); 
     $routes->post('delete', 'Alocacao::delete'); 
 });
+/* ROUTES SERIES*/
+$routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'accessFilter'*/],function ($routes){
+   
+    $routes->get('show/(:any)', 'Series::show/$1');
+   
+});
 
 
 /*ROUTES LOGOUT
