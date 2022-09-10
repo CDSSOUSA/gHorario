@@ -162,6 +162,7 @@ echo $this->section('content');
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
                 <span id="msgAlertError"></span>
                 <?php echo form_open('horario/api/create', ['id' => 'addScheduleForm']) ?>
@@ -172,37 +173,36 @@ echo $this->section('content');
                     <span class="error invalid-feedback" id="fieldlertError"></span>
                 </div>
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-default">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="fas fa-bullhorn"></i>
+                                    Dados ::
+                                </h3>
+                            </div>
 
-                
-                <div class="form-group col-3">
+                            <div class="card-body">
+                                <div class="callout callout-danger">
 
-                    <label for="exampleInputFile">Série :: </label>
-                    <input type="hidden" name="nSerie" id="idSerie" class="form-control">
-                    <input type="text" name="" id="idSerieFake" class="form-control" disabled>
+                                    <h5><i class="fa fa-th"></i> Série :: <span class="font-weight-bold" id="idSerieFake" class="info-box-number"></span> - <span id="shiftFake" class="info-box-number"></span></h5>
+                                    <p></p>
+                                </div>
 
+                                <div class="callout callout-info">
+                                    <h5><i class="fa fa-calendar"></i> <span id="positionFake" class="info-box-number"></span> Aula - <span id="dayWeekFake" class="info-box-number"></span></h5>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group col-3">
-
-                    <label for="exampleInputFile">Posição :: </label>
-                    <input type="text" name="nPosition" id="position" class="form-control">
-
-                </div>
-                <div class="form-group col-3">
-
-                    <label for="exampleInputFile">Dia semana :: </label>
-                    <input type="hidden" name="nDayWeek" id="dayWeek">
-                    <input type="text" name="" id="dayWeekFake" class="form-control" disabled>
-
-                </div>
-                <div class="form-group col-3">
-
-                    <label for="exampleInputFile">Turno :: </label>
-                    <input type="text" name="nShift" id="shift" class="form-control">
-
-                </div>
-                </div>
-
+                <span id="checkAll"></span>
+                <input type="hidden" name="nSerie" id="idSerie">
+                <input type="hidden" name="nDayWeek" id="dayWeek">
+                <input type="hidden" name="nPosition" id="position">
+                <input type="hidden" name="nShift" id="shift">
             </div>
             <div class="modal-footer">
                 <?= generationButtonSave(); ?>
