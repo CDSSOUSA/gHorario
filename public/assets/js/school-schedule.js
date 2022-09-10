@@ -16,20 +16,22 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
     addScheduleModal.show();
     document.getElementById('idSerie').value = idSerie
     document.getElementById('position').value = position
-    document.getElementById('positionFake').innerText = `${position}ª`
     document.getElementById('dayWeek').value = dayWeek
-    document.getElementById('dayWeekFake').innerText = await convertDayWeek(dayWeek)
     document.getElementById('shift').value = shift
-    document.getElementById('shiftFake').innerText = shift
+    document.getElementById('shiftFake').innerText = convertShift(shift)
+    document.getElementById('dayWeekFake').innerText = convertDayWeek(dayWeek)
+    document.getElementById('positionFake').innerText = `${position}ª`
     const divOpcao = document.getElementById('divOpcao')
     divOpcao.innerHTML = ''
 
-    await axios.get(`${URL_BASE}/series/show/${idSerie}`)
-        .then(response => {
-            console.log(response.data)
-            document.getElementById('idSerieFake').innerText = `${response.data[0].description}º ${response.data[0].classification}`
-        })
-        .catch(error => console.log(error))
+    // await axios.get(`${URL_BASE}/series/show/${idSerie}`)
+    //     .then(response => {
+    //         console.log(response.data)
+    //         document.getElementById('idSerieFake').innerText = `${response.data[0].description}º ${response.data[0].classification}`
+    //     })
+    //     .catch(error => console.log(error))
+
+    getSeries(idSerie, 'idSerieFake');
 
     await axios.get(`${URL_BASE}/horario/api/getAllocation/${idSerie}/${dayWeek}/${position}/${shift}`)
         .then(response => {
@@ -67,7 +69,7 @@ if (addScheduleForm) {
                     console.log('errro')
                     document.getElementById('msgAlertError').innerHTML = response.data.msg
                     document.getElementById('fieldlertError').textContent = 'Escolha obrigatória!'
-                    addForm.reset()
+
                 } else {
                     // load();
                     // //console.log(response.data)
@@ -90,7 +92,11 @@ async function deleteSchedule(id) {
             console.log(data);
             if (data) {
                 deleteScheduleModal.show();
-                document.getElementById('idDelete').value = data.id
+                document.getElementById('idDelete').value = data.id              
+                document.getElementById('dayWeekDel').innerText = convertDayWeek(data.dayWeek)
+                document.getElementById('positonDel').innerText = data.position
+                //document.getElementById('shiftDel').innerText = data.shift
+                getSeries(data.id_series, 'idSerieDel');
             }
         })
         .catch(error => console.log(error))
@@ -136,6 +142,16 @@ if (deleteScheduleForm) {
 
 }
 
+async function getSeries(id, locale){
+
+    await axios.get(`${URL_BASE}/series/show/${id}`)
+        .then(response => {
+            console.log(response.data)
+            document.getElementById(locale).innerText = `${response.data[0].description}º ${response.data[0].classification}`
+        })
+        .catch(error => console.log(error))
+}
+
 function load() {
     divLoad.classList.add("loada");
     divLoader.classList.add("loader");
@@ -145,12 +161,12 @@ function load() {
   `);
 }
 const stopLoad = () => {
-    divLoad.classList.remove("load");
+    divLoad.classList.remove("loada");
     divLoader.classList.remove("loader");
 }
 
-async function convertDayWeek(dia) {
-    var day
+const convertDayWeek = (dia) => {
+    let day
     const data = [
         "SEG",
         "TER",
@@ -158,10 +174,16 @@ async function convertDayWeek(dia) {
         "QUI",
         "SEX"
     ]
-     data.forEach((item, indice) => {
-        if (dia === indice + 2) {
-            day = item           
+    data.forEach((item, indice) => {
+        if (dia == indice + 2) {
+            day = item
         }
     });
     return day;
+}
+const convertShift = (turno) => {
+    let shift = 'TARDE'
+    if (turno === 'M')
+        shift = 'MANHÃ'
+    return shift;
 }

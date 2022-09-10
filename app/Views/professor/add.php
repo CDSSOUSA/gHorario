@@ -9,7 +9,7 @@ echo $this->section('content'); ?>
         <div class="row">
             <div class="col-md-12">
                 <?php if ($msgs['alert']) : ?>
-                    <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
+                    <div class="alert alert-close alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
                         <i class="fa fa-exclamation-triangle"></i><?= $msgs['message']; ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>

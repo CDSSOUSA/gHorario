@@ -176,21 +176,19 @@ echo $this->section('content');
                     <div class="col-md-6">
                         <div class="card card-default">
                             <div class="card-header">
-                                <h3 class="card-title">
-                                    <i class="fas fa-bullhorn"></i>
+                                <h3 class="card-title font-weight-bold">                                   
                                     Dados ::
                                 </h3>
                             </div>
 
                             <div class="card-body">
-                                <div class="callout callout-danger">
-
-                                    <h5><i class="fa fa-th"></i> Série :: <span class="font-weight-bold" id="idSerieFake" class="info-box-number"></span> - <span id="shiftFake" class="info-box-number"></span></h5>
-                                    <p></p>
+                                <div class="callout callout-info">
+                                    <h5 class="font-weight-bold"><i class="fa fa-th"></i> Série :: <span id="idSerieFake" class="info-box-number"></span> - <span id="shiftFake" class="info-box-number"></span></h5>
+                                  
                                 </div>
 
                                 <div class="callout callout-info">
-                                    <h5><i class="fa fa-calendar"></i> <span id="positionFake" class="info-box-number"></span> Aula - <span id="dayWeekFake" class="info-box-number"></span></h5>
+                                    <h5 class="font-weight-bold"><i class="fa fa-calendar"></i> <span id="positionFake" class="info-box-number"></span> Aula - <span id="dayWeekFake" class="info-box-number"></span></h5>
 
                                 </div>
 
@@ -221,7 +219,7 @@ echo $this->section('content');
                 <div id="loader"></div>
             </div>
             <div class="modal-header bg-danger">
-                <h5 class="modal-title" id="deleteScheduleModalLabel">Remover horário</h5>
+                <h5 class="modal-title" id="deleteScheduleModalLabel">Remover horário :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -232,6 +230,8 @@ echo $this->section('content');
 
                 <div class="form-group col-12">
                     <input type="text" id="idDelete" name="id" />
+                    <p class="font-weight-bold">Série:: <span id="idSerieDel"></span>  - </p>
+                    <p class="font-weight-bold"><span id="positonDel"></span>ª Aula - <span id="dayWeekDel"></span></p>
                     <p>Confirmar remoção?</p>
                 </div>
 

@@ -109,7 +109,7 @@ function generateAlertFieldErro(string $field)
 {
     if($field === '')
     return;
-    return '<span class="invalid-feedback"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> '.$field.'</span>';
+    return '<span class="alert-close invalid-feedback"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> '.$field.'</span>';
 
 }
 

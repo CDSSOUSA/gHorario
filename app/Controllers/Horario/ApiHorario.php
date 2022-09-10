@@ -97,8 +97,8 @@ class ApiHorario extends ResourceController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Ops!</strong> Erro(s) no preenchimento do formulário! 
+                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+  <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
@@ -222,6 +222,7 @@ class ApiHorario extends ResourceController
 
         try {
             $data = $this->schedule->find($id);
+            // definir nova consuta para todos os dados da schedule
 
             if ($data != null) {
                 return $this->response->setJSON($data);
