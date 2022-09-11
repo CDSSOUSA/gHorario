@@ -46,7 +46,7 @@ class Horario extends BaseController
      */
     public function index(string $shift = null): string
     {
-        if ($shift === null) {
+        if ($shift === null || $shift !== 'T') {
             $shift = 'M';
         } else {
             $shift = 'T';
@@ -56,11 +56,14 @@ class Horario extends BaseController
             'message' => '',
             'alert' => ''
         ];
+       // dd($this->yearSchoolActive);
         $data = array(
-            'title' => 'Quadro de  Horário :: ' . turno($shift),
-            //'blogAtual' => $this->blog->find($id),
-            //'blogs' => $this->blog->blogRecents($id),
-            //'horarioSegunda' => $this->horarioSegunda->getHorarioDiaSemana(2,1),
+            'title' => '<i class="fa fa-th"></i> Quadro de  Horário :: ' . turno($shift). ' - '.$this->yearSchoolActive->description,
+            'breadcrumb' => [
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+                '<li class="breadcrumb-item active"> Quadro Horário - '.turno($shift).'</li>',                
+                '<li class="breadcrumb-item">'. anchor($shift == 'T' ? '/':'/horario/shift/T','Quadro Horário - '.turno($shift == 'T' ? 'M':'T')).'</li>',                
+            ],
             'msgs' => $msg,
             'series' => $this->series->getSeries($shift),
             'schoolSchedule' => $this->horario,

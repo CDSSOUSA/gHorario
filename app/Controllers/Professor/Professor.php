@@ -2,9 +2,7 @@
 
 namespace App\Controllers\Professor;
 
-use App\Models\ProfessorModel;
 use App\Controllers\BaseController;
-use App\Models\DisciplinaModel;
 use App\Models\DisciplineModel;
 use App\Models\TeacherModel;
 
@@ -37,7 +35,12 @@ class Professor extends BaseController
         }
 
         $data = [
-            'title' => 'Cadastrar Professor(a) ::',
+            'title' => '<i class="fa fa-user"></i> Cadastrar Professor(a) ::',
+            'breadcrumb' => [
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+                '<li class="breadcrumb-item active"> Cadastrar </li>',
+                '<li class="breadcrumb-item">' . anchor('/professor/list', 'Listar') . '</li>',
+            ],
             'msgs' => $msgs,
             'erro' => $this->erros,
             'disciplinas' => $this->disciplinaModel->findAll()
@@ -80,13 +83,13 @@ class Professor extends BaseController
             ]
         );
 
-       
+
         if (!$val) {
             return redirect()->back()->withInput()->with('erro', $this->validator);
             //return redirect()->to('/admin/blog');
         } else {
 
-            
+
             $professor['name'] = mb_strtoupper($this->request->getPost('nNome'));
             $professor['amount'] = $this->request->getPost('nNumeroAulas');
             $professor['color'] = $this->request->getPost('nCorDestaque');
@@ -115,7 +118,7 @@ class Professor extends BaseController
                               <p class="mb-0"><i class="fa fa-exclamation-triangle"></i> Defina uma nova cor e a quantidade de horas para cada disciplina!</p>',
                 'alert' => 'success'
             ]);
-            return redirect()->to('/teacDisc/list/'.$this->professorModel->getInsertID());
+            return redirect()->to('/teacDisc/list/' . $this->professorModel->getInsertID());
         }
     }
 
@@ -131,7 +134,12 @@ class Professor extends BaseController
         }
 
         $data = [
-            'title' => 'Listar Professores',
+            'title' => '<i class="fa fa-user"></i> Listar Professores :: ',
+            'breadcrumb' => [
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/professor', 'Cadastrar') . '</li>',
+                '<li class="breadcrumb-item active"> Listar </li>'
+            ],
             'msgs' => $msgs,
             'erro' => $this->erros,
             'disciplinas' => $this->disciplinaModel->findAll(),
@@ -142,6 +150,5 @@ class Professor extends BaseController
         ];
         //session()->set('dado',$data);
         return view('professor/list', $data);
-
     }
 }

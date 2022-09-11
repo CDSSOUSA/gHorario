@@ -89,6 +89,13 @@ $routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'acc
     $routes->get('show/(:any)', 'Series::show/$1');
    
 });
+/* ROUTES YEAR SCHOOL*/
+$routes->group('/yearSchool',['namespace'=>'App\Controllers\YearSchool',/*'filter'=>'accessFilter'*/],function ($routes){
+   
+    $routes->get('/', 'YearSchool::index');
+    $routes->post('create', 'YearSchool::create');
+   
+});
 
 
 /*ROUTES LOGOUT

@@ -79,7 +79,14 @@ class Alocacao extends BaseController
         session()->remove('success');
 
         $data = array(
-            'title' => 'Alocar Professor(a) :: ',
+            'title' => '<i class="fa fa-user"></i> Alocar Professor(a) :: ',
+            'breadcrumb' => [
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/professor', 'Cadastrar') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/professor/list', 'Listar') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/teacDisc/list/'.$idTeacher, ' Editar Professor/Disciplina') . '</li>',
+                '<li class="breadcrumb-item active"> Alocação </li>',
+            ],
             'msgs' => $msgs,
             'erro' => $this->erros,
             'professor' => $this->professor->find($idTeacher),
@@ -87,7 +94,8 @@ class Alocacao extends BaseController
             //'professoresDisciplinas' => $this->professorDisciplina->getAllProfessorDisciplina(),
             'alocacao' => $this->alocacao->getAllAlocacaoProfessor($idTeacher),
             'teacDisc' => $this->teacDiscModel->getTeacherDisciplineByIdTeacher($idTeacher),
-            'scheduleModel' => $this->schedule
+            'scheduleModel' => $this->schedule,
+            'series' => $this->series
 
         );
         return view('alocacao/add', $data);

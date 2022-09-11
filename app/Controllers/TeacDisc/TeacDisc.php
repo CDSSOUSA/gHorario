@@ -37,7 +37,14 @@ class TeacDisc extends BaseController
         }
 
         $data = [
-            'title' => 'Editar Professor/Disciplina :: ',
+            'title' => '<i class="fa fa-user"></i> Editar Professor/Disciplina :: ',
+            'breadcrumb' => [
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/professor', 'Cadastrar') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/professor/list', 'Listar') . '</li>',
+                '<li class="breadcrumb-item active"> Editar Professor/Disciplina </li>',
+                '<li class="breadcrumb-item">' . anchor('/alocacao/add/'.$idTeacher, 'Alocacão') . '</li>',
+            ],
             'msgs' => $msgs,
             'erro' => $this->erros,
             'teacDisc' => $this->teacDiscModel->getTeacherDisciplineByIdTeacher($idTeacher),

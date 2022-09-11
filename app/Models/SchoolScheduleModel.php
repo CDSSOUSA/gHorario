@@ -14,7 +14,7 @@ class SchoolScheduleModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['id_allocation','dayWeek','position','id_series','status'];
+    protected $allowedFields        = ['id_allocation', 'dayWeek', 'position', 'id_series', 'status', 'id_year_school'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -49,7 +49,8 @@ class SchoolScheduleModel extends Model
             pd.color, 
             pd.id_teacher,
             d.abbreviation,
-            h.id')
+            h.id'
+        )
             ->from('tb_school_schedule h')
             ->join('tb_allocation ap', 'h.id_allocation = ap.id')
             ->join('tb_teacher_discipline pd', 'ap.id_teacher_discipline = pd.id')
@@ -58,27 +59,30 @@ class SchoolScheduleModel extends Model
             ->where('h.dayWeek', $diaSemana)
             ->where('h.id_series', $idSerie)
             ->where('h.position', $posicao)
-            ->get()->getRowArray();            
-            return $result;
+            ->where('h.id_year_school', session('session_idYearSchool'))
+            ->get()->getRowArray();
+        return $result;
     }
 
     public function getScheduleByIdAllocation(int $idAllocation)
     {
-        return $this->where('id_allocation',$idAllocation)
-        ->get()->getRow();
+        return $this->where('id_allocation', $idAllocation)
+            ->where('id_year_school', session('session_idYearSchool'))
+            ->get()->getRow();
     }
 
     public function getTotalDiscBySerie(int $idSerie)
     {
         return $this->select('count(*) as total, d.description, d.id')
-        //->from('tb_school_schedule h')
-        ->join('tb_allocation a', $this->table.'.id_allocation = a.id')
-        ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
-        ->join('tb_discipline d', 'td.id_discipline = d.id')
-        ->where($this->table.'.id_series', $idSerie)
-        ->where($this->table.'.status', 'A')
-        ->groupBy('td.id_discipline')
-        ->get()->getResult();
+            //->from('tb_school_schedule h')
+            ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
+            ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+            ->join('tb_discipline d', 'td.id_discipline = d.id')
+            ->where($this->table . '.id_series', $idSerie)
+            ->where($this->table . '.status', 'A')
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->groupBy('td.id_discipline')
+            ->get()->getResult();
 
 
         // SELECT count(*) as total, td.description  FROM tb_school_schedule tss
@@ -89,5 +93,23 @@ class SchoolScheduleModel extends Model
         // GROUP BY ttd.id_discipline ; 
 
 
+    }
+
+    public function getDataForDelete(int $id)
+    {
+        return $this->select('d.abbreviation, 
+           ' . $this->table . '.id_series, 
+           ' . $this->table . '.id, 
+           ' . $this->table . '.position,
+           ' . $this->table . '.dayWeek,           
+           s.shift,
+           t.name,
+           td.color')
+            ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
+            ->join('tb_series s', $this->table . '.id_series = s.id')
+            ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+            ->join('tb_teacher t', 'td.id_teacher = t.id')
+            ->join('tb_discipline d', 'td.id_discipline = d.id')
+            ->find($id);
     }
 }

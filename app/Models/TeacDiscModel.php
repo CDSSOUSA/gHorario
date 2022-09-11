@@ -14,7 +14,7 @@ class TeacDiscModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['id_teacher', 'id_discipline', 'amount', 'color'];
+    protected $allowedFields        = ['id_teacher', 'id_discipline', 'amount', 'color', 'id_year_school', 'status'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -54,6 +54,7 @@ class TeacDiscModel extends Model
             ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->orderBy('t.name')
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
             ->findAll();
     }
 
@@ -62,6 +63,7 @@ class TeacDiscModel extends Model
         return $this->select($this->table . '.color, ' . $this->table . '.id_teacher, d.description, d.abbreviation, ' . $this->table . '.id,' .$this->table . '.id_discipline,' . $this->table . '.amount')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->where($this->table . '.id_teacher', $idTeacher)
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
             ->findAll();
     }
     public function getTeacherWithoutDisciplineByIdTeacher(int $idTeacher)
@@ -69,6 +71,7 @@ class TeacDiscModel extends Model
         return $this->select($this->table . '.id_discipline ,'.$this->table . '.color, ' . $this->table . '.id_teacher, d.description, d.abbreviation, ' . $this->table . '.id,' . $this->table . '.amount')
             ->join('tb_discipline d', $this->table . '.id_discipline = d.id','RIGHT')
             ->where($this->table . '.id_teacher', $idTeacher)
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
             ->findAll();
             //->join('tb_operador_permissao OP', 'P.idPermissao = OP.idPermissao AND (OP.idOperador) =' . $idOperador, 'LEFT')
     }
@@ -106,6 +109,8 @@ class TeacDiscModel extends Model
             $teacherDiscipline['id_teacher'] =  $professor['id_teacher'];
             $teacherDiscipline['id_discipline'] = $item;
             $teacherDiscipline['amount'] = $data['amount'];
+            $teacherDiscipline['status'] = 'A';
+            $teacherDiscipline['id_year_school'] = session('session_idYearSchool');
             $teacherDiscipline['color'] = $data['color'] == '#000000' ? generationColor() : $data['color'] ;
             $teacDisc->save($teacherDiscipline);
         }

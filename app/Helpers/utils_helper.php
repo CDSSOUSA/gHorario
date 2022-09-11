@@ -18,31 +18,41 @@ function toDataMsql($data)
     return NULL;
 }
 
+
 /**
- * [Description for diaSemanaExtenso]
+ * Method diaSemanaExtenso
  *
- * @param int $diaSemana
- * 
+ * @param int $diaSemana [explicite description]
+ *
  * @return string
- * 
  */
 function diaSemanaExtenso(int $diaSemana): string
 {
+    $days = [
+        "SEG","TER","QUA","QUI","SEX"
+    
+    ];
 
-    switch ($diaSemana) {
-        case $diaSemana == 2:
-            return 'SEG';
-        case $diaSemana == 3:
-            return 'TER';
-        case $diaSemana == 4:
-            return 'QUA';
-        case $diaSemana == 5:
-            return 'QUI';
-        case $diaSemana == 6:
-            return 'SEX';
-        default:
-            return null;
+    foreach($days as $key => $item){
+        if($diaSemana === $key + 2)
+        return $item;
     }
+    return null;
+
+    // switch ($diaSemana) {
+    //     case $diaSemana == 2:
+    //         return 'SEG';
+    //     case $diaSemana == 3:
+    //         return 'TER';
+    //     case $diaSemana == 4:
+    //         return 'QUA';
+    //     case $diaSemana == 5:
+    //         return 'QUI';
+    //     case $diaSemana == 6:
+    //         return 'SEX';
+    //     default:
+    //         return null;
+    // }
 }
 function generationColor()
 {
@@ -50,10 +60,10 @@ function generationColor()
 }
 function turno($turno): string
 {
-    if (empty($turno)) {
-        return '--';
+    if (empty($turno) || $turno !== 'T') {
+        return 'MANHÃ';
     }
-    return $turno == 'M' ? "MANHÃ" : "TARDE";
+    return "TARDE";
 }
 function convertDiscipline(string $string): string
 {

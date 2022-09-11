@@ -114,6 +114,7 @@ class ApiHorario extends ResourceController
         $horario['id_series'] = $this->request->getPost('nSerie');
         //$horario['id_ano_letivo'] = 1;
         $horario['status'] = 'A';
+        $horario['id_year_school'] = session('session_idYearSchool');
 
         $save = $this->schedule->save($horario);
 
@@ -140,6 +141,7 @@ class ApiHorario extends ResourceController
                 $this->allocation->set('situation', 'B')
                     ->where('id_teacher_discipline', $teacherDiscipline[0]->id_teacher_discipline)
                     ->where('situation', 'L')
+                    ->where('id_year_school', session('session_idYearSchool'))
                     ->update();
             }
 
@@ -187,6 +189,7 @@ class ApiHorario extends ResourceController
                     $this->allocation->set('situation', 'L')
                         ->where('id_teacher_discipline', $teacherDiscipline[0]->id_teacher_discipline)
                         ->where('situation', 'B')
+                        ->where('id_year_school', session('session_idYearSchool'))
                         ->update();
                     //}
 
@@ -221,7 +224,7 @@ class ApiHorario extends ResourceController
     {
 
         try {
-            $data = $this->schedule->find($id);
+            $data = $this->schedule->getDataForDelete($id);
             // definir nova consuta para todos os dados da schedule
 
             if ($data != null) {

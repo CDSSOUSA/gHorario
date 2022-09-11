@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\YearSchoolModel;
 
 /**
  * Class BaseController
@@ -57,6 +58,8 @@ class BaseController extends Controller
         'alert' => 'success'
     ];
 
+    protected $yearSchoolActive;
+
     /**
      * Constructor.
      */
@@ -69,6 +72,10 @@ class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
         //helper('utils');       
+
+        $t = new YearSchoolModel();
+        $this->yearSchoolActive = $t->where('status','A')->find()[0];
+        session()->set('session_idYearSchool', $this->yearSchoolActive->id);
 
 
     }

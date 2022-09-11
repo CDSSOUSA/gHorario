@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AllocationModel;
+
 echo $this->extend('layouts2/default');
 echo $this->section('content'); ?>
 <div id="load">
@@ -8,99 +9,123 @@ echo $this->section('content'); ?>
     </div>
 </div>
 
-
-<div class="row">
-    <div class="col-12">
-        <?php if ($msgs['alert']) : ?>
-            <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
-                <?= $msgs['salutation']; ?>
-                <?= $msgs['message']; ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div class="content-header">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-sm-6">
             </div>
-        <?php
-        endif;
-        session()->remove('success'); ?>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <?php
+                    foreach ($breadcrumb as $item) {
+                        echo $item;
+                    } ?>
 
-        <div class="card card-dark">
-            <div class="card-header">
-                <h3 class="card-title font-weight-bold"><?= $title ?></h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <?php
-                        $total = count($disciplines->findAll());
-                        $totalTeacDisc = count($teacDisc);
-                        if ($total > $totalTeacDisc)
-                            echo anchor('#', '<i class="icons fas fa-plus"></i> Nova Disciplina', ['onclick' => 'addTeacherDiscipline(' . $dataTeacher->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
-                    </div>
-                </div>
+                </ol>
             </div>
-
-            <div class="card-body table-responsive p-0">
-                <table class="table table-head-fixed text-nowrap table-striped">
-                    <thead>
-                        <tr>
-                            <th colspan="5">
-                                <h5>Nome:: <?= $dataTeacher->name; ?></h5>
-                                <?php $allocation = new AllocationModel();
-                                    $totalAllocationOcupation = 1;
-                                    if($allocation->getCountByIdTeacDiscOcupation($dataTeacher->id) > 1){
-                                       $totalAllocationOcupation = $allocation->getCountByIdTeacDiscOcupation($dataTeacher->id);
-                                    }
-                                    ?>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>#</th>
-                            <th>Cor destaque :: </th>
-                            <th>Disciplina(s) :: </th>
-                            <th class="text-center">Qtde aulas :: </th>
-                            <th class="text-center">Ação :: </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $contador = 1;
-                        foreach ($teacDisc as $data) : ?>
-                            <tr>
-                                <td><?= $contador++; ?></td>
-                                <td>
-                                    <div style="background-color:<?= $data->color; ?>; color:transparent">.</div>
-                                </td>
-                                <td><?= $data->description; ?></td>
-                                <td class="text-center"><?= $data->amount; ?></td>
-
-                                <td class="text-center">
-                                    <!-- Button trigger modal -->
-
-                                    <?= anchor('#', '<i class="icons fas fa-pen"></i>', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark','title'=>'Editar']); ?>
-                                    <?php
-                                   $total = $allocation->getCountByIdTeacDisc($data->id);
-                                    //dd($total);
-                                   
-                                    if ($total <= 0) {
-
-                                        echo anchor('#', '<i class="icons fas fa-trash"></i>', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-danger buttonDelete']);
-                                    } else { ?>
-                                        <button type="buttton" class="btn btn-danger disabled"><i class="icons fas fa-trash"></i></button>
-
-                                    <?php } ?>
-
-                                    <?php echo anchor('alocacao/add/' . $data->id_teacher, '<i class="icons fas fa-plus"></i> Alocação', ['class' => 'btn btn-dark']); ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card-footer">
-            <?= generateButtonRetro('/professor/list'); ?>
         </div>
     </div>
 </div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <?php if ($msgs['alert']) : ?>
+                    <div class="alert alert-<?= $msgs['alert'] ?> bg-<?= $msgs['alert'] ?> text-light border-0 alert-dismissible fade show" role="alert">
+                        <?= $msgs['salutation']; ?>
+                        <?= $msgs['message']; ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php
+                endif;
+                session()->remove('success'); ?>
 
-<!-- Modal add-->
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <h3 class="card-title font-weight-bold"><?= $title ?></h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <?php
+                                $total = count($disciplines->findAll());
+                                $totalTeacDisc = count($teacDisc);
+                                if ($total > $totalTeacDisc)
+                                    echo anchor('#', '<i class="icons fas fa-plus"></i> Nova Disciplina', ['onclick' => 'addTeacherDiscipline(' . $dataTeacher->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-head-fixed text-nowrap table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="5">
+                                        <h5>Nome:: <?= $dataTeacher->name; ?></h5>
+                                        <?php $allocation = new AllocationModel();
+                                        $totalAllocationOcupation = 1;
+                                       
+                                       
+                                        ?>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cor destaque :: </th>
+                                    <th>Disciplina(s) :: </th>
+                                    <th class="text-center">Qtde aulas :: </th>
+                                    <th class="text-center">Ação :: </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $contador = 1;
+                                foreach ($teacDisc as $data) : ?>
+                                    <tr>
+                                        <td><?= $contador++; ?></td>
+                                        <td>
+                                            <div style="background-color:<?= $data->color; ?>; color:transparent">.</div>
+                                        </td>
+                                        <td><?= $data->description; ?></td>
+                                        <td class="text-center"><?= $data->amount; ?></td>
+
+                                        <td class="text-center">
+                                            <!-- Button trigger modal -->
+
+                                            <?= anchor('#', '<i class="icons fas fa-pen"></i>', ['onclick' => 'editTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-dark', 'title' => 'Editar']); ?>
+                                            <?php
+                                            $total = $allocation->getCountByIdTeacDisc($data->id);
+
+                                            if ($allocation->getCountByIdTeacDiscOcupation($data->id) > 1) {
+                                                $totalAllocationOcupation = $allocation->getCountByIdTeacDiscOcupation($data->id);
+                                            }
+                                            //dd($total);
+
+                                            if ($total <= 0) {
+
+                                                echo anchor('#', '<i class="icons fas fa-trash"></i>', ['onclick' => 'delTeacherDiscipline(' . $data->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-danger buttonDelete']);
+                                            } else { ?>
+                                                <button type="buttton" class="btn btn-danger disabled"><i class="icons fas fa-trash"></i></button>
+
+                                            <?php } ?>
+
+                                            <?php echo anchor('alocacao/add/' . $data->id_teacher, '<i class="icons fas fa-plus"></i> Alocação', ['class' => 'btn btn-dark']); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                    <?= generateButtonRetro('/professor/list'); ?>
+                </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- Modal add-->
+    </div>
+</div>
+
 <div class="modal fade" id="addTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherDisciplineModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -124,7 +149,7 @@ echo $this->section('content'); ?>
                 echo csrf_field()
                 ?>
                 <div class="form-group col-6">
-                
+
                     <label for="exampleColorInput" class="form-label">Disciplinas :: <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span> </label>
 
                     <?php
@@ -207,10 +232,10 @@ echo $this->section('content'); ?>
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
-                       
+
                         <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
-                        <input type="number" min="<?=$totalAllocationOcupation;?>" max="45" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
-                                                                                                                                                            ?>">
+                        <input type="number" min="<?= $totalAllocationOcupation; ?>" max="45" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
+                                                                                                                                                                                            ?>">
                         <span class="error invalid-feedback" id="fieldlertError"></span>
 
                     </div>

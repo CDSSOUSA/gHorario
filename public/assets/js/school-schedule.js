@@ -42,7 +42,7 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
             <label class="form-check-label" for="gridCheck1${element.id}">
             <div class="rotulo"><span class="abbreviation font-weight-bold">${element.abbreviation}</span>
             <span class="icon-delete"><i class="fa fa-unlock" aria-hidden="true"></i>
-            </span></div><p>${element.name.split(" ", 1)}</p>
+            </span></div><p class="font-weight-bold">${element.name.split(" ", 1)}</p>
             </label></div>`
                 //console.log(element);
             });
@@ -95,7 +95,10 @@ async function deleteSchedule(id) {
                 document.getElementById('idDelete').value = data.id              
                 document.getElementById('dayWeekDel').innerText = convertDayWeek(data.dayWeek)
                 document.getElementById('positonDel').innerText = data.position
-                //document.getElementById('shiftDel').innerText = data.shift
+                document.getElementById('shiftDel').innerText = convertShift(data.shift)
+                document.getElementById('disciplineDel').innerText = data.abbreviation
+                document.getElementById('nameDel').innerText = data.name.split(" ", 1)
+                document.getElementById('color').style.backgroundColor = data.color
                 getSeries(data.id_series, 'idSerieDel');
             }
         })

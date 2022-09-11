@@ -14,7 +14,7 @@ class AllocationModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['id_teacher_discipline', 'dayWeek', 'position', 'situation', 'status','shift'];
+    protected $allowedFields        = ['id_teacher_discipline', 'dayWeek', 'position', 'situation', 'status', 'shift', 'id_year_school'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -53,6 +53,7 @@ class AllocationModel extends Model
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
             ->whereNotIn('pd.id_discipline', $disciplines)
             ->get()->getResultArray();
            
@@ -83,7 +84,8 @@ class AllocationModel extends Model
             ->where('tb_allocation.status', 'A')
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
-            ->where('tb_allocation.situation', 'L')           
+            ->where('tb_allocation.situation', 'L')     
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))      
             ->get()->getResultArray();
            
             return $result;
@@ -109,6 +111,9 @@ class AllocationModel extends Model
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('pd.id_teacher', $idTeacher)
             ->where('tb_allocation.status', 'A')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
+            ->orderBy('tb_allocation.situation DESC, tb_allocation.shift ASC, tb_allocation.dayWeek ASC, tb_allocation.position ASC')           
             ->get()->getResult();
     }
 
@@ -139,6 +144,7 @@ class AllocationModel extends Model
                         $dataAllocation['situation'] = 'L';
                         $dataAllocation['status'] = 'A';
                         $dataAllocation['shift'] = $sh;
+                        $dataAllocation['id_year_school'] = session('session_idYearSchool');;
                         if($this->validateAllocation($item,$day,$posit, $sh) <= 0 ){
                             $save = $this->save($dataAllocation);
                             if ($save) {
@@ -162,6 +168,7 @@ class AllocationModel extends Model
         return $this->where('id_teacher_discipline', $id_teacher_discipline)
                     ->where('situation','O')
                     ->where('status', 'A')
+                    ->where('id_year_school', session('session_idYearSchool'))
                     ->countAllResults();
     }
     public function getCountByIdTeacDisc(int $id_teacher_discipline)
@@ -169,6 +176,7 @@ class AllocationModel extends Model
         return $this->where('id_teacher_discipline', $id_teacher_discipline)
                     //->where('situation','O')
                     ->where('status', 'A')
+                    ->where('id_year_school', session('session_idYearSchool'))
                     ->countAllResults();
     }
 
@@ -180,6 +188,7 @@ class AllocationModel extends Model
             ->where('position', $position)
             ->where('shift', $shift)
             ->where('status', 'A')
+            ->where('id_year_school', session('session_idYearSchool'))
             ->countAllResults();
             
     }
