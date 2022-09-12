@@ -184,7 +184,7 @@ const convertDayWeek = (dia) => {
     });
     return day;
 }
-const convertShift = (turno) => {
+var convertShift = (turno) => {
     let shift = 'TARDE'
     if (turno === 'M')
         shift = 'MANHÃ'

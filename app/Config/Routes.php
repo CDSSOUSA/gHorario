@@ -87,6 +87,8 @@ $routes->group('/alocacao',['namespace'=>'App\Controllers\Alocacao',/*'filter'=>
 $routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'accessFilter'*/],function ($routes){
    
     $routes->get('show/(:any)', 'Series::show/$1');
+    $routes->get('/', 'Series::list');
+    $routes->get('list', 'Series::listSeries');
    
 });
 /* ROUTES YEAR SCHOOL*/

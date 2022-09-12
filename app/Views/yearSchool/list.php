@@ -132,7 +132,8 @@ echo $this->section('content'); ?>
                         <div class="form-group col-6">
                             <span id="checkAll"></span>
                             <label for="description" class="form-label">Ano letivo ::</label>
-                            <input id="id" name="id"> 
+                            <input id="id" name="id" type="hidden"> 
+                            <input id="descriptionFake" type="text" class="form-control" disabled> 
                         </div>
                     </div>
                     <hr>

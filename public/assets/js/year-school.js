@@ -25,11 +25,11 @@ function loadDataTable(data) {
     data.forEach((element, indice) => {
         //console.log(data)
        
-        let ticket = `<a href="#" class="btn btn-dark" onclick="activateYearSchool(${element.id})"><i class="fa fa-check-circle"></i> Ativar</a>`;
+        let ticket = `<a href="#" class="btn btn-dark" onclick="activateYearSchool(${element.id}, ${element.description})"><i class="fa fa-check-circle"></i> Ativar</a>`;
 
         if (element.status === "A") {
             console.log(element.status)
-            ticket = '<button class="btn btn-default disabled"><i class="fa fa-check"></i> ATUAL </button>';           
+            ticket = '<button class="btn btn-success disabled"><i class="fa fa-check"></i> ATUAL </button>';           
         }
         row +=
             `<tr>
@@ -130,9 +130,11 @@ if (addYearSchoollForm) {
     })
 }
 const activateYearSchoolForm = document.getElementById('activateYearSchoolForm');
-function activateYearSchool(id){
+function activateYearSchool(id,description){
     activateYearSchoolModal.show();
+    console.log(description);
     document.getElementById('id').value = id    
+    document.getElementById('descriptionFake').value = description    
     //addYearSchoollForm.reset();
 }
 if(activateYearSchoolForm) {

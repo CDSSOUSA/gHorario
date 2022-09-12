@@ -34,17 +34,17 @@ class YearSchool extends BaseController
             $msgs = $this->messageSuccess;
         }
         $data = array(
-            'title' => '<i class="fa fa-calendar-check"></i> Cadastrar Ano Letivo :: ',
+            'title' => '<i class="fa fa-calendar-check"></i> Listar Ano Letivo :: ',
             'breadcrumb' => [
                 '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
-                '<li class="breadcrumb-item active"> Cadastrar </li>',
+                '<li class="breadcrumb-item active"> Listar </li>',
             ],
             'msgs' => $msgs,
             'erro' => $this->erros,
             'error' => $this->error,
 
         );
-        return view('yearSchool/add', $data);
+        return view('yearSchool/list', $data);
     }
 
     public function create()

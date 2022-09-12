@@ -39,6 +39,7 @@ Anything you want
 <script src="<?= base_url(); ?>/assets/js/script.js"></script>
 <script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
 <script src="<?= base_url(); ?>/assets/js/year-school.js"></script>
+<script src="<?= base_url(); ?>/assets/js/series.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
 
