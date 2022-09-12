@@ -14,7 +14,7 @@ class SeriesModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = [];
+    protected $allowedFields        = ['description','classification','shift','id_year_school','status'];
 
     // Dates
     protected $useTimestamps        = false;

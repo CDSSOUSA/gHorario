@@ -93,7 +93,9 @@ $routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'acc
 $routes->group('/yearSchool',['namespace'=>'App\Controllers\YearSchool',/*'filter'=>'accessFilter'*/],function ($routes){
    
     $routes->get('/', 'YearSchool::index');
+    $routes->get('list', 'YearSchool::list');
     $routes->post('create', 'YearSchool::create');
+    $routes->post('active', 'YearSchool::active');
    
 });
 

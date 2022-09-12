@@ -39,4 +39,60 @@ class YearSchoolModel extends Model
     protected $afterFind            = [];
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
+
+    public function updateYearSchool(array $data)
+    {
+        $updateAllocation = new AllocationModel();
+        $updateSeries = new SeriesModel();
+        $updateSchedule = new SchoolScheduleModel();
+        $updateTeacDisc = new TeacDiscModel();
+
+        $updateDisabled = $this->set('status', 'I')
+            ->whereNotIn('id', $data)
+            ->update();
+
+        $updateAllocation->set('status', 'I')
+            ->whereNotIn('id_year_school', $data)
+            ->update();
+
+        $updateSeries->set('status', 'I')
+            ->whereNotIn('id_year_school', $data)
+            ->update();
+
+        $updateSchedule->set('status', 'I')
+            ->whereNotIn('id_year_school', $data)
+            ->update();
+
+        $updateTeacDisc->set('status', 'I')
+            ->whereNotIn('id_year_school', $data)
+            ->update();
+            
+
+        //ATIVA TODOS OS CAMPOS 
+        $updateActive = $this->set('status', 'A')
+            ->where('id', $data['id'])
+            ->update();
+            
+        $updateAllocation->set('status', 'A')
+            ->whereIn('id_year_school', $data)
+            ->update();
+
+        $updateSeries->set('status', 'A')
+            ->whereIn('id_year_school', $data)
+            ->update();
+
+        $updateSchedule->set('status', 'A')
+            ->whereIn('id_year_school', $data)
+            ->update();
+
+        $updateTeacDisc->set('status', 'A')
+            ->whereIn('id_year_school', $data)
+            ->update();
+        
+
+        if ($updateDisabled && $updateActive) {
+            return true;
+        }
+        return false;
+    }
 }

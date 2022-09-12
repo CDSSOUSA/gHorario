@@ -75,7 +75,7 @@ async function addTeacherDiscipline(id) {
               </div>
                 `);*/
 
-            $('.toast').toast('show');
+            //$('.toast').toast('show');
 
 
 
