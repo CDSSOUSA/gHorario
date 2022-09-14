@@ -76,6 +76,7 @@ class BaseController extends Controller
         $t = new YearSchoolModel();
         $this->yearSchoolActive = $t->where('status','A')->find()[0];
         session()->set('session_idYearSchool', $this->yearSchoolActive->id);
+        session()->set('session_DescriptionYearSchool', $this->yearSchoolActive->description);
 
 
     }

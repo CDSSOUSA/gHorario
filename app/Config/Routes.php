@@ -89,6 +89,8 @@ $routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'acc
     $routes->get('show/(:any)', 'Series::show/$1');
     $routes->get('/', 'Series::list');
     $routes->get('list', 'Series::listSeries');
+    $routes->post('active', 'Series::active');
+    $routes->post('create', 'Series::create');
    
 });
 /* ROUTES YEAR SCHOOL*/

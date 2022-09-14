@@ -36,6 +36,7 @@ Anything you want
 
 <script src="<?= base_url(); ?>/assets/js/jquery.maskMoney.js"></script>
 <script src="<?= base_url(); ?>/assets/js/axios.min.js"></script>
+<script src="<?= base_url(); ?>/assets/js/utils.js"></script>
 <script src="<?= base_url(); ?>/assets/js/script.js"></script>
 <script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
 <script src="<?= base_url(); ?>/assets/js/year-school.js"></script>
@@ -67,7 +68,7 @@ $(document).ready(function() {
       $(".alert-close").fadeOut("slow", function() {
         $(this).alert('close');
       });
-    }, 1000);
+    }, 5000);
   });
  
 </script>

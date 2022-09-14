@@ -3,29 +3,31 @@ var divLoader = document.querySelector('#loader');
 var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
 var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
-const URL_YEAR = 'http://localhost/gerenciador-horario/public';
+//const URL_YEAR = 'http://localhost/gerenciador-horario/public';
 
-listYearSchool();
+    listYearSchool();
+
 
 async function listYearSchool() {
-    await axios.get(`${URL_YEAR}/yearSchool/list`)
+    await axios.get(`${URL_BASE}/yearSchool/list`)
         .then(response => {
             const data = response.data;
             console.log(data);
-            document.querySelector("#tb_year > tbody").innerHTML = `${loadDataTable(data)}`;
+            document.querySelector("#tb_year > tbody").innerHTML = `${loadDataYear(data)}`;
             //loadDataTable(data)
         }
         )
         .catch(error => console.log(error))
 }
 
-function loadDataTable(data) {
+function loadDataYear(data) {
     let row = "";
 
     data.forEach((element, indice) => {
         //console.log(data)
        
-        let ticket = `<a href="#" class="btn btn-dark" onclick="activateYearSchool(${element.id}, ${element.description})"><i class="fa fa-check-circle"></i> Ativar</a>`;
+        let ticket = `<a href="#" class="btn btn-dark" onclick="activateYearSchool(${element.id}, ${element.description})"><i class="far fa-circle nav-icon" aria-hidden="true"></i>
+        Ativar</a>`;
 
         if (element.status === "A") {
             console.log(element.status)
@@ -35,7 +37,7 @@ function loadDataTable(data) {
             `<tr>
                 <td>${indice + 1}</td>
                 <td>${element.description}</td>
-                <td>${element.status}</td>           
+                <td>${convertStatus(element.status)}</td>           
                 <td>${ticket}</td>        
             </tr>`;
 
@@ -100,7 +102,7 @@ if (addYearSchoollForm) {
         e.preventDefault();
         //load();
         const dataForm = new FormData(addYearSchoollForm);
-        await axios.post(`${URL_YEAR}/yearSchool/create`, dataForm, {
+        await axios.post(`${URL_BASE}/yearSchool/create`, dataForm, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -142,7 +144,7 @@ if(activateYearSchoolForm) {
         e.preventDefault();
         //load();
         const dataForm = new FormData(activateYearSchoolForm);
-        await axios.post(`${URL_YEAR}/yearSchool/active`, dataForm, {
+        await axios.post(`${URL_BASE}/yearSchool/active`, dataForm, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -172,23 +174,23 @@ if(activateYearSchoolForm) {
 }
 
 
-function loadToast(title, body, bg) {
+// function loadToast(title, body, bg) {
 
-    $(document).Toasts('create', {
-        title: title,
-        icon: 'fas fa-exclamation-triangle',
-        class: `bg-${bg} m-1 width-500 toast`,
-        autohide: true,
-        delay: 1000,
-        body: body,
-        close: false,
-        subtitle: new Date().toLocaleDateString(),
-        autoremove: true
-    });
-    $('.toast').on('hidden.bs.toast', e => {
-        $(e.currentTarget).remove();
-        //location.reload();
-        //listYearSchool();
-        //stopLoad();
-    });
-}
+//     $(document).Toasts('create', {
+//         title: title,
+//         icon: 'fas fa-exclamation-triangle',
+//         class: `bg-${bg} m-1 width-500 toast`,
+//         autohide: true,
+//         delay: 1000,
+//         body: body,
+//         close: false,
+//         subtitle: new Date().toLocaleDateString(),
+//         autoremove: true
+//     });
+//     $('.toast').on('hidden.bs.toast', e => {
+//         $(e.currentTarget).remove();
+//         //location.reload();
+//         //listYearSchool();
+//         //stopLoad();
+//     });
+// }

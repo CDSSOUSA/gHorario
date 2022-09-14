@@ -179,6 +179,7 @@ endforeach;
                         <?php
                         if ($data->situation === 'O') {
                           $schedule = $scheduleModel->getScheduleByIdAllocation($data->id);
+                          //dd($schedule);
                           echo '<span style="display:block" class="badge bg-secondary">' . $series->find($schedule->id_series)->description . 'ª Série</span>';
                         }
                         ?>

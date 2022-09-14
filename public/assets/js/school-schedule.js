@@ -6,7 +6,7 @@ var success = 'success';
 
 const addScheduleModal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
 
-var URL_BASE = 'http://localhost/gerenciador-horario/public';
+//var URL_BASE = 'http://localhost/gerenciador-horario/public';
 console.log(URL_BASE);
 
 async function addSchedule(idSerie, position, dayWeek, shift) {
@@ -73,10 +73,10 @@ if (addScheduleForm) {
                 } else {
                     // load();
                     // //console.log(response.data)
-                    // location.reload();
                     addScheduleModal.hide();
                     loadToast(titleSuccess, bodySuccess, success);
                     loada();
+                    location.reload();
                 }
             })
             .catch(error => console.log(error))
@@ -134,6 +134,7 @@ if (deleteScheduleForm) {
                     deleteScheduleModal.hide();
                     loadToast(titleSuccess, bodySuccess, success);
                     loada();
+                    location.reload();
 
                 }
             })
@@ -168,25 +169,3 @@ const stopLoad = () => {
     divLoader.classList.remove("loader");
 }
 
-const convertDayWeek = (dia) => {
-    let day
-    const data = [
-        "SEG",
-        "TER",
-        "QUA",
-        "QUI",
-        "SEX"
-    ]
-    data.forEach((item, indice) => {
-        if (dia == indice + 2) {
-            day = item
-        }
-    });
-    return day;
-}
-var convertShift = (turno) => {
-    let shift = 'TARDE'
-    if (turno === 'M')
-        shift = 'MANHÃ'
-    return shift;
-}

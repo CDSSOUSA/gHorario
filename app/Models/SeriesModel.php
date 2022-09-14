@@ -14,7 +14,7 @@ class SeriesModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['description','classification','shift','id_year_school','status'];
+    protected $allowedFields        = ['description', 'classification', 'shift', 'id_year_school', 'status'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -42,19 +42,38 @@ class SeriesModel extends Model
 
     public function getSeries(string $shift): array
     {
-        $this->where('shift',$shift)
-        ->orderBy('description');
-        $result = $this->findAll();        
+        $this->where('shift', $shift)
+            ->where('status', 'A')
+            ->orderBy('description');
+        $result = $this->findAll();
         return !is_null($result) ? $result : [];
     }
 
     public function getDescription(int $id)
     {
-        $return = $this->select('description,classification,shift')
-        ->where('id',$id)
-        ->get()
-        ->getResult();
+        $return = $this->select('description,classification,shift,status')
+            ->where('id', $id)
+            ->get()
+            ->getResult();
         return $return;
+    }
 
+    public function updateSeries(array $data)
+    {
+        $status = $data['status'] == 'A' ? 'I' : 'A';
+        
+        $schedule = new SchoolScheduleModel();
+        $schedule->where('id_series', $data['id'])
+            ->delete();
+        // testar no caso de desabilitar a série deletar todos horarios, depois alocacao    
+
+        $update = $this->set('status', $status)
+            ->where('id', $data['id'])
+            ->update();
+        if ($schedule && $update) {
+
+            return true;
+        }
+        return false;
     }
 }

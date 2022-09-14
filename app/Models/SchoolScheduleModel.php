@@ -67,7 +67,7 @@ class SchoolScheduleModel extends Model
     public function getScheduleByIdAllocation(int $idAllocation)
     {
         return $this->where('id_allocation', $idAllocation)
-            ->where('id_year_school', session('session_idYearSchool'))
+            //->where('id_year_school', session('session_idYearSchool'))
             ->get()->getRow();
     }
 

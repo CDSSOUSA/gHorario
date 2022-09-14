@@ -27,7 +27,7 @@ var divLoader = document.querySelector('#loader');
 var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
 var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
-const URL = 'http://localhost/gerenciador-horario/public';
+//const URL_BASE = 'http://localhost/gerenciador-horario/public';
 
 $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
     document.getElementById('qtdeAulas').value = '';
@@ -80,7 +80,7 @@ async function addTeacherDiscipline(id) {
 
 
             const dataForm = new FormData(addForm);
-            await axios.post(`${URL}/teacDisc/create`, dataForm, {
+            await axios.post(`${URL_BASE}/teacDisc/create`, dataForm, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -102,6 +102,7 @@ async function addTeacherDiscipline(id) {
                        
                         loadToast(titleSuccess, bodySuccess, success);                        
                         loada(); 
+                        location.reload();
 
                     }
                 })
@@ -116,7 +117,7 @@ async function editTeacherDiscipline(id) {
     document.getElementById('msgAlertError').innerHTML = '';
     document.getElementById('fieldlertError').textContent = '';
 
-    axios.get(URL + '/teacDisc/edit/' + id)
+    axios.get(URL_BASE + '/teacDisc/edit/' + id)
         .then(response => {
             const data = response.data;
             console.log(data);
@@ -140,7 +141,7 @@ if (editForm) {
     editForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const dataForm = new FormData(editForm);
-        await axios.post(`${URL}/teacDisc/update`, dataForm, {
+        await axios.post(`${URL_BASE}/teacDisc/update`, dataForm, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -161,6 +162,7 @@ if (editForm) {
                     
                     loadToast(titleSuccess, bodySuccess, success);                        
                     loada(); 
+                    location.reload();
 
                 }
             })
@@ -170,7 +172,7 @@ if (editForm) {
 
 const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
 async function delTeacherDiscipline(id) {
-    await axios.get(URL + '/teacDisc/delete/' + id)
+    await axios.get(URL_BASE + '/teacDisc/delete/' + id)
         .then(response => {
             const data = response.data;
             console.log(data);
@@ -195,7 +197,7 @@ if (deleteForm) {
         e.preventDefault();
         const dataForm = new FormData(deleteForm);
 
-        await axios.post(`${URL}/teacDisc/del`, dataForm, {
+        await axios.post(`${URL_BASE}/teacDisc/del`, dataForm, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -215,6 +217,7 @@ if (deleteForm) {
                     //location.reload();
                     loadToast(titleSuccess, bodySuccess, success);                        
                     loada(); 
+                    location.reload();
 
                 }
             })
@@ -223,27 +226,27 @@ if (deleteForm) {
 }
 
 
-function loadToast(title, body, bg) {
+// function loadToast(title, body, bg) {
 
-    $(document).Toasts('create', {
-        title: title,
-        icon: 'fas fa-exclamation-triangle',
-        class: `bg-${bg} m-1 width-500 toast`,
-        autohide: true,
-        delay: 1000,
-        body: body,
-        close: false,
-        subtitle: new Date().toLocaleDateString(),        
-        autoremove: true
-    });
+//     $(document).Toasts('create', {
+//         title: title,
+//         icon: 'fas fa-exclamation-triangle',
+//         class: `bg-${bg} m-1 width-500 toast`,
+//         autohide: true,
+//         delay: 1000,
+//         body: body,
+//         close: false,
+//         subtitle: new Date().toLocaleDateString(),        
+//         autoremove: true
+//     });
 
     
 
-    $('.toast').on('hidden.bs.toast', e => {
-        $(e.currentTarget).remove();
-        location.reload();
-    });
-}
+//     $('.toast').on('hidden.bs.toast', e => {
+//         $(e.currentTarget).remove();
+//         location.reload();
+//     });
+// }
 
 function loada() {
     divLoad.classList.add("loada");
