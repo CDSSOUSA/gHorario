@@ -58,6 +58,15 @@ $routes->group('/professor',['namespace'=>'App\Controllers\Professor'],function 
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Professor::create'); 
 });
+
+/* ROUTES TEACHER */
+$routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($routes){
+    // $routes->get('/','Professor::add');
+    $routes->get('list','Teacher::list');
+    $routes->get('listTeacDisc/(:any)','Teacher::listTeacDisc/$1');
+    //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
+    $routes->post('create', 'Teacher::create'); 
+});
 /* ROUTES PROFESSOR DISCIPLINA */
 $routes->group('/teacDisc',['namespace'=>'App\Controllers\TeacDisc'],function ($routes){
     $routes->get('list/(:any)','TeacDisc::list/$1');

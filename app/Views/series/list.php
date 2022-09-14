@@ -83,7 +83,7 @@ echo $this->section('content'); ?>
 
                         <div class="form-group col-6">
                             <label for="description" class="form-label">Descrição :: </label>
-                            <input type="text" name="description" class="form-control" id="description" placeholder=" Ex.: 6º, 7º ..." value="<?= set_value('description') ?>">
+                            <input type="text" name="description" class="form-control" id="description" placeholder=" Ex.: 6, 7, 8 ..." value="<?= set_value('description') ?>">
                             <span class="error invalid-feedback" id="fieldlertErrordescription"></span>
 
                         </div>

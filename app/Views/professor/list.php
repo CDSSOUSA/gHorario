@@ -8,7 +8,7 @@ echo $this->section('content'); ?>
 <div class="content-header">
     <div class="container">
         <div class="row mb-2">
-            <div class="col-sm-6">               
+            <div class="col-sm-6">
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -32,68 +32,103 @@ echo $this->section('content'); ?>
                         <h3 class="card-title font-weight-bold"><?= $title ?></h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                                <?php
+                                echo anchor('#', '<i class="icons fas fa-plus"></i> Novo professor', ['onclick' => 'addTeacher()', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-body table-responsive p-0" style="height: 1000px;">
 
-                        <table class="table table-head-fixed text-nowrap table-striped">
+                        <table id="tb_teacher" class="table table-head-fixed text-nowrap table-striped">
 
                             <thead>
 
                                 <tr>
                                     <th>#</th>
                                     <th>Nome :: </th>
-                                    <th>Disciplina(s)/ Qtde aula(s) ::</th>
+                                    <th>Disciplina(s)/ Qtde aula(s) :: </th>
                                     <th>Qtde total aulas :: </th>
                                     <th>Ação :: </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $contador = 1;
-                                foreach ($teachers as $data) : ?>
-                                    <tr>
-                                        <td class="align-middle"><?= $contador++; ?></td>
-                                        <td class="align-middle"><?= $data->name; ?></td>
-                                        <td width="20px">
-                                            <?php
-                                            $disciplines = new TeacDiscModel();
-                                            $disciplinesTeacher = $disciplines->getTeacherDisciplineByIdTeacher($data->id);
-                                            foreach ($disciplinesTeacher as $item) : ?>
-                                                <div class="m-2 p-2 font-weight-bold" style="background-color:<?= $item->color; ?>; color:white">
-                                                    <i class="icons fas fa-book"></i> <?= $item->abbreviation; ?> :: <?= $item->amount; ?>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </td>
-                                        <td class="align-middle text-center"><?= $data->amount; ?></td>
-
-                                        <td class="align-middle">
-                                            <!-- Button trigger modal -->
-
-                                            <?= anchor('/teacDisc/list/' . $data->id, '<i class="icons fas fa-book"></i> Adicionar Disciplina', ['class' => 'btn btn-dark']); ?>
-                                            <?php //anchor('#', '<i class="icons fas fa-pen"></i> Editar professor', ['data-bs-toggle' => 'modal', 'class' => 'btn btn-dark']); 
-                                            ?>
-                                            <?php
-                                            if (count($disciplinesTeacher) >= 1) {
-                                                echo anchor('alocacao/add/' . $data->id, '<i class="icons fas fa-calendar"></i> Adicionar Alocação', ['class' => 'btn btn-dark']);
-                                            } ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
+                               
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark">
+                        <h5 class="modal-title" id="addTeacherModalLabel"><i class="fa fa-user"></i> Adicionar Professor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span id="msgAlertError"></span>
+                        <?php echo form_open('teacher/create', ['id' => 'addTeacherForm']);
+                        //echo form_hidden('id', $teacDisc->id);
+                        //echo form_hidden('_method', "put");
+                        //echo form_hidden('id_teacher', $teacDisc->id_teacher);
+                        echo csrf_field()
+                        ?>
 
+                        <div class="row">
+                            <div class="form-group col-12">
+                                <label for="inputNanme4" class="form-label">Nome Completo :: </label>
+                                <input type="text" name="name" class="form-control" id="firstName" placeholder="Nome completo" value="<?= set_value('nNome') ?>" autofocus>
+                                <span class="error invalid-feedback" id="fieldlertErrorname"></span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
+                                <input type="number" min="1" max="45" name="amount" class="form-control" id="lastName" placeholder="Quantidade de aulas" value="<?= set_value('nNumeroAulas') ?>">
+                                <span class="error invalid-feedback" id="fieldlertErroramount"></span>
+
+                            </div>
+
+
+                            <div class="form-group col-6">
+                                <label for="exampleColorInput" class="form-label">Cor Destaque ::</label>
+                                <input type="color" name="color" class="form-control form-control-color" id="exampleColorInput" value="<?= set_value('nCorDestaque', '#000000') ?>" title="Escolha uma cor">
+                                <span class="error invalid-feedback" id="fieldlertErrorcolor"></span>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-8">
+                            <label for="exampleColorInput" class="form-label">Disciplinas :: </label>
+
+                            <?php foreach ($disciplinas as $item) : ?>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" name="disciplines[]" value="<?= $item->id; ?>" <?php echo set_checkbox('nDisciplinas', $item->id); ?> type="checkbox" id="flexSwitchCheckDefault<?= $item->id; ?>">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault<?= $item->id; ?>"> <?= $item->description; ?> </label>
+                                </div>
+
+                            <?php endforeach ?>
+                            <span class="error invalid-feedback" id="fieldlertErrordisciplines"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <?= generationButtonSave(); ?>
+                        <?= generateButtonCloseModal(); ?>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <!-- Modal -->
         <div class="modal fade" id="editTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherDisciplineModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

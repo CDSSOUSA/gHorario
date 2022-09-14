@@ -64,7 +64,7 @@ class TeacDiscModel extends Model
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->where($this->table . '.id_teacher', $idTeacher)
             ->where($this->table . '.id_year_school', session('session_idYearSchool'))
-            ->findAll();
+            ->get()->getResultObject();
     }
     public function getTeacherWithoutDisciplineByIdTeacher(int $idTeacher)
     {
@@ -116,5 +116,25 @@ class TeacDiscModel extends Model
         }
         return true;
         //dd($result);
+    }
+
+    public function getTeacherDisciplineAll()
+    {
+        $a = $this->select(
+            't.name, 
+            d.description,
+            ' . $this->table . '.id,
+            ' . $this->table . '.id_teacher,
+            ' . $this->table . '.amount,
+            ' . $this->table . '.color,
+            d.abbreviation'
+        )
+            ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher','left')
+            ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
+            //->where($this->table . '.id', $id)
+            ->orderBy('t.name')
+            ->get()->getResultObject();
+        //dd($a);
+        return $a;
     }
 }
