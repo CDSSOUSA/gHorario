@@ -26,83 +26,39 @@ function loadDataTeacher(data) {
     data.forEach((element, indice) => {
         //console.log(data)
 
-        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="far fa-circle nav-icon" aria-hidden="true"></i> Ativar</a>`;
+        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addDisciplineTeacher(${element.id})">
+        <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
+        <a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
+        <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`;
 
-        if (element.status === "A") {
-            console.log(element.status)
-            ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
-        }
+        // if (element.status === "A") {
+        //     console.log(element.status)
+        //     ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
+        // }
         row +=
             `<tr>
-                <td>${indice + 1}</td>
-                <td>${element.name}º ${element.name} - ${convertShift(element.name)} </td>   
-                <td class="discipline">${listTeachDiscs(element.id)}</td>                     
-                <td>${ticket}</td>        
+                <td class="align-middle">${indice + 1}</td>
+                <td class="align-middle">${element.name}</td>   
+                <td class="discipline">${document.getElementsByClassName("discipline").innerHTML = listRowDisciplinesTeacher(element.disciplines)}</td>                     
+                <td class="align-middle">${ticket}</td>        
             </tr>`;
 
     });
     return row;
 }
 
-
-// for (let i = 0; i < collection.length; i++) {
-//   collection[i].style.backgroundColor = "red";
-// }
-
-// const divOpcao = document.querySelectorAll('td.discipline')
-// divOpcao.innerHTML = ''
-
-const listTeachDiscs = (id) => {
-    //let r = ""
-    axios.get(`${URL_BASE}/teacher/listTeacDisc/${id}`)
-        .then(response => {
-            const datas = response.data;
-
-            // const a = adb(datas);
-            // console.log(a);
-
-            datas.forEach(e => {
-                // console.log(e.color);
-                //var collection = document.getElementsByClassName("discipline");
-                console.log(id)
-                console.log('aquiii')
-
-                if (e.color != 1) {
-                    var collection = document.getElementsByClassName("discipline");
-                    collection.innerHTML = '';
-                    for (let i = 0; i < collection.length; i++) {
-                        collection[i].innerHTML += `
-                      <div class="m-2 p-2 font-weight-bold" style="background-color:${e.color}; color:white">
-                      <i class="icons fas fa-book"></i> ${e.abbreviation} :: ${e.amount}
-                     </div>`;
-                    }
-                } else {
-                    var collection = document.getElementsByClassName("discipline");
-                    collection.innerHTML = ''
-                }
-            }
-            );
-
-
-        }
-        )
-        .catch(error => console.log(error))
-    //return r;
-}
-
-function adb(data) {
-    let r = "";
-
-    data.forEach((e, indice) => {
-        if (e.color) {
-            r += `<div class="m-2 p-2 font-weight-bold" style="background-color:${e.color}; color:white">
-            <i class="icons fas fa-book"></i> ${e.abbreviation} :: ${e.amount}
-        </div>`
-            //console.log(r);
-        }
-    })
-    //console.log(r);
-    return r;
+function listRowDisciplinesTeacher (data) {
+    let row = '';    
+    if(data != null){
+        data.forEach( e => {            
+            row += `<div class="m-2 p-2 font-weight-bold" style="background-color:${e.color}; color:white">
+            <i class="icons fas fa-book"></i> ${e.abbreviation} :: ${e.amount}  
+            <a href="#" class="btn btn-dark btn-sm" onclick="editDisciplineTeacher(${e.id})">
+        <i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>          
+            </div>` ;
+        })
+    }
+    return row;
 }
 
 const addTeacherModal = new bootstrap.Modal(document.getElementById('addTeacherModal'));
@@ -165,7 +121,8 @@ if (addTeacherForm) {
                     //loadDataTable(response.data)
                     //loada();
                     //listSeries();
-                    location.reload();
+                    //location.reload();
+                    listTeacDisc();
 
                 }
             })

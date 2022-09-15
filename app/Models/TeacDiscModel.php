@@ -64,7 +64,7 @@ class TeacDiscModel extends Model
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->where($this->table . '.id_teacher', $idTeacher)
             ->where($this->table . '.id_year_school', session('session_idYearSchool'))
-            ->get()->getResultObject();
+            ->findAll();
     }
     public function getTeacherWithoutDisciplineByIdTeacher(int $idTeacher)
     {

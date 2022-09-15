@@ -47,8 +47,8 @@ echo $this->section('content'); ?>
                                 <tr>
                                     <th>#</th>
                                     <th>Nome :: </th>
-                                    <th>Disciplina(s)/ Qtde aula(s) :: </th>
-                                    <th>Qtde total aulas :: </th>
+                                    <th>Disciplina(s) / Qtde aula(s) :: </th>
+                                    <!-- <th>Qtde total aulas :: </th> -->
                                     <th>Ação :: </th>
                                 </tr>
                             </thead>
