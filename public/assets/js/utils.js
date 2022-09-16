@@ -1,3 +1,18 @@
+
+// const checkAll = document.getElementById('checkAll');
+
+// checkAll.addEventListener('click', () => {   
+//     $(":checkbox").each(
+//         function() {
+//             if ($(this).bootstrapSwitch('state')) {
+//                 $(this).bootstrapSwitch('state', false);
+//             } else {
+//                 $(this).bootstrapSwitch('state',true)
+//             }            
+//         }
+//     );
+// });
+
 const URL_BASE = 'http://localhost/gerenciador-horario/public';
 
 const convertStatus = (status) => {

@@ -1,26 +1,3 @@
-$("input[type=checkbox]").bootstrapSwitch(
-    {
-        onText: '<i class="fa fa-check"></i>',
-        offText: '',
-        size: "mini",
-        onColor: "success"
-    }
-);
-
-const checkAll = document.getElementById('checkAll');
-
-checkAll.addEventListener('click', () => {   
-    $(":checkbox").each(
-        function() {
-            if ($(this).bootstrapSwitch('state')) {
-                $(this).bootstrapSwitch('state', false);
-            } else {
-                $(this).bootstrapSwitch('state',true)
-            }            
-        }
-    );
-});
-
 
 var divLoad = document.querySelector('#load');
 var divLoader = document.querySelector('#loader');
@@ -29,18 +6,18 @@ var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
 //const URL_BASE = 'http://localhost/gerenciador-horario/public';
 
-$('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
-    document.getElementById('qtdeAulas').value = '';
-    document.getElementById('color').value = '';
-    const a = document.querySelectorAll('input[type=checkbox]');
-    //$("input[type=checkbox]").prop('checked', false);
-    a.forEach((element) => {
-        //element.style.setProperty("border", "1px solid #dc3545");
-        //$(element.currentTarget).remove();
-        console.log(element);
-    })
-    // Faça algo, aqui...
-})
+// $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
+//     document.getElementById('qtdeAulas').value = '';
+//     document.getElementById('color').value = '';
+//     const a = document.querySelectorAll('input[type=checkbox]');
+//     //$("input[type=checkbox]").prop('checked', false);
+//     a.forEach((element) => {
+//         //element.style.setProperty("border", "1px solid #dc3545");
+//         //$(element.currentTarget).remove();
+//         console.log(element);
+//     })
+//     // Faça algo, aqui...
+// })
 
 //const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
 

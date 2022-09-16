@@ -231,14 +231,14 @@
   /* display: flex; */
 
 }
-#checkAll{
+.checkAll{
   color:blue;
   cursor: pointer;
 }
-#checkAll :hover{
+.checkAll :hover{
   color: green
 }
-#checkAll :active{
+.checkAll :active{
   color: gold
 }
 .buttonDelete :hover:after {    

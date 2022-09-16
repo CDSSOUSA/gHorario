@@ -7,6 +7,7 @@ use App\Models\DisciplineModel;
 use App\Models\TeacDiscModel;
 use App\Models\TeacherModel;
 use App\Models\AllocationModel;
+use Exception;
 
 class TeacDisc extends BaseController
 {
@@ -64,7 +65,7 @@ class TeacDisc extends BaseController
         //dd($data);
         return $this->response->setJSON($data);
     }
-    public function create()
+    public function create__()
     {
 
         $msgs = [
@@ -150,6 +151,90 @@ class TeacDisc extends BaseController
             return $this->response->setJSON($response);
         }
     }
+    public function create()
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('/admin/blog');
+        }
+        $val = $this->validate(
+            [
+                'id_teacher' => 'required',
+                'amount' => 'required',
+                'color' => 'required|is_unique[tb_teacher_discipline.color]',
+                'disciplinesTeacher' => 'required|disciplineValidationDuplicate[disciplinesTeacher]',
+            ],
+            [
+                'id_teacher' => [
+                    'required' => 'Preenchimento obrigatório!',
+                   
+                ],
+                'amount' => [
+                    'required' => 'Preenchimento obrigatório!',
+                ],
+                'color' => [
+                    'required' => 'Preenchimento obrigatório!',
+                    'is_unique' => 'Cor utilizada por outro (a) professor (a)!',
+                ],
+                'disciplinesTeacher' => [
+                    'required' => 'Preenchimento obrigatório!',
+                    'disciplineValidationDuplicate' => 'Disciplina cadastrada para o (a) professor (a)!',
+                ],
+            ]
+        );
+
+        if (!$val) {
+
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>',
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+        }
+
+
+        $teacher['id_teacher'] = mb_strtoupper($this->request->getPost('id_teacher'));
+        $teacher['amount'] = $this->request->getPost('amount');
+        $teacher['color'] = $this->request->getPost('color') == '#000000' ? generationColor() : $this->request->getPost('color') ;
+        $teacher['disciplines'] = $this->request->getPost('disciplinesTeacher[]');
+        $teacher['status'] = 'A';       
+        //$data['status'] = 'A';
+
+        // if ($data['description'] > getenv('YEAR.END')) {
+        //     return redirect()->back()->withInput()->with('error', 'Ano não permitido!');
+        // }
+
+        $save = $this->teacDiscModel->saveTeacherDiscipline($teacher);
+        try{
+
+            if ($save) {
+                $response = [
+                    'status' => 'OK',
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    //'data' => $this->list()
+                ];
+                return $this->response->setJSON($response);
+        }
+        }catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+        //return $this->response->setJSON($response);
+    }
+
     public function delete(int $id)
     {
 

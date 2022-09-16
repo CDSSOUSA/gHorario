@@ -70,7 +70,8 @@ CREATE TABLE tb_teacher_discipline(
     CONSTRAINT id_pk PRIMARY KEY (id),
     CONSTRAINT id_teacher_fk FOREIGN KEY (id_teacher) REFERENCES tb_teacher (id),
     CONSTRAINT id_discipline_fk FOREIGN KEY (id_discipline) REFERENCES tb_discipline (id),
-    CONSTRAINT id_year_teacher_discipline_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
+    CONSTRAINT id_year_teacher_discipline_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id),
+    CONSTRAINT id_unique_teac_disc UNIQUE (id_teacher,id_discipline,id_year_school,status)
 ) ENGINE = INNODB;
 INSERT INTO tb_teacher_discipline (id_teacher, id_discipline, amount, id_year_school, color, status)
 VALUES (1, 1, 2, 1,'#3C0BF3','A'),

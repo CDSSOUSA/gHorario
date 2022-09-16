@@ -137,4 +137,15 @@ class TeacDiscModel extends Model
         //dd($a);
         return $a;
     }
+
+    public function getDisciplineValidationDuplicate($id_discipline) : int
+    {
+         $a = $this->where('id_discipline', $id_discipline)
+                    //->where('id_discipline', $id_discipline)
+                    //->where('id_year_school', session('session_yearSchool'))
+                   // ->where('status', $status)
+                    ->countAll();
+                    //dd($a);
+                    return $a;
+    }
 }

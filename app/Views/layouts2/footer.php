@@ -71,6 +71,16 @@ $(document).ready(function() {
       });
     }, 5000);
   });
+
+  $("input[type=checkbox]").bootstrapSwitch(
+    {
+        onText: '<i class="fa fa-check"></i>',
+        offText: '',
+        size: "mini",
+        onColor: "success"
+    }
+);
+
  
 </script>
 
