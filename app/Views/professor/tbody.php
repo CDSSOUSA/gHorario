@@ -28,3 +28,23 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
+
+
+
+                    <?php
+                    $myDiscipline = [];
+                    foreach ($teacDisc as $a) {
+                        $myDiscipline[] = $a->id_discipline;
+                    }
+                    foreach ($disciplines->findAll() as $item) :
+                        if (!in_array($item->id, $myDiscipline)) : ?>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="nDisciplinas[]" value="<?= $item->id; ?>" <?php echo set_checkbox('nDisciplinas', $item->id); ?> type="checkbox" id="flexSwitchCheckDefault<?= $item->id; ?>">
+                                <label class="form-check-label" for="flexSwitchCheckDefault<?= $item->id; ?>"> <?= $item->description; ?> </label>
+                            </div>
+
+                    <?php endif;
+
+                    endforeach ?>
+                    <span style="color:red" class="font-italic font-weight-bold"><?php echo $erro !== '' ? $erro->getError('nDisciplinas') : ''; ?></span>
+

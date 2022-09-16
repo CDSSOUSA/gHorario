@@ -42,7 +42,7 @@ $('#addTeacherDisciplineModal').on('hidden.bs.modal', function (e) {
     // Faça algo, aqui...
 })
 
-const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
+//const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
 
 
 async function addTeacherDiscipline(id) {
@@ -113,62 +113,62 @@ async function addTeacherDiscipline(id) {
 
 
 }
-async function editTeacherDiscipline(id) {
-    document.getElementById('msgAlertError').innerHTML = '';
-    document.getElementById('fieldlertError').textContent = '';
+// async function editTeacherDiscipline(id) {
+//     document.getElementById('msgAlertError').innerHTML = '';
+//     document.getElementById('fieldlertError').textContent = '';
 
-    axios.get(URL_BASE + '/teacDisc/edit/' + id)
-        .then(response => {
-            const data = response.data;
-            console.log(data);
-            if (data) {
-                editModal.show();
-                document.getElementById('idEdit').value = data[0].id
-                document.getElementById('nameEdit').value = data[0].name
-                document.getElementById('id_discipline').value = data[0].description
-                document.getElementById('numeroAulas').value = data[0].amount
-                document.getElementById('corDestaque').value = data[0].color
-            }
-        })
-        .catch(error => console.log(error))
-}
+//     axios.get(URL_BASE + '/teacDisc/edit/' + id)
+//         .then(response => {
+//             const data = response.data;
+//             console.log(data);
+//             if (data) {
+//                 editModal.show();
+//                 document.getElementById('idEdit').value = data[0].id
+//                 document.getElementById('nameEdit').value = data[0].name
+//                 document.getElementById('id_discipline').value = data[0].description
+//                 document.getElementById('numeroAulas').value = data[0].amount
+//                 document.getElementById('corDestaque').value = data[0].color
+//             }
+//         })
+//         .catch(error => console.log(error))
+// }
 
-const editForm = document.getElementById('editTeacherDiscipline');
-console.log(editForm);
+// const editForm = document.getElementById('editTeacherDiscipline');
+// console.log(editForm);
 
-if (editForm) {
+// if (editForm) {
 
-    editForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const dataForm = new FormData(editForm);
-        await axios.post(`${URL_BASE}/teacDisc/update`, dataForm, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(response => {
-                console.log(response.data.id_teacher);
-                if (response.data.error) {
-                    document.getElementById('msgAlertError').innerHTML = response.data.msg
-                    document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
-                    document.getElementById("msgAlertSuccess").innerHTML = "";
-                } else {
+//     editForm.addEventListener("submit", async (e) => {
+//         e.preventDefault();
+//         const dataForm = new FormData(editForm);
+//         await axios.post(`${URL_BASE}/teacDisc/update`, dataForm, {
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }
+//         })
+//             .then(response => {
+//                 console.log(response.data.id_teacher);
+//                 if (response.data.error) {
+//                     document.getElementById('msgAlertError').innerHTML = response.data.msg
+//                     document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
+//                     document.getElementById("msgAlertSuccess").innerHTML = "";
+//                 } else {
 
-                    document.getElementById('msgAlertError').innerHTML = '';
-                    document.getElementById('fieldlertError').textContent = '';
-                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                    //location.reload();
-                    editModal.hide();
+//                     document.getElementById('msgAlertError').innerHTML = '';
+//                     document.getElementById('fieldlertError').textContent = '';
+//                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+//                     //location.reload();
+//                     editModal.hide();
                     
-                    loadToast(titleSuccess, bodySuccess, success);                        
-                    loada(); 
-                    location.reload();
+//                     loadToast(titleSuccess, bodySuccess, success);                        
+//                     loada(); 
+//                     location.reload();
 
-                }
-            })
-            .catch(error => console.log(error))
-    })
-}
+//                 }
+//             })
+//             .catch(error => console.log(error))
+//     })
+// }
 
 const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
 async function delTeacherDiscipline(id) {

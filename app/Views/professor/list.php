@@ -53,7 +53,7 @@ echo $this->section('content'); ?>
                                 </tr>
                             </thead>
                             <tbody>
-                               
+
                             </tbody>
                         </table>
                     </div>
@@ -129,13 +129,65 @@ echo $this->section('content'); ?>
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="addTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherDisciplineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark font-weight-bold">
+                <h5 class="modal-title" id="addTeacherDisciplineModal">Cadastrar Professor/Disciplina :: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="msgAlertError"></span>
+                <?php echo form_open('teacDisc/create', ['id' => 'addTeacherDisciplineForm']);
+                //echo form_hidden('id', $teacDisc->id);
+                //echo form_hidden('_method', "put");
+                //echo form_hidden('id_teacher', $teacDisc->id_teacher);
+                echo form_input([
+                    'id' => 'id',
+                    'name' => 'id_teacher',
+                    'type' => 'text'
+                ]);
+                echo csrf_field()
+                ?>
+                <div class="form-group col-6">
+
+                    <label for="exampleColorInput" class="form-label">Disciplinas :: <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span> </label>
+                    <div id="disciplines">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
+                        <input type="number" min="1" max="45" name="nNumeroAulas" class="form-control" id="qtdeAulas" placeholder="" value="<?= set_value('nNumeroAulas') ?>">
+                        <span class="error invalid-feedback" id="fieldlertError"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="exampleColorInput" class="form-label">Cor Destaque :: </label>
+                        <input type="color" name="nCorDestaque" class="form-control form-control-color" id="color" value="nCorDestaque" title="Escolha uma cor">
+                        <span style="color:red" class="font-italic font-weight-bold"><?php echo $erro !== '' ? $erro->getError('nCorDestaque') : ''; ?></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <?= generationButtonSave(); ?>
+                <?= generateButtonCloseModal(); ?>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
         <!-- Modal -->
         <div class="modal fade" id="editTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherDisciplineModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-secondary">
-                        <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Editar Professor/Disciplina</h5>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+                    <div class="modal-header bg-dark">
+                        <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Editar Professor/Disciplina :: </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -148,92 +200,94 @@ echo $this->section('content'); ?>
                         echo csrf_field()
                         ?>
 
-
-                        <div class="form-group col-6">
-                            <input type="text" id="id" name="id">
-                            <label for="inputNanme4" class="form-label">Nome :: </label>
-                            <input type="text" id="id_teacher" class="form-control" id="firstName" placeholder="Nome" value="<?php //$nameTeacher 
+                        <input type="text" id="idEdit" name="id">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="inputNanme4" class="form-label">Nome :: </label>
+                                <input type="text" id="nameEdit" class="form-control" id="firstName" placeholder="Nome" value="<?php //$nameTeacher 
                                                                                                                                 ?>" disabled>
-                            <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nNome') : ''; 
-                                                                                            ?></span>
+                                <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nNome') : ''; 
+                                                                                                ?></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="exampleColorInput" class="form-label">Disciplina :: </label>
+
+                                <input type="text" id="id_discipline" disabled class="form-control" id="exampleColorInput" value="<?php //$discipline;
+                                                                                                                                    ?>">
+                                <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nDisciplina') : ''; 
+                                                                                                ?></span>
+
+                            </div>
                         </div>
-                        <div class="form-group col-6">
-                            <label for="exampleColorInput" class="form-label">Disciplina :: </label>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
+                                <input type="number" min="1" max="40" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
+                                                                                                                                                    ?>">
+                                <span class="error invalid-feedback" id="fieldlertError"></span>
 
-                            <input type="text" id="id_discipline" disabled class="form-control" id="exampleColorInput" value="<?php //$discipline;
-                                                                                                                                ?>">
-                            <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nDisciplina') : ''; 
-                                                                                            ?></span>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="exampleColorInput" class="form-label">Cor destaque :: </label>
+                                <input type="color" id="corDestaque" name="nCorDestaque" class="form-control form-control-color" id="exampleColorInput" value="<?php //set_value('nCorDestaque',$teacDisc->color);
+                                                                                                                                                                ?>" title="Escolha uma cor">
+                                <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nCorDestaque') : ''; 
+                                                                                                ?></span>
 
-                        </div>
+                            </div>
+                            <div class="row">
+                            </div>
 
-                        <div class="form-group col-6">
-                            <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
-                            <input type="number" id="numeroAulas" name="nNumeroAulas" class="form-control" id="lastName" placeholder="" value="<?php //set_value('nNumeroAulas', $teacDisc->amount) 
-                                                                                                                                                ?>">
-                            <span class="error invalid-feedback" id="fieldlertError"></span>
+                            <div class="modal-footer">
+                                <?= generationButtonSave(); ?>
+                                <?= generateButtonCloseModal(); ?>
 
-                        </div>
-                        <div class="form-group col-3">
-                            <label for="exampleColorInput" class="form-label">Cor destaque</label>
-                            <input type="color" id="corDestaque" name="nCorDestaque" class="form-control form-control-color" id="exampleColorInput" value="<?php //set_value('nCorDestaque',$teacDisc->color);
-                                                                                                                                                            ?>" title="Escolha uma cor">
-                            <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nCorDestaque') : ''; 
-                                                                                            ?></span>
+                                </form>
+                            </div>
 
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <!-- Modal -->
+                <div class="modal fade" id="deleteTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="deleteTeacherDisciplineModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title" id="deleteTeacherDisciplineModalLabel">Excluir Professor/disciplina</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
 
-                        </form>
+                                <?php echo form_open('teacDisc/del', ['id' => 'deleteTeacherDisciplineForm']);
+                                //echo form_hidden('id', $teacDisc->id);
+                                //echo form_hidden('_method', "put");
+                                //echo form_hidden('id_teacher', $teacDisc->id_teacher);
+                                echo csrf_field()
+                                ?>
+
+
+                                <div class="form-group col-6">
+                                    <input type="text" id="idDelete" name="id">
+                                    <p>Desejar realmente excluir?</p>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <?= generateButtonRetro('/horario'); ?>
+
+                                </form>
+                            </div>
+
+
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="deleteTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="deleteTeacherDisciplineModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-danger">
-                        <h5 class="modal-title" id="deleteTeacherDisciplineModalLabel">Excluir Professor/disciplina</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-
-                        <?php echo form_open('teacDisc/del', ['id' => 'deleteTeacherDisciplineForm']);
-                        //echo form_hidden('id', $teacDisc->id);
-                        //echo form_hidden('_method', "put");
-                        //echo form_hidden('id_teacher', $teacDisc->id_teacher);
-                        echo csrf_field()
-                        ?>
-
-
-                        <div class="form-group col-6">
-                            <input type="text" id="idDelete" name="id">
-                            <p>Desejar realmente excluir?</p>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <?= generateButtonRetro('/horario'); ?>
-
-                        </form>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?= $this->endSection(); ?>
+        <?= $this->endSection(); ?>

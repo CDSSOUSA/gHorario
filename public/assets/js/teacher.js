@@ -26,7 +26,7 @@ function loadDataTeacher(data) {
     data.forEach((element, indice) => {
         //console.log(data)
 
-        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addDisciplineTeacher(${element.id})">
+        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
         <a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`;
@@ -51,11 +51,15 @@ function listRowDisciplinesTeacher (data) {
     let row = '';    
     if(data != null){
         data.forEach( e => {            
-            row += `<div class="m-2 p-2 font-weight-bold" style="background-color:${e.color}; color:white">
-            <i class="icons fas fa-book"></i> ${e.abbreviation} :: ${e.amount}  
-            <a href="#" class="btn btn-dark btn-sm" onclick="editDisciplineTeacher(${e.id})">
-        <i class="fa fa-pencil" aria-hidden="true"></i> Editar</a>          
-            </div>` ;
+            row += `<div class="d-flex justify-content-center">
+                        <div class="m-2 p-2 font-weight-bold w-35" style="background-color:${e.color}; color:white">
+                            <i class="icons fas fa-book"></i> ${e.abbreviation} :: ${e.amount}  
+                        </div>
+                        <div class="m-2 p-2 font-weight-bold w-25">
+                            <a href="#" class="btn btn-dark" onclick="editTeacherDiscipline(${e.id})">
+                            <i class="icons fas fa-pen"></i> Editar</a>          
+                        </div>
+                    </div>` ;
         })
     }
     return row;
@@ -128,4 +132,153 @@ if (addTeacherForm) {
             })
             .catch(error => console.log(error))
     });
+}
+
+const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
+
+async function editTeacherDiscipline(id) {
+    document.getElementById('msgAlertError').innerHTML = '';
+    document.getElementById('fieldlertError').textContent = '';
+
+    await axios.get(URL_BASE + '/teacDisc/edit/' + id)
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            if (data) {
+                editModal.show();
+                document.getElementById('idEdit').value = data[0].id
+                document.getElementById('nameEdit').value = data[0].name
+                document.getElementById('id_discipline').value = data[0].description
+                document.getElementById('numeroAulas').value = data[0].amount
+                document.getElementById('corDestaque').value = data[0].color
+            }
+        })
+        .catch(error => console.log(error))
+}
+
+const editForm = document.getElementById('editTeacherDiscipline');
+console.log(editForm);
+
+if (editForm) {
+
+    editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const dataForm = new FormData(editForm);
+        await axios.post(`${URL_BASE}/teacDisc/update`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                console.log(response.data.id_teacher);
+                if (response.data.error) {
+                    document.getElementById('msgAlertError').innerHTML = response.data.msg
+                    document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
+                    document.getElementById("msgAlertSuccess").innerHTML = "";
+                } else {
+
+                    document.getElementById('msgAlertError').innerHTML = '';
+                    document.getElementById('fieldlertError').textContent = '';
+                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                    //location.reload();
+                    editModal.hide();
+                    
+                    loadToast(titleSuccess, bodySuccess, success);                        
+                    //loada(); 
+                    //location.reload();
+                    listTeacDisc();
+
+                }
+            })
+            .catch(error => console.log(error))
+    })
+}
+
+const listDisciplines = () =>{
+    let discipline = '';
+    const data = [
+        "HISTORIA",
+        "GEOGRAFA",
+        "MATEMATICA",
+        "ARTES",
+        "INGLES"
+    ]
+    data.forEach((e,i) => {
+        discipline += `<div class="form-check form-switch">
+        <input class="form-check-input" name="nDisciplinas[]" value="${i}" type="checkbox" id="flexSwitchCheckDefault${i}">
+        <label class="form-check-label" for="flexSwitchCheckDefault${i}"> ${e} </label>
+        </div>
+        ` 
+    })
+    return discipline;
+}
+
+async function addTeacherDiscipline(id) {
+    const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
+    document.getElementById('msgAlertError').innerHTML = '';
+    document.getElementById('fieldlertError').textContent = '';
+
+    const addForm = document.getElementById('addTeacherDisciplineForm');
+
+    addModal.show();
+    document.getElementById('id').value = id
+    document.getElementById('disciplines').innerHTML = listDisciplines()
+    console.log(addForm);
+
+    if (addForm) {
+        addForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            // adicionar o toast
+            /*$('#toast-place').append(`
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                <div class="toast-header">
+                  <strong class="me-auto">Bootstrap</strong>
+                  <small>11 mins ago</small>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
+                  <span aria-hidden">&time</span>;
+                  </button>
+                </div>
+                <div class="toast-body">
+                  Hello, world! This is a toast message.
+                </div>
+              </div>
+                `);*/
+
+            //$('.toast').toast('show');
+
+
+
+            const dataForm = new FormData(addForm);
+            await axios.post(`${URL_BASE}/teacDisc/create`, dataForm, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    console.log(response.data.id_teacher);
+                    if (response.data.error) {
+                        console.log(response.data)
+                        document.getElementById('msgAlertError').innerHTML = response.data.msg
+                        document.getElementById("msgAlertSuccess").innerHTML = "";
+                        //loadToast('oi','oila','danger');
+                        addForm.reset()
+                        
+
+                    } else {
+                        document.getElementById('msgAlertError').innerHTML = '';
+                        addModal.hide();
+                        //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                       
+                        loadToast(titleSuccess, bodySuccess, success);                        
+                        loada(); 
+                        location.reload();
+
+                    }
+                })
+                .catch(error => console.log(error))
+        })
+    }
+
+
+
 }

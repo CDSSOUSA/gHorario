@@ -253,6 +253,10 @@ div.dataTables_wrapper {
     margin: 0 auto;
 }
 
+.w-35 {
+  width: 200px;
+}
+
 /* @keyframes is-rotating {
   to {
      transform: rotate(1turn);
