@@ -1,10 +1,10 @@
 <footer class="main-footer">
 
-<div class="float-right d-none d-sm-inline">
-Anything you want
-</div>
+  <div class="float-right d-none d-sm-inline">
+    Anything you want
+  </div>
 
-<strong>Copyright © 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  <strong>Copyright © 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
 </footer>
 
 </div>
@@ -25,6 +25,7 @@ Anything you want
 <script src="<?= base_url(); ?>/assets/plugins/summernote/summernote-bs4.min.js"></script>
 
 <script src="<?= base_url(); ?>/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+
 <script src="<?= base_url(); ?>/assets/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
 
 <script src="<?= base_url(); ?>/assets/plugins/toastr/toastr.min.js"></script>
@@ -46,23 +47,23 @@ Anything you want
 <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
 
 <script>
-$(document).ready(function() {
-    var table = $('#example').DataTable( {
-        scrollY:        "480px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging: false,
-        ordering: false,
-        info: false,    
-        searching: false,
-        stateSave: true,
-        fixedHeader: true,    
-        fixedColumns:   {
-            left: 2,
-            //right: 1
-        }
-    } );
-} );
+  $(document).ready(function() {
+    var table = $('#example').DataTable({
+      scrollY: "480px",
+      scrollX: true,
+      scrollCollapse: true,
+      paging: false,
+      ordering: false,
+      info: false,
+      searching: false,
+      stateSave: true,
+      fixedHeader: true,
+      fixedColumns: {
+        left: 2,
+        //right: 1
+      }
+    });
+  });
 
   $(document).ready(function() {
     setTimeout(function() {
@@ -72,16 +73,21 @@ $(document).ready(function() {
     }, 5000);
   });
 
-  $("input[type=checkbox]").bootstrapSwitch(
-    {
-        onText: '<i class="fa fa-check"></i>',
-        offText: '',
-        size: "mini",
-        onColor: "success"
-    }
-);
-
- 
+    $("input[type=checkbox]").bootstrapSwitch(
+      {
+          onText: '<i class="fa fa-check"></i>',
+          offText: '',
+          size: "mini",
+          onColor: "success"
+      }
+  );
+  // $("input[type=checdkbox]").bootstrapSwitch({
+  //   onText: '<i class="fa fa-check"></i>',
+  //   offText: '',
+  //   size: "mini",
+  //   onColor: "success"
+  // });
+  
 </script>
 
 </body>

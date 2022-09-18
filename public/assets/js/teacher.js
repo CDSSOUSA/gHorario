@@ -22,14 +22,23 @@ async function listTeacDisc() {
 
 function loadDataTeacher(data) {
     let row = "";
+    let rowAllocation = '';
 
     data.forEach((element, indice) => {
         //console.log(data)
 
+        if(element.disciplines){            
+            rowAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
+            <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`
+        } else {
+            rowAllocation = '';
+
+        }
+
         let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
-        <a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
-        <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`;
+        ${rowAllocation}
+        `;
 
         // if (element.status === "A") {
         //     console.log(element.status)
@@ -214,6 +223,7 @@ if (editForm) {
 // }
 
 const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
+const addFormTeacDisc = document.getElementById('addTeacherDisciplineForm');
 async function addTeacherDiscipline(id) {
     document.getElementById('msgAlertErrorTeacDisc').innerHTML = '';
     document.getElementById('fieldlertErroramountTechDisc').innerHTML = ''
@@ -224,18 +234,22 @@ async function addTeacherDiscipline(id) {
     //document.getElementById('fieldlertError').textContent = '';
     
    
-    addForm.reset();
+    addFormTeacDisc.reset();
     addModal.show();
     document.getElementById('idTeac').value = id
+    getDataTeacher(id,'nameDiscipline');
     // document.getElementById('disciplines').innerHTML = listDisciplines()
     // document.querySelector('.abc').classList.add("form-switch");
     // console.log(addForm);
+    $('#addTeacherDisciplineModal').on('shown.bs.modal', function () {
+        $('#amount').trigger('focus');
+    });
+
 
 }
 
-const addForm = document.getElementById('addTeacherDisciplineForm');
-if (addForm) {
-    addForm.addEventListener("submit", async (e) => {
+if (addFormTeacDisc) {
+    addFormTeacDisc.addEventListener("submit", async (e) => {
         e.preventDefault();
         // adicionar o toast
         /*$('#toast-place').append(`
@@ -257,7 +271,7 @@ if (addForm) {
 
 
         
-        const dataForm = new FormData(addForm);
+        const dataForm = new FormData(addFormTeacDisc);
         await axios.post(`${URL_BASE}/teacDisc/create`, dataForm, {
             headers: {
                 "Content-Type": "application/json"
@@ -266,7 +280,7 @@ if (addForm) {
         .then(response => {
             console.log(response.data.id_teacher);
             if (response.data.error) {
-                    console.log(response.data)
+                    console.log(response.data.msg)
                     document.getElementById('msgAlertErrorTeacDisc').innerHTML = response.data.msg
                     //document.getElementById("msgAlertSuccess").innerHTML = "";
                     //document.getElementById('idTeac').value = id
@@ -274,6 +288,9 @@ if (addForm) {
                     //loadToast('oi','oila','danger');
 
                     //validateErros(response.data.msgs.name, 'fieldlertErrorname')
+                    // if(response.data.error.code == 1062){
+                    //     validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
+                    // }
                     validateErros(response.data.msgs.amount, 'fieldlertErroramountTechDisc')
                     validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
                     validateErros(response.data.msgs.color, 'fieldlertErrorcolorTechDisc')
@@ -283,6 +300,7 @@ if (addForm) {
 
                 } else {
                     document.getElementById('msgAlertError').innerHTML = '';
+                    addFormTeacDisc.reset();
                     addModal.hide();
                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     
@@ -297,3 +315,115 @@ if (addForm) {
             .catch(error => console.log(error))
     })
 }
+
+const addAllocationModal = new bootstrap.Modal(document.getElementById('addAllocationModal'));
+const addAllocationForm = document.getElementById('addAllocationForm');
+
+async function getDataTeacher(id,locale){
+
+    await axios.get(`${URL_BASE}/teacher/show/${id}`)
+        .then(response => {
+            const data = response.data;
+
+            console.log(data);
+            if (data) {
+                //editModal.show();
+                //document.getElementById('idEdit').value = data[0].id
+                document.getElementById(locale).value = data.name
+                //document.getElementById('id_discipline').value = data[0].description
+                //document.getElementById('numeroAulas').value = data[0].amount
+                //document.getElementById('corDestaque').value = data[0].color
+            }
+        })
+        .catch(error => console.log(error))
+}
+
+const addAllocationTeacher = (id) => {
+
+    addAllocationModal.show();
+    addAllocationForm.reset();
+    document.getElementById('idTeacherAllocation').value = id
+    getDataTeacher(id,'nameAllocation');
+
+    
+    // document.getElementById('msgAlertError').innerHTML = ''
+    // document.getElementById('fieldlertErrorname').innerHTML = ''
+    // document.getElementById('fieldlertErroramount').innerHTML = ''
+    // document.getElementById('fieldlertErrordisciplines').innerHTML = ''
+    // document.getElementById('fieldlertErrorcolor').innerHTML = ''
+
+
+    // $('#addAllocationModal').on('shown.bs.modal', function () {
+    //     $('#name').trigger('focus');
+    // });
+
+}
+
+if (addAllocationForm) {
+    addAllocationForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        // adicionar o toast
+        /*$('#toast-place').append(`
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+            <div class="toast-header">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
+              <span aria-hidden">&time</span>;
+              </button>
+              </div>
+              <div class="toast-body">
+              Hello, world! This is a toast message.
+            </div>
+          </div>
+          `);*/
+
+        //$('.toast').toast('show');
+
+
+        
+        const dataForm = new FormData(addAllocationForm);
+        await axios.post(`${URL_BASE}/allocation/create`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            console.log(response.data.id_teacher);
+            if (response.data.error) {
+                    console.log(response.data.msg)
+                    document.getElementById('msgAlertErrorAllocation').innerHTML = response.data.msg
+                    //document.getElementById("msgAlertSuccess").innerHTML = "";
+                    //document.getElementById('idTeac').value = id
+                    //document.getElementById('msgAlertError').innerHTML = response.data.msg
+                    //loadToast('oi','oila','danger');
+
+                    //validateErros(response.data.msgs.name, 'fieldlertErrorname')
+                    // if(response.data.error.code == 1062){
+                    //     validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
+                    // }
+                    // validateErros(response.data.msgs.amount, 'fieldlertErroramountTechDisc')
+                    // validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
+                    // validateErros(response.data.msgs.color, 'fieldlertErrorcolorTechDisc')
+
+                    //addForm.reset()
+                    
+
+                } else {
+                    document.getElementById('msgAlertError').innerHTML = '';
+                    addFormTeacDisc.reset();
+                    addModal.hide();
+                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                    
+                    loadToast(titleSuccess, bodySuccess, success);                        
+                    //loada(); 
+                    //location.reload();
+                    listTeacDisc();
+
+
+                }
+            })
+            .catch(error => console.log(error))
+    })
+}
+

@@ -99,21 +99,21 @@ class TeacDiscModel extends Model
     public function saveTeacherDiscipline(array $data)
     {
 
-        $professor['amount'] = $data['amount'];
-        $professor['color'] = $data['color'];
-        $professor['status'] = $data['status'];
-        $professor['id_teacher'] = $data['id_teacher'];
+        // $professor['amount'] = $data['amount'];
+        // $professor['color'] = $data['color'];
+        // $professor['status'] = $data['status'];
+        // $professor['id_teacher'] = $data['id_teacher'];
 
-        foreach ($data['disciplines'] as $item) {
+        //foreach ($data['disciplines'] as $item) {
             $teacDisc = new TeacDiscModel();
-            $teacherDiscipline['id_teacher'] =  $professor['id_teacher'];
-            $teacherDiscipline['id_discipline'] = $item;
+            $teacherDiscipline['id_teacher'] =  $data['id_teacher'];
+            $teacherDiscipline['id_discipline'] =$data['disciplines'];
             $teacherDiscipline['amount'] = $data['amount'];
             $teacherDiscipline['status'] = 'A';
             $teacherDiscipline['id_year_school'] = session('session_idYearSchool');
             $teacherDiscipline['color'] = $data['color'] == '#000000' ? generationColor() : $data['color'] ;
             $teacDisc->save($teacherDiscipline);
-        }
+        //}
         return true;
         //dd($result);
     }

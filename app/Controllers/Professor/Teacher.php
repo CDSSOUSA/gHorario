@@ -103,7 +103,7 @@ class Teacher extends BaseController
     {       
         try {
 
-            $data = $this->teacherModel->orderBy('id','DESC')->findAll();
+            $data = $this->teacherModel->orderBy('name','ASC')->findAll();
 
             //$dat = [];
             foreach($data as $d){
@@ -130,5 +130,22 @@ class Teacher extends BaseController
         $data = $this->teacDiscModel->getTeacherDisciplineByIdTeacher($id);
 
         return $data;
+    }
+
+    public function show(int $id)
+    {
+        try {
+
+            $data = $this->teacherModel->find($id);            
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
     }
 }

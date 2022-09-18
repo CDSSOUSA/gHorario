@@ -161,7 +161,7 @@ class TeacDisc extends BaseController
                 'id_teacher' => 'required',
                 'amount' => 'required',
                 'color' => 'required|is_unique[tb_teacher_discipline.color]',
-                'disciplinesTeacher' => 'required|disciplineValidationDuplicate[disciplinesTeacher]',
+                'disciplinesTeacher' => 'required',
             ],
             [
                 'id_teacher' => [
@@ -176,8 +176,7 @@ class TeacDisc extends BaseController
                     'is_unique' => 'Cor utilizada por outro (a) professor (a)!',
                 ],
                 'disciplinesTeacher' => [
-                    'required' => 'Preenchimento obrigatório!',
-                    'disciplineValidationDuplicate' => 'Disciplina cadastrada para o (a) professor (a)!',
+                    'required' => 'Preenchimento obrigatório!',                    
                 ],
             ]
         );
@@ -200,20 +199,21 @@ class TeacDisc extends BaseController
             return $this->response->setJSON($response);
         }
 
+       
 
         $teacher['id_teacher'] = mb_strtoupper($this->request->getPost('id_teacher'));
         $teacher['amount'] = $this->request->getPost('amount');
         $teacher['color'] = $this->request->getPost('color') == '#000000' ? generationColor() : $this->request->getPost('color') ;
-        $teacher['disciplines'] = $this->request->getPost('disciplinesTeacher[]');
+        $teacher['disciplines'] = $this->request->getPost('disciplinesTeacher');
         $teacher['status'] = 'A';       
         //$data['status'] = 'A';
 
         // if ($data['description'] > getenv('YEAR.END')) {
         //     return redirect()->back()->withInput()->with('error', 'Ano não permitido!');
         // }
-
-        $save = $this->teacDiscModel->saveTeacherDiscipline($teacher);
+        
         try{
+            $save = $this->teacDiscModel->saveTeacherDiscipline($teacher);
 
             if ($save) {
                 $response = [
@@ -227,10 +227,19 @@ class TeacDisc extends BaseController
         }
         }catch (Exception $e) {
             return $this->response->setJSON([
-                'response' => 'Erros',
-                'msg'      => 'Não foi possível executar a operação',
-                'error'    => $e->getMessage()
-            ]);
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+                <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>', 
+                'msgs' => [
+                    'disciplinesTeacher' => 'Disciplina já cadastrada!'  
+                ]            
+            ]);          
         }
         //return $this->response->setJSON($response);
     }

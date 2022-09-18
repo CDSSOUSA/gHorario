@@ -63,6 +63,7 @@ $routes->group('/professor',['namespace'=>'App\Controllers\Professor'],function 
 $routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($routes){
     // $routes->get('/','Professor::add');
     $routes->get('list','Teacher::list');
+    $routes->get('show/(:any)','Teacher::show/$1');
     $routes->get('listTeacDisc/(:any)','Teacher::listTeacDisc/$1');
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Teacher::create'); 
@@ -109,6 +110,15 @@ $routes->group('/yearSchool',['namespace'=>'App\Controllers\YearSchool',/*'filte
     $routes->get('list', 'YearSchool::list');
     $routes->post('create', 'YearSchool::create');
     $routes->post('active', 'YearSchool::active');
+   
+});
+/* ROUTES ALLOCATION*/
+$routes->group('/allocation',['namespace'=>'App\Controllers\Allocation',/*'filter'=>'accessFilter'*/],function ($routes){
+   
+    //$routes->get('/', 'YearSchool::index');
+    //$routes->get('list', 'YearSchool::list');
+    $routes->post('create', 'Allocation::create');
+    //$routes->post('active', 'YearSchool::active');
    
 });
 

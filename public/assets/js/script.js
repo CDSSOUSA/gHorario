@@ -22,74 +22,74 @@ var success = 'success';
 //const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
 
 
-async function addTeacherDiscipline(id) {
-    const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
-    document.getElementById('msgAlertError').innerHTML = '';
-    document.getElementById('fieldlertError').textContent = '';
+// async function addTeacherDiscipline(id) {
+//     const addModal = new bootstrap.Modal(document.getElementById('addTeacherDisciplineModal'));
+//     document.getElementById('msgAlertError').innerHTML = '';
+//     document.getElementById('fieldlertError').textContent = '';
 
-    const addForm = document.getElementById('addTeacherDisciplineForm');
+//     const addForm = document.getElementById('addTeacherDisciplineForm');
 
-    addModal.show();
-    document.getElementById('id').value = id
-    console.log(addForm);
+//     addModal.show();
+//     document.getElementById('id').value = id
+//     console.log(addForm);
 
-    if (addForm) {
-        addForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            // adicionar o toast
-            /*$('#toast-place').append(`
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
-                <div class="toast-header">
-                  <strong class="me-auto">Bootstrap</strong>
-                  <small>11 mins ago</small>
-                  <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
-                  <span aria-hidden">&time</span>;
-                  </button>
-                </div>
-                <div class="toast-body">
-                  Hello, world! This is a toast message.
-                </div>
-              </div>
-                `);*/
+//     if (addForm) {
+//         addForm.addEventListener("submit", async (e) => {
+//             e.preventDefault();
+//             // adicionar o toast
+//             /*$('#toast-place').append(`
+//                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+//                 <div class="toast-header">
+//                   <strong class="me-auto">Bootstrap</strong>
+//                   <small>11 mins ago</small>
+//                   <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close">
+//                   <span aria-hidden">&time</span>;
+//                   </button>
+//                 </div>
+//                 <div class="toast-body">
+//                   Hello, world! This is a toast message.
+//                 </div>
+//               </div>
+//                 `);*/
 
-            //$('.toast').toast('show');
+//             //$('.toast').toast('show');
 
 
 
-            const dataForm = new FormData(addForm);
-            await axios.post(`${URL_BASE}/teacDisc/create`, dataForm, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-                .then(response => {
-                    console.log(response.data.id_teacher);
-                    if (response.data.error) {
-                        console.log(response.data)
-                        document.getElementById('msgAlertError').innerHTML = response.data.msg
-                        document.getElementById("msgAlertSuccess").innerHTML = "";
-                        //loadToast('oi','oila','danger');
-                        addForm.reset()
+//             const dataForm = new FormData(addForm);
+//             await axios.post(`${URL_BASE}/teacDisc/create`, dataForm, {
+//                 headers: {
+//                     "Content-Type": "application/json"
+//                 }
+//             })
+//                 .then(response => {
+//                     console.log(response.data.id_teacher);
+//                     if (response.data.error) {
+//                         console.log(response.data)
+//                         document.getElementById('msgAlertError').innerHTML = response.data.msg
+//                         document.getElementById("msgAlertSuccess").innerHTML = "";
+//                         //loadToast('oi','oila','danger');
+//                         addForm.reset()
                         
 
-                    } else {
-                        document.getElementById('msgAlertError').innerHTML = '';
-                        addModal.hide();
-                        //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+//                     } else {
+//                         document.getElementById('msgAlertError').innerHTML = '';
+//                         addModal.hide();
+//                         //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                        
-                        loadToast(titleSuccess, bodySuccess, success);                        
-                        loada(); 
-                        location.reload();
+//                         loadToast(titleSuccess, bodySuccess, success);                        
+//                         loada(); 
+//                         location.reload();
 
-                    }
-                })
-                .catch(error => console.log(error))
-        })
-    }
+//                     }
+//                 })
+//                 .catch(error => console.log(error))
+//         })
+//     }
 
 
 
-}
+// }
 // async function editTeacherDiscipline(id) {
 //     document.getElementById('msgAlertError').innerHTML = '';
 //     document.getElementById('fieldlertError').textContent = '';

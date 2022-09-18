@@ -1,24 +1,44 @@
 
-// const checkAll = document.getElementById('checkAll');
+const checkAll = document.getElementById('checkAll');
 
-// checkAll.addEventListener('click', () => {   
-//     $(":checkbox").each(
-//         function() {
-//             if ($(this).bootstrapSwitch('state')) {
-//                 $(this).bootstrapSwitch('state', false);
-//             } else {
-//                 $(this).bootstrapSwitch('state',true)
-//             }            
-//         }
-//     );
-// });
+checkAll.addEventListener('click', () => {   
+    $(":checkbox").each(
+        function() {
+            if ($(this).bootstrapSwitch('state')) {
+                $(this).bootstrapSwitch('state', false);
+            } else {
+                $(this).bootstrapSwitch('state',true)
+            }            
+        }
+    );
+});
 
+function marca(caller) {
+    var checks = document.querySelectorAll('input[type="checkbox"]');
+    for (let i = 0; i < checks.length; i++) {
+        checks[i].checked = checks[i] == caller;
+    }  
+   
+        //     checks.addEventListener('click', () => {   
+        //     $(":checkbox").each(
+        //         function() {
+        //             if ($(this).bootstrapSwitch('state')) {
+        //                 $(this).bootstrapSwitch('state', false);
+        //             } else {
+        //                 $(this).bootstrapSwitch('state',true)
+        //             }            
+        //         }
+        //     );
+        // }
+        ;
+
+}
 const URL_BASE = 'http://localhost/gerenciador-horario/public';
 
 const convertStatus = (status) => {
     let _shift = 'INATIVO'
     if (status === 'A')
-    _shift = 'ATIVO'
+        _shift = 'ATIVO'
     return _shift;
 }
 
@@ -68,10 +88,9 @@ const loadToast = (title, body, bg) => {
 }
 
 const validateErros = (errors, locale) => {
-    let r = document.getElementById(locale).innerHTML ='';
-    if(errors) {
+    let r = document.getElementById(locale).innerHTML = '';
+    if (errors) {
         r = document.getElementById(locale).innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ${errors}!`
-    } 
+    }
     return r;
 }
-
