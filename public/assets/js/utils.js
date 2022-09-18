@@ -66,6 +66,15 @@ const convertShift = (turno) => {
     return shift;
 }
 
+const convertSituation = (situation) =>
+{
+    if (situation === 'L')
+        return 'LIVRE';
+    if (situation === 'O')
+        return 'OCUPADO';
+    return 'BLOQUEADO';
+}
+
 const loadToast = (title, body, bg) => {
 
     $(document).Toasts('create', {

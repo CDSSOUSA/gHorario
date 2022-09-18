@@ -3,6 +3,11 @@ var divLoader = document.querySelector('#loader');
 var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
 var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
+var idTeacheDiscipline = 11;
+
+const btnListAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${idTeacheDiscipline})">
+<i class="fa fa-list" aria-hidden="true"></i> Alocação</a>`
+
 
 listTeacDisc();
 
@@ -38,6 +43,7 @@ function loadDataTeacher(data) {
         let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
         ${rowAllocation}
+        ${btnListAllocation}
         `;
 
         // if (element.status === "A") {
@@ -238,6 +244,8 @@ async function addTeacherDiscipline(id) {
     addModal.show();
     document.getElementById('idTeac').value = id
     getDataTeacher(id,'nameDiscipline');
+    getDataTeacherDiscipline(id)
+    
     // document.getElementById('disciplines').innerHTML = listDisciplines()
     // document.querySelector('.abc').classList.add("form-switch");
     // console.log(addForm);
@@ -319,7 +327,7 @@ if (addFormTeacDisc) {
 const addAllocationModal = new bootstrap.Modal(document.getElementById('addAllocationModal'));
 const addAllocationForm = document.getElementById('addAllocationForm');
 
-async function getDataTeacher(id,locale){
+async function getDataTeacher(id,locale) {
 
     await axios.get(`${URL_BASE}/teacher/show/${id}`)
         .then(response => {
@@ -338,12 +346,55 @@ async function getDataTeacher(id,locale){
         .catch(error => console.log(error))
 }
 
+async function getDataTeacherDiscipline(id) {
+    await axios.get(`${URL_BASE}/teacher/listDisciplinesByTeacher/${id}`)
+    .then(response => {
+        const data = response.data;
+
+        console.log(data);
+        if (data) {
+            //editModal.show();
+            //document.getElementById('idEdit').value = data[0].id
+            document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
+            
+            //document.getElementById('id_discipline').value = data[0].description
+            //document.getElementById('numeroAulas').value = data[0].amount
+            //document.getElementById('corDestaque').value = data[0].color
+        }
+    })
+    .catch(error => console.log(error))
+}
+function listRowDisciplines(data) {
+
+    let row = '';    
+    if(data != null){
+        data.forEach( e => {            
+            row += ` <div class="form-check-inline radio-toolbar text-white" style="background-color:${e.color}; border-radius: 5px;">            
+                        <input name="nDisciplines[]" value="${e.id}" type="checkbox" id="flexSwitch${e.id}">
+                        <label class="form-check-label" for="flexSwitch${e.id}">
+                            <div class="rotulo">
+                                <span class="abbreviation font-weight-bold">${e.abbreviation}</span>
+                                <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i></span>
+                            </div>
+                        </label>
+                    </div>`
+        })
+    }
+    return row;
+}
 const addAllocationTeacher = (id) => {
 
     addAllocationModal.show();
     addAllocationForm.reset();
     document.getElementById('idTeacherAllocation').value = id
     getDataTeacher(id,'nameAllocation');
+    getDataTeacherDiscipline(id)
+    // usar aqui document.querySelector("#disc").innerHTML = `${listRowDisciplines(csa)}`
+    document.getElementById('msgAlertErrorAllocation').innerHTML = '';
+    document.getElementById('fieldlertErrorDayWeek').innerHTML = '';
+    document.getElementById('fieldlertErrorPosition').innerHTML = ''
+    document.getElementById('fieldlertErrorDisciplines').innerHTML = ''
+    document.getElementById('fieldlertErrorShift').innerHTML = ''
 
     
     // document.getElementById('msgAlertError').innerHTML = ''
@@ -402,17 +453,18 @@ if (addAllocationForm) {
                     // if(response.data.error.code == 1062){
                     //     validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
                     // }
-                    // validateErros(response.data.msgs.amount, 'fieldlertErroramountTechDisc')
-                    // validateErros(response.data.msgs.disciplinesTeacher, 'fieldlertErrordisciplinesTechDisc')
-                    // validateErros(response.data.msgs.color, 'fieldlertErrorcolorTechDisc')
+                    validateErros(response.data.msgs.nDayWeek, 'fieldlertErrorDayWeek')
+                    validateErros(response.data.msgs.nDisciplines, 'fieldlertErrorDisciplines')
+                    validateErros(response.data.msgs.nPosition, 'fieldlertErrorPosition')
+                    validateErros(response.data.msgs.nShift, 'fieldlertErrorShift')
 
                     //addForm.reset()
                     
 
                 } else {
-                    document.getElementById('msgAlertError').innerHTML = '';
-                    addFormTeacDisc.reset();
-                    addModal.hide();
+                    document.getElementById('msgAlertErrorAllocation').innerHTML = '';
+                    addAllocationForm.reset();
+                    addAllocationModal.hide();
                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     
                     loadToast(titleSuccess, bodySuccess, success);                        
@@ -425,5 +477,108 @@ if (addAllocationForm) {
             })
             .catch(error => console.log(error))
     })
+}
+
+const listAllocationModal = new bootstrap.Modal(document.getElementById('listAllocationModal'));
+
+// const listAllocationTeacherDiscipline = (id) => {
+
+//     listAllocationModal.show();
+//     document.querySelector("#tb_teacher > tbody").innerHTML = `${loadDataTeacher(data)}`;
+
+// } 
+
+const listAllocationTeacherDiscipline = async (id) => {
+
+    listAllocationModal.show();
+
+    await axios.get(`${URL_BASE}/allocation/show/${id}`)
+    .then(response => {
+        const data = response.data;
+
+        console.log(data);
+        if (data) {
+            //editModal.show();
+            //document.getElementById('idEdit').value = data[0].id
+            //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
+            document.querySelector("#tb_allocation > tbody").innerHTML = `${loadDataAllocation(data)}`;
+            //document.getElementById('id_discipline').value = data[0].description
+            //document.getElementById('numeroAulas').value = data[0].amount
+            //document.getElementById('corDestaque').value = data[0].color
+        }
+    })
+    .catch(error => console.log(error))
+
+
+}
+
+const loadDataAllocation = (data)=> {
+    let row = "";
+    let rowAllocation = '';
+
+    data.forEach((element, indice) => {
+        // //console.log(data)
+
+        if(element.disciplines){            
+            rowAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
+            <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`
+        } else {
+            rowAllocation = '';
+
+        }
+
+        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
+        <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
+        ${rowAllocation}
+        ${btnListAllocation}
+        `;
+
+        // // if (element.status === "A") {
+        // //     console.log(element.status)
+        // //     ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
+        // // }
+        row +=
+            `<tr>
+                <td class="align-middle">${indice + 1}</td>
+                <td class="align-middle">${convertDayWeek(element.dayWeek)}</td>   
+                <td class="align-middle"><div class="text-white ticket-small" style="background-color:${element.color}">${element.abbreviation}</div></td>                     
+                <td class="align-middle">${element.position} ª</td>                     
+                <td class="align-middle ocupation">${getOcupationSchedule(element.id)}</td>                     
+                <td class="align-middle">${convertShift(element.shift)}</td>                     
+                <td class="align-middle">${ticket}</td>        
+            </tr>`;
+
+    });
+    return row;
+}
+
+async function getOcupationSchedule(id,situation) {   
+
+    let a = '';
+    console.log(situation);
+
+    //if(situation === 'O') {
+        await axios.get(`${URL_BASE}/horario/api/getOcupationSchedule/${id}`)
+        .then(response => {
+            const data = response.data;
+    
+            console.log(data);
+            if (data) {
+
+                //return data.id_series
+                //editModal.show();
+                //document.getElementById('idEdit').value = data[0].id
+                //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`               
+                document.getElementsByClassName("ocupation").innerHTML = `<p> ${data.id_series}</p>`
+                //document.getElementById('numeroAulas').value = data[0].amount
+                //document.getElementById('corDestaque').value = data[0].color
+            } else{
+                document.getElementsByClassName("ocupation").innerHTML = `<p> COO</p>`
+            }
+        })
+        .catch(error => console.log(error))
+    //} else {
+   // }
+    //return a;
 }
 

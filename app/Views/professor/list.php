@@ -245,6 +245,7 @@ echo $this->section('content'); ?>
                 </div>
                 <div class="form-group col-12">
                     <label for="exampleColorInput" class="form-label">Disciplinas :: </label><br>
+                      
 
                     <?php foreach ($disciplinas as $item) : ?>
                         <div class="form-check-inline radio-toolbar text-white" style="background-color:#5BDC7E; border-radius: 5px; margin: 5px;">
@@ -338,7 +339,7 @@ echo $this->section('content'); ?>
                 </button>
             </div>
             <div class="modal-body">
-                <span id="msgAlertError"></span>
+                <span id="msgAlertErrorAllocation"></span>
                 <?php echo form_open('allocation/create', ['id' => 'addAllocationForm']);
                 //echo form_hidden('id', $teacDisc->id);
                 //echo form_hidden('_method', "put");
@@ -384,22 +385,12 @@ echo $this->section('content'); ?>
                 </div>
                 <div class="row">
 
-                    <div class="form-group col-6">
+                    <div class="form-group col-12">
                         <label for="exampleColorInput" class="form-label">Disciplinas :: </label>
 
-                        <?php
-                        $teacDisca = new TeacDiscModel();
-                        $teacDisc = $teacDisca->getTeacherDisciplineByIdTeacher(11);
-                        foreach ($teacDisc as $item) : ?>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" name="nDisciplines[]" value="<?= $item->id; ?>" <?php echo set_checkbox('nDisciplines', $item->id); ?> type="checkbox" id="flexSwitchCheckAllocation<?= $item->id; ?>">
-                                <label class="form-check-label" for="flexSwitchCheckAllocation<?= $item->id; ?>"> <?= $item->description; ?> </label>
-                            </div>
-
-                        <?php endforeach ?>
+                        <div id ="disc">
+                        </div>                    
                         <span class="error invalid-feedback" id="fieldlertErrorDisciplines"></span>
-
-
                     </div>
                     <div class="form-group">
                         <label for="inputEmail3" class="col-form-label">Turno :: </label>
@@ -431,6 +422,41 @@ echo $this->section('content'); ?>
 
             </div>
             </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- modal list-->
+<div class="modal fade" id="listAllocationModal" tabindex="-1" role="dialog" aria-labelledby="listAllocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title" id="listAllocationModalLabel"><i class="fa fa-user"></i>Alocação(ões) Realizada(s) ::</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <table id="tb_allocation" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Dia :: </th>
+                    <th scope="col">Disciplina :: </th>
+                    <th scope="col">Posição ::</th>
+                    <th scope="col">Situação ::</th>
+                    <th scope="col">Turno ::</th>
+                    <th scope="col">Ação :: </th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+              
+               
+
 
         </div>
     </div>

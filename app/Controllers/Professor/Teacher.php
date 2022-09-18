@@ -98,6 +98,11 @@ class Teacher extends BaseController
         }
     }
 
+    public function listDisciplinesByTeacher($id) {
+        $data = $this->listTeacDisc($id);
+        return $this->response->setJSON($data);
+    }
+
 
     public function list()
     {       
@@ -109,7 +114,7 @@ class Teacher extends BaseController
             foreach($data as $d){
                 $dat = $this->listTeacDisc($d->id);
                 foreach($dat as $ab){
-
+                    
                     $d->disciplines = $dat;
                 }
             }        

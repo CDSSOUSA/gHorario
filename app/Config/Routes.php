@@ -46,6 +46,7 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     // $routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     // $routes->post('add', 'Horario::add'); 
     $routes->get('getAllocation/(:any)','ApiHorario::getAllocation/$1');    
+    $routes->get('getOcupationSchedule/(:any)','ApiHorario::getOcupationSchedule/$1');    
     $routes->post('create','ApiHorario::create');    
     $routes->get('delete/(:any)','ApiHorario::deleteSchedule/$1');    
     $routes->post('del','ApiHorario::del');    
@@ -65,6 +66,7 @@ $routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($
     $routes->get('list','Teacher::list');
     $routes->get('show/(:any)','Teacher::show/$1');
     $routes->get('listTeacDisc/(:any)','Teacher::listTeacDisc/$1');
+    $routes->get('listDisciplinesByTeacher/(:any)','Teacher::listDisciplinesByTeacher/$1');
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Teacher::create'); 
 });
@@ -118,6 +120,7 @@ $routes->group('/allocation',['namespace'=>'App\Controllers\Allocation',/*'filte
     //$routes->get('/', 'YearSchool::index');
     //$routes->get('list', 'YearSchool::list');
     $routes->post('create', 'Allocation::create');
+    $routes->get('show/(:any)', 'Allocation::show/$1');
     //$routes->post('active', 'YearSchool::active');
    
 });

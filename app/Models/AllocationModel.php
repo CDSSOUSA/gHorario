@@ -116,6 +116,19 @@ class AllocationModel extends Model
             ->orderBy('tb_allocation.situation DESC, tb_allocation.shift ASC, tb_allocation.dayWeek ASC, tb_allocation.position ASC')           
             ->get()->getResult();
     }
+    public function getAllocationTeacher(int $idTeacher)
+    {
+        return $this->select('tb_allocation.id, tb_allocation.dayWeek, tb_allocation.position, tb_allocation.situation, d.abbreviation, pd.color, tb_allocation.shift')
+            ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            ->where('pd.id_teacher', $idTeacher)
+            ->where('tb_allocation.status', 'A')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
+            ->orderBy('tb_allocation.situation DESC, tb_allocation.shift ASC, tb_allocation.dayWeek ASC, tb_allocation.position ASC')           
+            ->get()->getResult();
+    }
+
 
     public function getTeacherByIdAllocation(int $idAlocacao)
     {

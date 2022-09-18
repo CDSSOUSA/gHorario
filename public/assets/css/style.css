@@ -134,7 +134,7 @@
   width: 60px;
 }
 
-.radio-toolbar input[type="radio"] {
+.radio-toolbar input[type="radio"], input[type='checkbox'] {
   opacity: 0;
   position: fixed;
   width: 0;
@@ -167,12 +167,19 @@
   width: 100%; 
 }
 
-.radio-toolbar input[type="radio"]:focus+label {
+.radio-toolbar input[type="radio"]:focus+label{
   border: 2px dashed #444;
   width: 100%;
 }
 
-.radio-toolbar input[type="radio"]:checked+label {
+.radio-toolbar input[type="radio"]:checked+label{
+  /* background-color: #bfb; */
+  border-color: #4c4;
+  border: 2px dashed rgb(20, 20, 20);
+  width: 100%;
+
+}
+.radio-toolbar input[type="checkbox"]:checked+label {
   /* background-color: #bfb; */
   border-color: #4c4;
   border: 2px dashed rgb(20, 20, 20);

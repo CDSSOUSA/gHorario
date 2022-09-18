@@ -74,6 +74,22 @@ class ApiHorario extends ResourceController
             'msg'      => 'Nenhum usuário encontrado para essa pesquisa!',
         ]);
     }
+    public function getOcupationSchedule(int $idAllocation)
+    {
+        try {
+
+            $data = $this->schedule->getScheduleByIdAllocation($idAllocation);                      
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+            
+    }
     public function create()
     {
         if ($this->request->getMethod() !== 'post') {
