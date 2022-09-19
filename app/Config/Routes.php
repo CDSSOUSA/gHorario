@@ -120,6 +120,7 @@ $routes->group('/allocation',['namespace'=>'App\Controllers\Allocation',/*'filte
     //$routes->get('/', 'YearSchool::index');
     //$routes->get('list', 'YearSchool::list');
     $routes->post('create', 'Allocation::create');
+    $routes->get('showTeacher/(:any)', 'Allocation::showTeacher/$1');
     $routes->get('show/(:any)', 'Allocation::show/$1');
     //$routes->post('active', 'YearSchool::active');
    

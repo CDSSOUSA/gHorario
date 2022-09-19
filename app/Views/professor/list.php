@@ -239,13 +239,13 @@ echo $this->section('content'); ?>
                 ?>
                 <div class="row">
                     <div class="form-group col-6">
-                    <label for="nameDiscipline" class="form-label">Nome :: </label>
+                        <label for="nameDiscipline" class="form-label">Nome :: </label>
                         <input class="form-control" id="nameDiscipline" disabled>
                     </div>
                 </div>
                 <div class="form-group col-12">
                     <label for="exampleColorInput" class="form-label">Disciplinas :: </label><br>
-                      
+
 
                     <?php foreach ($disciplinas as $item) : ?>
                         <div class="form-check-inline radio-toolbar text-white" style="background-color:#5BDC7E; border-radius: 5px; margin: 5px;">
@@ -353,7 +353,7 @@ echo $this->section('content'); ?>
                 ?>
                 <div class="row">
                     <div class="form-group col-6">
-                    <label for="nameAllocation" class="form-label">Nome :: </label>
+                        <label for="nameAllocation" class="form-label">Nome :: </label>
                         <input class="form-control" id="nameAllocation" disabled>
                     </div>
                 </div>
@@ -388,8 +388,8 @@ echo $this->section('content'); ?>
                     <div class="form-group col-12">
                         <label for="exampleColorInput" class="form-label">Disciplinas :: </label>
 
-                        <div id ="disc">
-                        </div>                    
+                        <div id="disc">
+                        </div>
                         <span class="error invalid-feedback" id="fieldlertErrorDisciplines"></span>
                     </div>
                     <div class="form-group">
@@ -438,26 +438,64 @@ echo $this->section('content'); ?>
                 </button>
             </div>
             <div class="modal-body">
-            <table id="tb_allocation" class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Dia :: </th>
-                    <th scope="col">Disciplina :: </th>
-                    <th scope="col">Posição ::</th>
-                    <th scope="col">Situação ::</th>
-                    <th scope="col">Turno ::</th>
-                    <th scope="col">Ação :: </th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                <table id="tb_allocation" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Dia :: </th>
+                            <th scope="col">Disciplina :: </th>
+                            <th scope="col">Posição ::</th>
+                            <th scope="col">Situação ::</th>
+                            <th scope="col">Turno ::</th>
+                            <th scope="col">Ação :: </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-              
-               
 
 
+
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal deleteTeacherDiscipline -->
+<div class="modal fade" id="delAllocationTeacherModal" tabindex="-1" role="dialog" aria-labelledby="delAllocationTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="delAllocationTeacherModalLabel">Excluir Alocação Professor :: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <?php echo form_open('allocation/del', ['id' => 'delAllocationTeacherForm']);
+                //echo form_hidden('id', $teacDisc->id);
+                //echo form_hidden('_method', "put");
+                //echo form_hidden('id_teacher', $teacDisc->id_teacher);
+                echo csrf_field()
+                ?>
+
+                <div class="form-group col-6">
+                    <div id="dataAllocation">
+
+                    </div>
+                    <input type="hidden" id="idAllocationDel" name="id">
+                   
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <?= generationButtonSave('Confirmar'); ?>
+                <?= generateButtonCloseModal(); ?>
+            </div>
+            </form>
         </div>
     </div>
 </div>

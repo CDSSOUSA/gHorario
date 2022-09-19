@@ -133,11 +133,27 @@ class Allocation extends BaseController
         //return $this->response->setJSON($response);
     }
 
-    public function show(int $id)
+    public function showTeacher(int $id)
     {
         try {
 
             $data = $this->allocationModel->getAllocationTeacher($id);            
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
+    }
+    public function show(int $id)
+    {
+        try {
+
+            $data = $this->allocationModel->getTeacherByIdAllocation($id);            
 
             return $this->response->setJSON($data);
         } catch (Exception $e) {

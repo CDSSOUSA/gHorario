@@ -56,8 +56,8 @@ class AllocationModel extends Model
             ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
             ->whereNotIn('pd.id_discipline', $disciplines)
             ->get()->getResultArray();
-           
-            return $result;
+
+        return $result;
 
 
 
@@ -84,11 +84,11 @@ class AllocationModel extends Model
             ->where('tb_allocation.status', 'A')
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
-            ->where('tb_allocation.situation', 'L')     
-            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))      
+            ->where('tb_allocation.situation', 'L')
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
             ->get()->getResultArray();
-           
-            return $result;
+
+        return $result;
 
 
 
@@ -106,34 +106,35 @@ class AllocationModel extends Model
 
     public function getAllAlocacaoProfessor(int $idTeacher)
     {
-        return $this->select('tb_allocation.id, tb_allocation.dayWeek, tb_allocation.position, tb_allocation.situation, d.abbreviation, pd.color, tb_allocation.shift')
-            ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.tb_allocation.position, ' . $this->table . '.tb_allocation.situation, d.abbreviation, pd.color, ' . $this->table . '.tb_allocation.shift')
+            ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('pd.id_teacher', $idTeacher)
-            ->where('tb_allocation.status', 'A')
+            ->where($this->table . '.status', 'A')
             ->where('pd.id_year_school', session('session_idYearSchool'))
-            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
-            ->orderBy('tb_allocation.situation DESC, tb_allocation.shift ASC, tb_allocation.dayWeek ASC, tb_allocation.position ASC')           
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }
     public function getAllocationTeacher(int $idTeacher)
     {
-        return $this->select('tb_allocation.id, tb_allocation.dayWeek, tb_allocation.position, tb_allocation.situation, d.abbreviation, pd.color, tb_allocation.shift')
-            ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, ' . $this->table . '.shift')
+            ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('pd.id_teacher', $idTeacher)
-            ->where('tb_allocation.status', 'A')
+            ->where($this->table . '.status', 'A')
             ->where('pd.id_year_school', session('session_idYearSchool'))
-            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
-            ->orderBy('tb_allocation.situation DESC, tb_allocation.shift ASC, tb_allocation.dayWeek ASC, tb_allocation.position ASC')           
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }
 
 
     public function getTeacherByIdAllocation(int $idAlocacao)
     {
-        return $this->select('pd.id_teacher, tb_allocation.id_teacher_discipline')
+        return $this->select('pd.id_teacher, tb_allocation.id_teacher_discipline, pd.color, d.abbreviation,tb_allocation.dayWeek, tb_allocation.position')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('tb_allocation.id', $idAlocacao)
             ->get()->getResult();
     }
@@ -145,12 +146,12 @@ class AllocationModel extends Model
         $dayWeek = $data['dayWeek'];
         $position = $data['position'];
 
-        $cont = 0;       
+        $cont = 0;
 
-        foreach($shift as $sh){           
+        foreach ($shift as $sh) {
             foreach ($allocation as $item) {
                 foreach ($dayWeek as $day) {
-                    foreach ($position as $posit) {                    
+                    foreach ($position as $posit) {
                         $dataAllocation['id_teacher_discipline'] = $item;
                         $dataAllocation['dayWeek'] = $day;
                         $dataAllocation['position'] = $posit;
@@ -158,11 +159,11 @@ class AllocationModel extends Model
                         $dataAllocation['status'] = 'A';
                         $dataAllocation['shift'] = $sh;
                         $dataAllocation['id_year_school'] = session('session_idYearSchool');;
-                        if($this->validateAllocation($item,$day,$posit, $sh) <= 0 ){
+                        if ($this->validateAllocation($item, $day, $posit, $sh) <= 0) {
                             $save = $this->save($dataAllocation);
                             if ($save) {
-                               $cont++;
-                           }                       
+                                $cont++;
+                            }
                         }
                     }
                 }
@@ -172,37 +173,36 @@ class AllocationModel extends Model
         if ($cont >= 1) {
             return true;
         }
-       
+
         return false;
     }
 
     public function getCountByIdTeacDiscOcupation(int $id_teacher_discipline)
     {
         return $this->where('id_teacher_discipline', $id_teacher_discipline)
-                    ->where('situation','O')
-                    ->where('status', 'A')
-                    ->where('id_year_school', session('session_idYearSchool'))
-                    ->countAllResults();
+            ->where('situation', 'O')
+            ->where('status', 'A')
+            ->where('id_year_school', session('session_idYearSchool'))
+            ->countAllResults();
     }
     public function getCountByIdTeacDisc(int $id_teacher_discipline)
     {
         return $this->where('id_teacher_discipline', $id_teacher_discipline)
-                    //->where('situation','O')
-                    ->where('status', 'A')
-                    ->where('id_year_school', session('session_idYearSchool'))
-                    ->countAllResults();
+            //->where('situation','O')
+            ->where('status', 'A')
+            ->where('id_year_school', session('session_idYearSchool'))
+            ->countAllResults();
     }
 
-    private function validateAllocation(int $idTeacherDiscipline, int $dayWeek, int $position, string $shift) : int
+    private function validateAllocation(int $idTeacherDiscipline, int $dayWeek, int $position, string $shift): int
     {
-       
-            return $this->where('id_teacher_discipline', $idTeacherDiscipline)
+
+        return $this->where('id_teacher_discipline', $idTeacherDiscipline)
             ->where('dayWeek', $dayWeek)
             ->where('position', $position)
             ->where('shift', $shift)
             ->where('status', 'A')
             ->where('id_year_school', session('session_idYearSchool'))
             ->countAllResults();
-            
     }
 }

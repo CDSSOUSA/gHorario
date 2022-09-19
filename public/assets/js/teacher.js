@@ -3,10 +3,10 @@ var divLoader = document.querySelector('#loader');
 var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
 var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
-var idTeacheDiscipline = 11;
+//var idTeacheDiscipline = 11;
 
-const btnListAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${idTeacheDiscipline})">
-<i class="fa fa-list" aria-hidden="true"></i> Alocação</a>`
+// const btnListAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${idTeacheDiscipline})">
+// <i class="fa fa-list" aria-hidden="true"></i> Alocação</a>`
 
 
 listTeacDisc();
@@ -43,7 +43,8 @@ function loadDataTeacher(data) {
         let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
         ${rowAllocation}
-        ${btnListAllocation}
+        <a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${element.id})">
+        <i class="fa fa-list" aria-hidden="true"></i> Alocação</a>
         `;
 
         // if (element.status === "A") {
@@ -492,7 +493,7 @@ const listAllocationTeacherDiscipline = async (id) => {
 
     listAllocationModal.show();
 
-    await axios.get(`${URL_BASE}/allocation/show/${id}`)
+    await axios.get(`${URL_BASE}/allocation/showTeacher/${id}`)
     .then(response => {
         const data = response.data;
 
@@ -516,22 +517,19 @@ const loadDataAllocation = (data)=> {
     let row = "";
     let rowAllocation = '';
 
-    data.forEach((element, indice) => {
-        // //console.log(data)
+    data.forEach((el, indice) => {
+        console.log(data)
 
-        if(element.disciplines){            
-            rowAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
-            <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`
+        if(el.situation == 'L'){            
+            rowAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="delAllocationTeacher(${el.id},${el.dayWeek})">
+            <i class="fa fa-trash" aria-hidden="true"></i></a>`
         } else {
-            rowAllocation = '';
+            rowAllocation = `<a href="#" class="btn btn-dark btn-sm disabled">
+            <i class="fa fa-trash" aria-hidden="true"></i></a>`;
 
         }
 
-        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
-        <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
-        ${rowAllocation}
-        ${btnListAllocation}
-        `;
+        let ticket = rowAllocation;
 
         // // if (element.status === "A") {
         // //     console.log(element.status)
@@ -540,11 +538,11 @@ const loadDataAllocation = (data)=> {
         row +=
             `<tr>
                 <td class="align-middle">${indice + 1}</td>
-                <td class="align-middle">${convertDayWeek(element.dayWeek)}</td>   
-                <td class="align-middle"><div class="text-white ticket-small" style="background-color:${element.color}">${element.abbreviation}</div></td>                     
-                <td class="align-middle">${element.position} ª</td>                     
-                <td class="align-middle ocupation">${getOcupationSchedule(element.id)}</td>                     
-                <td class="align-middle">${convertShift(element.shift)}</td>                     
+                <td class="align-middle">${convertDayWeek(el.dayWeek)}</td>   
+                <td class="align-middle"><div class="text-white ticket-small" style="background-color:${el.color}">${el.abbreviation}</div></td>                     
+                <td class="align-middle">${el.position} ª AULA </td>                     
+                <td class="align-middle">${convertSituation(el.situation)} <br><p class="badge badge-secondary" id="ocupation${el.id}">${getOcupationSchedule(el.id,el.situation)}</p></td>                     
+                <td class="align-middle">${convertShift(el.shift)}</td>                     
                 <td class="align-middle">${ticket}</td>        
             </tr>`;
 
@@ -552,33 +550,110 @@ const loadDataAllocation = (data)=> {
     return row;
 }
 
-async function getOcupationSchedule(id,situation) {   
+async function getOcupationSchedule(idAllocation,situation) {   
 
     let a = '';
-    console.log(situation);
+    console.log(idAllocation);
 
     //if(situation === 'O') {
-        await axios.get(`${URL_BASE}/horario/api/getOcupationSchedule/${id}`)
-        .then(response => {
+        await axios.get(`${URL_BASE}/horario/api/getOcupationSchedule/${idAllocation}`)
+        .then(
+            response => {
             const data = response.data;
     
-            console.log(data);
-            if (data) {
+            if (data != null) {
+                console.log(data.description);
 
                 //return data.id_series
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
                 //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`               
-                document.getElementsByClassName("ocupation").innerHTML = `<p> ${data.id_series}</p>`
+                document.querySelector(`#ocupation${idAllocation}`).innerHTML =  `Série :: ${data.description}º ${data.classification}`
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
-            } else{
-                document.getElementsByClassName("ocupation").innerHTML = `<p> COO</p>`
+            } else {
+                document.querySelector(`#ocupation${idAllocation}`).innerHTML=  ''
             }
-        })
+        }
+        )
         .catch(error => console.log(error))
     //} else {
    // }
     //return a;
 }
+const delAllocationTeacherModel = new bootstrap.Modal(document.getElementById('delAllocationTeacherModal'));
 
+async function delAllocationTeacher(idAllocationDel, dayWeekAllocationDel) {
+    delAllocationTeacherForm.reset();
+    document.getElementById('idAllocationDel').value = idAllocationDel
+    
+    await axios.get(`${URL_BASE}/allocation/show/${idAllocationDel}`)
+    .then(response => {
+        const data = response.data;
+        
+        console.log(data);
+        if (data) {
+            //editModal.show();
+            //document.getElementById('idEdit').value = data[0].id
+            //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
+            document.getElementById('dataAllocation').innerHTML = `
+                        <div class="text-white ticket-small" style="background-color:${data[0].color}">
+                            <div class="rotulo">
+                                <span class="abbreviation font-weight-bold">${convertDayWeek(data[0].dayWeek)} - ${data[0].position}ª Aula</span>
+                                <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i></span>
+                                <br>
+                                </div>
+                                <p>${data[0].abbreviation}</p>
+                        </div>`
+            //document.getElementById('id_discipline').value = data[0].description
+            //document.getElementById('numeroAulas').value = data[0].amount
+            //document.getElementById('corDestaque').value = data[0].color
+        }
+    })
+    .catch(error => console.log(error))    
+    
+    delAllocationTeacherModel.show() 
+    
+}
+
+const delAllocationTeacherForm = document.getElementById('delAllocationTeacherForm');
+if (delAllocationTeacherForm) {
+    
+    delAllocationTeacherForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dataForm = new FormData(delAllocationTeacherForm);
+
+        console.log(dataForm.get('id'));
+
+        await axios.post(`${URL_BASE}/allocation/del`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (response.data.error) {
+                    document.getElementById('msgAlertError').innerHTML = response.data.msg
+                    document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
+                    document.getElementById("msgAlertSuccess").innerHTML = "";
+                } else {
+                    // console.log('deu certo')
+                    // document.getElementById('msgAlertError').innerHTML = '';
+                    // document.getElementById('fieldlertError').textContent = '';
+                    // //editModal.hide();
+                    // document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+                    delAllocationTeacherModel.hide();
+                    loadToast(titleSuccess, bodySuccess, success);
+                    //loada();
+                    //location.reload();
+                    listAllocationTeacherDiscipline(dataForm.get('id'))
+
+                }
+            })
+            .catch(error => console.log(error))
+
+    });
+
+
+
+}
