@@ -165,4 +165,36 @@ class Allocation extends BaseController
         }
 
     }
+
+    public function allocationDel()
+    {
+        $idAlocacao = $this->request->getPost('id');
+
+        
+        try {
+            $delete = $this->allocationModel->where('id', $idAlocacao)->delete();
+
+            if ($delete) {
+                $response = [
+                    'status' => 'OK',
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    //'data' => $this->list()
+                ];
+                return $this->response->setJSON($idAlocacao);
+            } 
+                 
+
+            
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+       
+
+    }
 }

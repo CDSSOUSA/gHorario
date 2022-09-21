@@ -438,7 +438,8 @@ echo $this->section('content'); ?>
                 </button>
             </div>
             <div class="modal-body">
-                <table id="tb_allocation" class="table table-striped">
+            <div class="card-body table-responsive p-0" style="height: 50vh;">
+                <table id="tb_allocation" class="table table-head-fixed text-nowrap table-striped" style="height:400px ;">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -453,6 +454,7 @@ echo $this->section('content'); ?>
                     <tbody>
                     </tbody>
                 </table>
+            </div>
             </div>
 
 
@@ -485,7 +487,8 @@ echo $this->section('content'); ?>
                     <div id="dataAllocation">
 
                     </div>
-                    <input type="hidden" id="idAllocationDel" name="id">
+                    <input type="text" id="idAllocationDel" name="id">
+                    <input type="text" id="id_teacher" name="id_teacher">
                    
                 </div>
 

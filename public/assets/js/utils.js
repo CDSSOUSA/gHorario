@@ -80,7 +80,7 @@ const loadToast = (title, body, bg) => {
     $(document).Toasts('create', {
         title: title,
         icon: 'fas fa-exclamation-triangle',
-        class: `bg-${bg} m-1 width-500 toast`,
+        class: `bg-${bg} m-1 width-500 toast z-index-1000`,
         autohide: true,
         delay: 1000,
         body: body,

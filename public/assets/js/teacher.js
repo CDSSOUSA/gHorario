@@ -34,7 +34,9 @@ function loadDataTeacher(data) {
 
         if(element.disciplines){            
             rowAllocation = `<a href="#" class="btn btn-dark btn-sm" onclick="addAllocationTeacher(${element.id})">
-            <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>`
+                                <i class="fa fa-plus" aria-hidden="true"></i> Alocação</a>
+                            <a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${element.id})">
+                                <i class="fa fa-list" aria-hidden="true"></i> Alocação</a>`
         } else {
             rowAllocation = '';
 
@@ -43,8 +45,7 @@ function loadDataTeacher(data) {
         let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Disciplina</a>
         ${rowAllocation}
-        <a href="#" class="btn btn-dark btn-sm" onclick="listAllocationTeacherDiscipline(${element.id})">
-        <i class="fa fa-list" aria-hidden="true"></i> Alocação</a>
+        
         `;
 
         // if (element.status === "A") {
@@ -605,7 +606,7 @@ async function delAllocationTeacher(idAllocationDel, dayWeekAllocationDel) {
                                 </div>
                                 <p>${data[0].abbreviation}</p>
                         </div>`
-            //document.getElementById('id_discipline').value = data[0].description
+            document.getElementById('id_teacher').value = data[0].id_teacher
             //document.getElementById('numeroAulas').value = data[0].amount
             //document.getElementById('corDestaque').value = data[0].color
         }
@@ -624,7 +625,9 @@ if (delAllocationTeacherForm) {
 
         const dataForm = new FormData(delAllocationTeacherForm);
 
+        console.log(dataForm.get('id_teacher'));
         console.log(dataForm.get('id'));
+        const id = dataForm.get('id');
 
         await axios.post(`${URL_BASE}/allocation/del`, dataForm, {
             headers: {
@@ -643,11 +646,12 @@ if (delAllocationTeacherForm) {
                     // //editModal.hide();
                     // document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     delAllocationTeacherModel.hide();
-                    loadToast(titleSuccess, bodySuccess, success);
+                    listAllocationModal.hide();
                     //loada();
                     //location.reload();
-                    listAllocationTeacherDiscipline(dataForm.get('id'))
-
+                    //listAllocationTeacherDiscipline(dataForm.get('id_teacher'))
+                    
+                    loadToast(titleSuccess, bodySuccess, success);
                 }
             })
             .catch(error => console.log(error))
