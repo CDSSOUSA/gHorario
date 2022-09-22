@@ -136,8 +136,7 @@ class Professor extends BaseController
         $data = [
             'title' => '<i class="fa fa-user"></i> Listar Professores :: ',
             'breadcrumb' => [
-                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
-                '<li class="breadcrumb-item">' . anchor('/professor', 'Cadastrar') . '</li>',
+                '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',                
                 '<li class="breadcrumb-item active"> Listar </li>'
             ],
             'msgs' => $msgs,
@@ -149,6 +148,6 @@ class Professor extends BaseController
             //'erro' => $this->erros
         ];
         //session()->set('dado',$data);
-        return view('professor/list', $data);
+        return view('teacher/list', $data);
     }
 }

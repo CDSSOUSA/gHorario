@@ -69,6 +69,8 @@ $routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($
     $routes->get('listDisciplinesByTeacher/(:any)','Teacher::listDisciplinesByTeacher/$1');
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Teacher::create'); 
+    $routes->post('del', 'Teacher::del'); 
+    
 });
 /* ROUTES PROFESSOR DISCIPLINA */
 $routes->group('/teacDisc',['namespace'=>'App\Controllers\TeacDisc'],function ($routes){

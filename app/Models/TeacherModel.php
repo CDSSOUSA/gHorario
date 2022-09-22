@@ -50,20 +50,21 @@ class TeacherModel extends Model
 
         $this->save($professor);
         $lastId = $this->getInsertID();
-        foreach ($data['disciplines'] as $item) {
+        //foreach ($data['disciplines'] as $item) {
             $teacDisc = new TeacDiscModel();
             $teacherDiscipline['id_teacher'] = $lastId;
-            $teacherDiscipline['id_discipline'] = $item;
+            //$teacherDiscipline['id_discipline'] = $item;
+            $teacherDiscipline['id_discipline'] = $data['disciplines'];
             $teacherDiscipline['amount'] = $data['amount'];
             $teacherDiscipline['status'] = $data['status'];
             $teacherDiscipline['id_year_school'] = $data['id_year_school'];
             $teacherDiscipline['color'] = $data['color'] == '#000000' ? generationColor() : $data['color'] ;
             $teacDisc->save($teacherDiscipline);
-        }
-        if(count($data['disciplines']) > 1){
+        //}
+        //if(count($data['disciplines']) > 1){
             
-            return false;
-        }
+            //return false;
+        //}
         return true;
         //dd($result);
     }

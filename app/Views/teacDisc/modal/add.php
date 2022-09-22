@@ -1,0 +1,78 @@
+<!-- Model add teacher disciplina-->
+<div class="modal fade" id="addTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherDisciplineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark font-weight-bold">
+                <h5 class="modal-title" id="addTeacherDisciplineModal">Cadastrar Professor/Disciplina :: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <span id="msgAlertErrorTeacDisc"></span>
+                <?php echo form_open('teacDisc/create', ['id' => 'addTeacherDisciplineForm']);
+                //echo form_hidden('id', $teacDisc->id);
+                //echo form_hidden('_method', "put");
+                //echo form_hidden('id_teacher', $teacDisc->id_teacher);
+                echo form_input([
+                    'id' => 'idTeac',
+                    'name' => 'id_teacher',
+                    'type' => 'text'
+                ]);
+                echo form_input([
+                    'name' => 'status',
+                    'type' => 'text',
+                    'value' => 'A'
+                ]);
+                echo csrf_field()
+                ?>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="nameDiscipline" class="form-label">Nome :: </label>
+                        <input class="form-control" id="nameDiscipline" disabled>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label for="exampleColorInput" class="form-label">Disciplinas :: </label><br>
+
+
+                    <?php foreach ($disciplinas as $item) : ?>
+                        <div class="form-check-inline radio-toolbar text-white" style="background-color:#2e5b8e; border-radius: 5px; margin: 5px;">
+                            <input class="form-check-inline" name="disciplinesTeacher" value="<?= $item->id; ?>" type="radio" id="flexSwitchCheck<?= $item->id; ?>">
+                            <label class="form-check-label" for="flexSwitchCheck<?= $item->id; ?>">
+
+                                <div class="rotulo"><span class="abbreviation font-weight-bold"><?= $item->abbreviation; ?></span>
+                                    <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+
+                            </label>
+                        </div>
+
+                    <?php endforeach ?>
+
+                    <span class="error invalid-feedback" id="fieldlertErrordisciplinesTechDisc"></span>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label for="lastName" class="form-label">Quantidade de Aulas ::</label>
+                        <input type="number" min="1" max="45" name="amount" class="form-control" id="amount" placeholder="Quantidade de aulas" value="<?= set_value('amount') ?>">
+                        <span class="error invalid-feedback" id="fieldlertErroramountTechDisc"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="exampleColorInput" class="form-label">Cor Destaque :: </label>
+                        <input type="color" name="color" class="form-control form-control-color" id="color" value="nCorDestaque" title="Escolha uma cor">
+                        <span class="error invalid-feedback" id="fieldlertErrorcolorTechDisc"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer card-footer">
+                <?= generationButtonSave(); ?>
+                <?= generateButtonCloseModal(); ?>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

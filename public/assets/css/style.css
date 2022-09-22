@@ -177,15 +177,17 @@
 
 .radio-toolbar input[type="radio"]:checked+label{
   /* background-color: #bfb; */
-  border-color: #4c4;
-  border: 2px dashed rgb(20, 20, 20);
+  /* border-color: #4c4; */
+  border: 2px dashed rgb(255, 255, 255);
+  margin: 2px;
   width: 100%;
 
 }
 .radio-toolbar input[type="checkbox"]:checked+label {
   /* background-color: #bfb; */
-  border-color: #4c4;
-  border: 2px dashed rgb(20, 20, 20);
+  /* border-color: #4c4; */
+  border: 2px dashed rgb(255, 255, 255);
+  margin: 2px;
   width: 100%;
 
 }
@@ -261,6 +263,12 @@ th, td { white-space: nowrap; }
 div.dataTables_wrapper {
     width: 100%;
     margin: 0 auto;
+}
+.discipline-ticket div:hover {
+  padding: 10px;
+  cursor: pointer;
+  transform: translateY(-4px);
+  transform: scale(0.98);
 }
 
 .w-35 {

@@ -3,6 +3,7 @@
 namespace App\Controllers\Professor;
 
 use App\Controllers\BaseController;
+use App\Models\AllocationModel;
 use App\Models\DisciplineModel;
 use App\Models\TeacherModel;
 use Exception;
@@ -17,11 +18,14 @@ class Teacher extends BaseController
     private $teacherModel;
     private $teacDiscModel;
 
+    private $allocationModel;
+
     public function __construct()
     {
         $this->teacherModel = new TeacherModel();
         $this->disciplineModel = new DisciplineModel();
         $this->teacDiscModel = new TeacDiscModel();
+        $this->allocationModel = new AllocationModel();
     }
     public function create()
     {
@@ -48,7 +52,7 @@ class Teacher extends BaseController
                     'is_unique' => 'Cor utilizada por outro (a) professor (a)!',
                 ],
                 'disciplines' => [
-                    'required' => 'Preenchimento obrigatório!',
+                    'required' => 'Escolha uma opção!',
                 ],
             ]
         );
@@ -116,6 +120,11 @@ class Teacher extends BaseController
                 foreach($dat as $ab){
                     
                     $d->disciplines = $dat;
+
+                    $al = $this->allocationModel->getCountByIdTeacDisc($ab->id);
+                    if($al >= 1){
+                        $d->allocation = $al;
+                    }
                 }
             }        
 
@@ -153,4 +162,32 @@ class Teacher extends BaseController
         }
 
     }
+
+    public function del()
+    {
+        $id = $this->request->getPost('id');
+
+       
+        $delete = $this->teacherModel->where('id', $id)
+            ->delete();
+
+        if ($delete) {
+            $response = [
+                'status' => 'OK',
+                'error' => false,
+                'code' => 200,
+                'msg' => '<p>Operação realizada com sucesso!</p>'
+            ];
+            return $this->response->setJSON($response);
+        }
+        
+        $response = [
+            'status' => 'ERROR',
+            'error' => true,
+            'code' => 400,
+            'msg' => 'Erro, não foi possível realizar a operação!'
+        ];
+        return $this->response->setJSON($response);
+    }
 }
+

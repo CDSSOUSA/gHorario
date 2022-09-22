@@ -28,11 +28,10 @@ echo $this->section('content'); ?>
 <div class="content">
     <div class="container">
         <div class="row">
-
             <div class="col-md-12">
                 <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title font-weight-bold"><i class="fa fa-calendar-check"></i> Listar Séries :: </h3>
+                        <h3 class="card-title font-weight-bold"><i class="fa fa-users"></i> Listar séries :: </h3>
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <?php
@@ -67,7 +66,7 @@ echo $this->section('content'); ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark font-weight-bold">
-                <h5 class="modal-title" id="addSeriesModalLabel">Cadastrar Série :: </h5>
+                <h5 class="modal-title" id="addSeriesModalLabel"><i class="fa fa-users"></i> Cadastrar Série :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -85,6 +84,7 @@ echo $this->section('content'); ?>
                             <label for="description" class="form-label">Descrição :: </label>
                             <input type="text" name="description" class="form-control" id="description" placeholder=" Ex.: 6, 7, 8 ..." value="<?= set_value('description') ?>">
                             <span class="error invalid-feedback" id="fieldlertErrordescription"></span>
+                            <span class="error invalid-feedback" id="fieldlertDuplicative"></span>
 
                         </div>
                         <div class="form-group col-6">
@@ -117,13 +117,13 @@ echo $this->section('content'); ?>
                     </div>
 
                 </div>
-                <div class="modal-footer">
-                    <?= generationButtonSave(); ?>
-                    <?= generateButtonCloseModal(); ?>
-                </div>
-                </form>
-
+                
             </div>
+            <div class="modal-footer card-footer">
+                <?= generationButtonSave(); ?>
+                <?= generateButtonCloseModal(); ?>
+            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -131,7 +131,7 @@ echo $this->section('content'); ?>
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark font-weight-bold">
-                <h5 class="modal-title" id="activeSeriesModalLabel">Ativar Serie :: </h5>
+                <h5 class="modal-title" id="activeSeriesModalLabel"><i class="fa fa-users"></i> Ativar/Desativar Série :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -143,7 +143,7 @@ echo $this->section('content'); ?>
                 ?>
 
                 <div class="card-body">
-                    <div class="row">
+                <div class="row">
                         <div class="form-group col-6">
                             <span id="checkAll"></span>
                             <label for="description" class="form-label">Série ::</label>
@@ -151,18 +151,18 @@ echo $this->section('content'); ?>
                             <input id="status" name="status" type="text">
                             <input id="descriptionFake" type="text" class="form-control" disabled>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="card-footer">
-                        <?= generationButtonSave(); ?>
-                        <?= generateButtonCloseModal(); ?>
+                    </div>             
 
-                    </div>
-                    </form>
                 </div>
-
+                
             </div>
+            <div class="modal-footer card-footer">
+                <?= generationButtonSave(); ?>
+                <?= generateButtonCloseModal(); ?>
+            </div>
+            </form>
         </div>
     </div>
 </div>
+
 <?= $this->endSection(); ?>

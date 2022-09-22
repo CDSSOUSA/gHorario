@@ -2,7 +2,7 @@ DROP DATABASE bd_sisHorario;
 CREATE DATABASE bd_sisHorario;
 USE bd_sisHorario;
 
-CREATE TABLE IF NOT EXISTS tb_year_school(
+CREATE TABLE IF NOT EXISTS tb_year_school (
     id SMALLINT AUTO_INCREMENT NOT NULL,
     description CHAR(4),
     status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
@@ -68,17 +68,11 @@ CREATE TABLE tb_teacher_discipline(
     color CHAR(7),
     status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
     CONSTRAINT id_pk PRIMARY KEY (id),
-    CONSTRAINT id_teacher_fk FOREIGN KEY (id_teacher) REFERENCES tb_teacher (id),
+    CONSTRAINT id_teacher_fk FOREIGN KEY (id_teacher) REFERENCES tb_teacher (id) ON DELETE CASCADE,
     CONSTRAINT id_discipline_fk FOREIGN KEY (id_discipline) REFERENCES tb_discipline (id),
     CONSTRAINT id_year_teacher_discipline_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id),
     CONSTRAINT id_unique_teac_disc UNIQUE (id_teacher,id_discipline,id_year_school,status)
 ) ENGINE = INNODB;
-INSERT INTO tb_teacher_discipline (id_teacher, id_discipline, amount, id_year_school, color, status)
-VALUES (1, 1, 2, 1,'#3C0BF3','A'),
-       (1, 2, 2, 1,'#908734','A'),
-       (2, 2, 3, 1,'#A00E2A','A'),
-       (3, 5, 5, 1,'#0481D7','A'),
-       (4, 7, 3, 1,'#CC4567','A');
 
 CREATE TABLE tb_allocation(
     id INT AUTO_INCREMENT NOT NULL,
@@ -90,19 +84,9 @@ CREATE TABLE tb_allocation(
     shift CHAR(1) COMMENT 'M-MANHA T-TARDE',
     id_year_school SMALLINT,
     CONSTRAINT id_pk PRIMARY KEY (id),
-    CONSTRAINT id_teacher_discipline_fk FOREIGN KEY (id_teacher_discipline) REFERENCES tb_teacher_discipline(id),
+    CONSTRAINT id_teacher_discipline_fk FOREIGN KEY (id_teacher_discipline) REFERENCES tb_teacher_discipline(id) ON DELETE CASCADE,
     CONSTRAINT id_year_allocation_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
 ) ENGINE = INNODB;
-
-INSERT INTO tb_allocation (id_teacher_discipline, dayWeek, position, situation, status, id_year_school ) VALUES 
-(1,'2','1','O','A',1),
-(2,'2','2','O','A',1),
-(3,'3','1','L','A',1),
-(4,'2','2','L','A',1),
-(5,'2','4','L','A',1),
-(2,'2','6','L','A',1),
-(5,'2','3','L','A',1),
-(4,'2','3','L','A',1);
 
 CREATE TABLE tb_series(
   id SMALLINT AUTO_INCREMENT NOT NULL,
@@ -112,7 +96,8 @@ CREATE TABLE tb_series(
   id_year_school SMALLINT,
   status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
   CONSTRAINT id_pk PRIMARY KEY (id),
-  CONSTRAINT id_year_series_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
+  CONSTRAINT id_year_series_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id),
+  CONSTRAINT serie_uk UNIQUE(description,classification,shift,id_year_school,status)
 )ENGINE = INNODB;
 
 INSERT INTO tb_series(description,classification,shift,id_year_school,status) VALUES
@@ -141,13 +126,7 @@ CREATE TABLE tb_school_schedule(
     id_year_school SMALLINT,
     status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
     CONSTRAINT id_pk PRIMARY KEY (id),
-    CONSTRAINT id_allocation_fk FOREIGN KEY (id_allocation) REFERENCES tb_allocation(id),
+    CONSTRAINT id_allocation_fk FOREIGN KEY (id_allocation) REFERENCES tb_allocation(id) ON DELETE CASCADE,
     CONSTRAINT id_series_fk FOREIGN KEY (id_series) REFERENCES tb_series(id),
     CONSTRAINT id_year_schedulefk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
 )ENGINE = INNODB;
-
-INSERT INTO tb_school_schedule (id_allocation,dayWeek,position,id_series,status) VALUES
-(1,'2','1',1,'A'),
-(2,'2','2',1,'A');
-
-

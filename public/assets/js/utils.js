@@ -2,7 +2,7 @@
 const checkAll = document.getElementById('checkAll');
 
 checkAll.addEventListener('click', () => {   
-    $(":checkbox").each(
+    $(".checkbox").each(
         function() {
             if ($(this).bootstrapSwitch('state')) {
                 $(this).bootstrapSwitch('state', false);
@@ -39,6 +39,12 @@ const convertStatus = (status) => {
     let _shift = 'INATIVO'
     if (status === 'A')
         _shift = 'ATIVO'
+    return _shift;
+}
+const convertStatusRotulo = (status) => {
+    let _shift = 'Ativar'
+    if (status === 'A')
+        _shift = 'Desativar'
     return _shift;
 }
 

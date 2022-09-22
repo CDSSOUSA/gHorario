@@ -62,6 +62,9 @@ class TeacDisc extends BaseController
     {
 
         $data = $this->teacDiscModel->getTeacherDisciplineById($id);
+
+        $amountAllocation = $this->allocation->getCountByIdTeacDisc($id);
+        $data[0]->amount_allocation = $amountAllocation;
         //dd($data);
         return $this->response->setJSON($data);
     }
@@ -176,7 +179,7 @@ class TeacDisc extends BaseController
                     'is_unique' => 'Cor utilizada por outro (a) professor (a)!',
                 ],
                 'disciplinesTeacher' => [
-                    'required' => 'Preenchimento obrigatório!',                    
+                    'required' => 'Escolha uma opção!',                    
                 ],
             ]
         );
@@ -246,6 +249,7 @@ class TeacDisc extends BaseController
 
     public function delete(int $id)
     {
+        // testar se a exite alocação para esta teacDisc
 
         $data = $this->teacDiscModel->getTeacherDisciplineById($id);
         //dd($data);
@@ -282,6 +286,7 @@ class TeacDisc extends BaseController
     {
         $id = $this->request->getPost('id');
 
+       
         $delete = $this->teacDiscModel->where('id', $id)
             ->delete();
 

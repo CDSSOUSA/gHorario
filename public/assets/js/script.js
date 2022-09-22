@@ -147,60 +147,60 @@ var success = 'success';
 //     })
 // }
 
-const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
-async function delTeacherDiscipline(id) {
-    await axios.get(URL_BASE + '/teacDisc/delete/' + id)
-        .then(response => {
-            const data = response.data;
-            console.log(data);
-            if (data) {
+// const deleteModal = new bootstrap.Modal(document.getElementById('deleteTeacherDisciplineModal'));
+// async function delTeacherDiscipline(id) {
+//     await axios.get(URL_BASE + '/teacDisc/delete/' + id)
+//         .then(response => {
+//             const data = response.data;
+//             console.log(data);
+//             if (data) {
 
-                deleteModal.show();
-                document.getElementById('idDelete').value = data[0].id
+//                 deleteModal.show();
+//                 document.getElementById('idDelete').value = data[0].id
 
-            }
-        })
-        .catch(error => console.log(error))
-    //deleteModal.show()
-}
+//             }
+//         })
+//         .catch(error => console.log(error))
+//     //deleteModal.show()
+// }
 
 
-const deleteForm = document.getElementById('deleteTeacherDisciplineForm');
-console.log(deleteForm);
+// const deleteForm = document.getElementById('deleteTeacherDisciplineForm');
+// console.log(deleteForm);
 
-if (deleteForm) {
+// if (deleteForm) {
 
-    deleteForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const dataForm = new FormData(deleteForm);
+//     deleteForm.addEventListener("submit", async (e) => {
+//         e.preventDefault();
+//         const dataForm = new FormData(deleteForm);
 
-        await axios.post(`${URL_BASE}/teacDisc/del`, dataForm, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(response => {
+//         await axios.post(`${URL_BASE}/teacDisc/del`, dataForm, {
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }
+//         })
+//             .then(response => {
 
-                if (response.data.error) {
-                    document.getElementById('msgAlertError').innerHTML = response.data.msg
-                    document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
-                    document.getElementById("msgAlertSuccess").innerHTML = "";
-                } else {
+//                 if (response.data.error) {
+//                     document.getElementById('msgAlertError').innerHTML = response.data.msg
+//                     document.getElementById('fieldlertError').textContent = 'Preenchimento obrigatório!'
+//                     document.getElementById("msgAlertSuccess").innerHTML = "";
+//                 } else {
 
-                    document.getElementById('msgAlertError').innerHTML = '';
-                    document.getElementById('fieldlertError').textContent = '';
-                    deleteModal.hide();
-                    //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
-                    //location.reload();
-                    loadToast(titleSuccess, bodySuccess, success);                        
-                    loada(); 
-                    location.reload();
+//                     document.getElementById('msgAlertError').innerHTML = '';
+//                     document.getElementById('fieldlertError').textContent = '';
+//                     deleteModal.hide();
+//                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
+//                     //location.reload();
+//                     loadToast(titleSuccess, bodySuccess, success);                        
+//                     loada(); 
+//                     location.reload();
 
-                }
-            })
-            .catch(error => console.log(error))
-    })
-}
+//                 }
+//             })
+//             .catch(error => console.log(error))
+//     })
+// }
 
 
 // function loadToast(title, body, bg) {

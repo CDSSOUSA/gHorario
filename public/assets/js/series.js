@@ -52,6 +52,7 @@ async function addSeries() {
     document.getElementById('fieldlertErrordescription').innerHTML = ''
     document.getElementById('fieldlertErrorclassification').innerHTML = ''
     document.getElementById('fieldlertErrorshift').innerHTML = ''
+    document.getElementById('fieldlertDuplicative').innerHTML = ''
    
     //document.getElementById('fieldlertError').textContent = ''
 
@@ -87,6 +88,7 @@ if (addSeriesForm) {
                     validateErros(response.data.msgs.description, 'fieldlertErrordescription')
                     validateErros(response.data.msgs.classification, 'fieldlertErrorclassification')
                     validateErros(response.data.msgs.shift, 'fieldlertErrorshift')
+                    validateErros(response.data.msgs.series, 'fieldlertDuplicative') 
                     //if(response.data.msgs.description){
                     //     document.getElementById('fieldlertErrorDescription').innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ${response.data.msgs.description}!`
                     // } else {
@@ -145,7 +147,7 @@ if (activeSerieForm) {
                     console.log(response.data)
                     document.getElementById('msgAlertError').innerHTML = response.data.msg
                     document.getElementById('fieldlertError').innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ${response.data.msgs.description}!`
-
+                    
                 } else {
                     // load();
                     // //console.log(response.data)
@@ -172,6 +174,7 @@ async function getSeriess(id, locale) {
             console.log(response.data)
             document.getElementById(locale).value = `${response.data[0].description}º ${response.data[0].classification} - ${convertShift(response.data[0].shift)}`
             document.getElementById('status').value = response.data[0].status
+            document.getElementById('activeSeriesModalLabel').innerHTML = `<i class="fa fa-users"></i> ${convertStatusRotulo(response.data[0].status)} série`
         })
         .catch(error => console.log(error))
 }

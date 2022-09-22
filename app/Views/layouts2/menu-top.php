@@ -17,6 +17,7 @@
                 <?=view('layouts2/menu/menu-schedule');?>
                 <?=view('layouts2/menu/menu-year');?>
                 <?=view('layouts2/menu/menu-series');?>
+                <?=view('layouts2/menu/menu-discipline');?>
                 
                 <li class="nav-item dropdown">
                     <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Professor</a>

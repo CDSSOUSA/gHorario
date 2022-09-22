@@ -161,18 +161,34 @@ class Series extends BaseController
         // if ($data['description'] > getenv('YEAR.END')) {
         //     return redirect()->back()->withInput()->with('error', 'Ano não permitido!');
         // }
+        try {
+            $save = $this->series->save($data);
 
-        $save = $this->series->save($data);
-
-        if ($save) {
-            $response = [
-                'status' => 'OK',
-                'error' => false,
-                'code' => 200,
-                'msg' => '<p>Operação realizada com sucesso!</p>',
-                //'data' => $this->list()
-            ];
-            return $this->response->setJSON($response);
+            if ($save) {
+                $response = [
+                    'status' => 'OK',
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    //'data' => $this->list()
+                ];
+                return $this->response->setJSON($response);
+            }
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => $e->getCode(),
+                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>',
+                'msgs' => [
+                    'series' => 'Série, turma e turno já cadastrados!'
+                ]
+            ]);
         }
     }
 }

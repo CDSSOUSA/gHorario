@@ -61,16 +61,25 @@ class SeriesModel extends Model
     public function updateSeries(array $data)
     {
         $status = $data['status'] == 'A' ? 'I' : 'A';
-        
-        $schedule = new SchoolScheduleModel();
-        $schedule->where('id_series', $data['id'])
-            ->delete();
+
+        if($status == 'I'){
+
+            $allocationModel= new AllocationModel();
+            $schedule = new SchoolScheduleModel();
+    
+            $dataSchedule = $schedule->where('id_series', $data['id'])->findAll();
+            foreach ($dataSchedule as $allocation) {
+                $allocationModel->set('situation','L')->where('id',$allocation->id_allocation)->update();
+            }
+            $schedule->where('id_series', $data['id'])->delete();
+        }
+        //$dataSchedule[0]->id_allocation;;
         // testar no caso de desabilitar a série deletar todos horarios, depois alocacao    
 
         $update = $this->set('status', $status)
             ->where('id', $data['id'])
             ->update();
-        if ($schedule && $update) {
+        if ($update) {
 
             return true;
         }
