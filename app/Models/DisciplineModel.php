@@ -14,7 +14,7 @@ class DisciplineModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = [];
+    protected $allowedFields        = ['description','abbreviation','amount'];
 
     // Dates
     protected $useTimestamps        = false;

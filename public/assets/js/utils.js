@@ -1,4 +1,6 @@
-
+var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
+var bodySuccess = ' Operação realizada com sucesso';
+var success = 'success';
 const checkAll = document.getElementById('checkAll');
 
 checkAll.addEventListener('click', () => {   
