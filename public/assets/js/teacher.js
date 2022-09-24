@@ -85,11 +85,18 @@ function listRowDisciplinesTeacher(data) {
     let row = '';
     if (data != null) {
         data.forEach(e => {
-            row += `<div class="d-flex discipline-ticket">                    
-                        <div class="rounded m-1 p-2 w-25" style="background-color:${e.color}; color:white; border:2px #EAEAEA solid" onclick="editTeacherDiscipline(${e.id})">
-                           ${e.abbreviation} :: <br> ${e.amount} - Aula(s) 
+            row += `   <div class="discipline-ticket">               
+                            <div class="d-flex m-1 p-2 w-35" style="background-color:${e.color}; color:white; border-radius: 5px;" onclick="editTeacherDiscipline(${e.id})">
+                                <div>
+                                    <img src="${URL_BASE}/assets/img/${e.icone}" width="25px"  class="me-3 border-radius-lg m-2" alt="spotify">
+                                </div>
+                                <div class="my-auto">
+                                    <h6 class="mb-0 text-sm"> ${e.abbreviation}</h6>
+                                    ${e.amount} - Aula(s) 
+                                </div>                    
+                            </div>
                         </div>
-                    </div>` ;
+                    ` ;
         })
     } else {
 
@@ -187,7 +194,7 @@ async function editTeacherDiscipline(id) {
                 document.getElementById('id_discipline').value = data[0].description
                 document.getElementById('numeroAulas').value = data[0].amount
                 document.getElementById('corDestaque').value = data[0].color
-                if(data[0].amount_allocation == 0) {                   
+                if (data[0].amount_allocation == 0) {
                     document.getElementById('btnDelete').innerHTML = `<a herf="#" class="btn btn-danger" onclick="delTeacherDiscipline(${id})"><i class="fa fa-trash"></i> Excluir </a>`
                 }
             }
@@ -393,15 +400,22 @@ function listRowDisciplines(data) {
     let row = '';
     if (data != null) {
         data.forEach(e => {
-            row += ` <div class="form-check-inline radio-toolbar text-white" style="background-color:${e.color}; border-radius: 5px;">            
+            row += ` <div class="form-check-inline radio-toolbar text-white  m-1 p-0" style="background-color:${e.color}; border-radius: 5px; margin: 5px; width: 120px;">            
                         <input name="nDisciplines[]" value="${e.id}" type="checkbox" id="flexSwitch${e.id}">
                         <label class="form-check-label" for="flexSwitch${e.id}">
-                            <div class="rotulo">
-                                <span class="abbreviation font-weight-bold">${e.abbreviation}</span>
-                                <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i></span>
-                            </div>
+                        <div class="d-flex">
+                        <div>
+                            <img src="${URL_BASE}/assets/img/${e.icone}" width="28px" class="me-3 border-radius-lg p-1" alt="spotify">
+                        </div>
+                        <div class="my-auto">
+                            <h6 class="mb-0 text-sm"> ${e.abbreviation}</h6>
+                        </div>
+                    </div>
                         </label>
                     </div>`
+
+
+
         })
     }
     return row;
@@ -541,7 +555,7 @@ const loadDataAllocation = (data) => {
     let row = "";
     let rowAllocation = `<a href="#" class="btn btn-dark btn-sm disabled">
     <i class="fa fa-trash" aria-hidden="true"></i></a>`;
-    let l ="";
+    let l = "";
 
     data.forEach((el, indice) => {
         console.log(data)
@@ -553,20 +567,32 @@ const loadDataAllocation = (data) => {
         } else if (el.situation == 'B') {
             l = `<span class="badge badge-sm bg-gradient-danger">${convertSituation(el.situation)}</span>`
         }
-        
+
         let ticket = rowAllocation;
 
         // // if (element.status === "A") {
         // //     console.log(element.status)
         // //     ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
         // // }
+        // TRABALHAR O MESMO LAYUTE DO ICONE
         row +=
             `<tr>
                 <td class="align-middle">${indice + 1}</td>                  
-                <td class="align-middle"><div class="text-white ticket-small" style="background-color:${el.color}">
-                                            ${el.abbreviation} - ${convertDayWeek(el.dayWeek)} <br>
-                                            <span>${el.position} ª AULA - ${convertShift(el.shift)}</span>
-                                        </div></td>
+                <td class="align-middle">
+                
+                                        <div class="text-white m-2 p-2 w-35" style="background-color:${el.color}; border-radius: 5px; margin: 5px;">
+                 
+                                        <div class="d-flex">
+                                        <div>
+                                            <img src="${URL_BASE}/assets/img/${el.icone}" width="30px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                        </div>
+                                        <div class="my-auto">
+                                            <h6 class="mb-0 text-sm"> ${el.abbreviation} </h6>
+                                            <span class="text-sm">${convertDayWeek(el.dayWeek)} - ${el.position} ª AULA - ${convertShift(el.shift)}</span>
+                                        </div>
+                                    </div>                     
+                                        
+                                        </td>
                 <td class="align-middle">${l}<p id="ocupation${el.id}">${getOcupationSchedule(el.id, el.situation)}</p></td>                     
                 <td class="align-middle">${ticket}</td>        
             </tr>`;
@@ -612,10 +638,10 @@ const delAllocationTeacherModel = new bootstrap.Modal(document.getElementById('d
 async function delAllocationTeacher(idAllocationDel, dayWeekAllocationDel) {
     delAllocationTeacherForm.reset();
     document.getElementById('idAllocationDel').value = idAllocationDel
-    
+
     await axios.get(`${URL_BASE}/allocation/show/${idAllocationDel}`)
-    .then(response => {
-        const data = response.data;
+        .then(response => {
+            const data = response.data;
 
             console.log(data);
             if (data) {
@@ -736,7 +762,7 @@ if (deleteForm) {
                     editModal.hide();
                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     //location.reload();
-                    loadToast(titleSuccess, bodySuccess, success);                        
+                    loadToast(titleSuccess, bodySuccess, success);
                     //loada(); 
                     //location.reload();
                     listTeacDisc();
@@ -755,9 +781,9 @@ async function delTeacher(id) {
     //         if (data) {
     //             console.log(data);
 
-                deleteTeacherModal.show();
-                document.getElementById('idDeleteTeacher').value = id
-                getDataTeacher(id,'nameTeacher') 
+    deleteTeacherModal.show();
+    document.getElementById('idDeleteTeacher').value = id
+    getDataTeacher(id, 'nameTeacher')
     //          </div>`
 
     //         }
@@ -789,10 +815,10 @@ if (deleteTeacherForm) {
 
                     document.getElementById('msgAlertError').innerHTML = '';
                     document.getElementById('fieldlertError').textContent = '';
-                    deleteTeacherModal.hide();                   
+                    deleteTeacherModal.hide();
                     //document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     //location.reload();
-                    loadToast(titleSuccess, bodySuccess, success);                        
+                    loadToast(titleSuccess, bodySuccess, success);
                     //loada(); 
                     //location.reload();
                     listTeacDisc();

@@ -1,5 +1,6 @@
 <li class="nav-item dropdown">
-    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-th"></i> Hórario</a>
+    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle text-white-50">
+        <i class="fa fa-th"></i> Hórario</a>
     <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
         <li><?= anchor('/', '<i class="fa fa-th-list"></i> Manhã', ['class' => 'dropdown-item']); ?></li>
         <li><?= anchor('/horario/shift/T', '<i class="fa fa-th-list"></i> Tarde', ['class' => 'dropdown-item']); ?></li>

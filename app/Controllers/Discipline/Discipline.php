@@ -233,7 +233,7 @@ class Discipline extends BaseController
         }
     }
 
-    public function del()
+    public function delete()
     {
         $id = $this->request->getPost('id');
 
@@ -252,7 +252,12 @@ class Discipline extends BaseController
         } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',
-                'msg'      => 'Não foi possível executar a operação',
+                'msg'      => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+                <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Não foi possível executar a operação! 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
                 'error'    => $e->getMessage(),
             ]);
         }

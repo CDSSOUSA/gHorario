@@ -1,6 +1,6 @@
-<nav class="main-header navbar navbar-expand-md bg-orange navbar-light">
+<nav class="main-header navbar navbar-expand-md bg-navy navbar-light">
     <div class="container">
-        <a href="../../index3.html" class="navbar-brand">
+        <a href="../../index3.html" class="navbar-brand text-white-50">
            <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
 
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="index3.html" class="nav-link"><i class="fa fa-home"></i> Home </a>
+                    <a href="index3.html" class="nav-link text-white-50"><i class="fa fa-home"></i> Home </a>
                 </li>               
                 
                 <?=view('layouts2/menu/menu-teacher');?>

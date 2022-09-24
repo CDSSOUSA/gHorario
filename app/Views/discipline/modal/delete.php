@@ -9,6 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
+            <span id="msgAlertErrorDisciplineDelete"></span>
 
                 <?php echo form_open('discipline/del', ['id' => 'delDisciplineForm']);
                 //echo form_hidden('id', $teacDisc->id);

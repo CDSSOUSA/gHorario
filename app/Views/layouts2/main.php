@@ -2,6 +2,7 @@
 
 <body class="hold-transition layout-top-nav">
 
+
     <div class="wrapper">
 
         <?= view('layouts2/menu-top'); ?>

@@ -9,7 +9,7 @@ echo $this->section('content'); ?>
     <div class="container">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0"> <small><?= $title ?></small></h1>
+                <h1 class="m-0"><?= $title ?> <small>Example 3.0</small></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -27,19 +27,25 @@ echo $this->section('content'); ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <span id="msgAlertSuccess"></span>
+                <div class="card card-dark">
                     <div class="card-header">
-                        <?php
-                        echo anchor('#', '<i class="icons fas fa-plus"></i> Nova disciplina', ['onclick' => 'addDiscipline()', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
+                        <h3 class="card-title font-weight-bold"><?= $title ?></h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <?php
+                                echo anchor('#', '<i class="icons fas fa-plus"></i> Nova disciplina', ['onclick' => 'addDiscipline()', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
 
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card-body">
-                        <table id="tb_discipline" class="table table-bordered">
+                    <div class="card-body table-responsive p-0" style="height: 50vh;">
+                        <table id="tb_discipline" class="table table-head-fixed text-nowrap table-striped">
                             <thead>
-                                <tr class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                <tr>
                                     <th>#</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descrição :: </th>
+                                    <th class="text-left">Descrição :: </th>
                                     <th class="text-left">Abreviação :: </th>
                                     <th class="text-center">Quantidade :: </th>
                                     <!-- <th>Qtde total aulas :: </th> -->
@@ -50,18 +56,9 @@ echo $this->section('content'); ?>
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                </div> -->
                 </div>
             </div>
+        
         </div>
     </div>
 </div>

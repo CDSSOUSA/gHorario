@@ -37,17 +37,23 @@
 
 
                     <?php foreach ($disciplinas as $item) : ?>
-                        <div class="form-check-inline radio-toolbar text-white" style="background-color:#2e5b8e; border-radius: 5px; margin: 5px;">
+                        <div class="form-check-inline radio-toolbar text-white m-2 p-0" style="background-color:#2e5b8e; border-radius: 5px; margin: 5px; width: 120px;">
                             <input class="form-check-inline" name="disciplinesTeacher" value="<?= $item->id; ?>" type="radio" id="flexSwitchCheck<?= $item->id; ?>">
                             <label class="form-check-label" for="flexSwitchCheck<?= $item->id; ?>">
-
-                                <div class="rotulo"><span class="abbreviation font-weight-bold"><?= $item->abbreviation; ?></span>
-                                    <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i>
-                                    </span>
+                                <div class="d-flex">
+                                    <div >
+                                        <img src="<?= base_url(); ?>/assets/img/<?= $item->icone; ?>" width="28px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm"> <?= $item->abbreviation; ?></h6>
+                                    </div>
                                 </div>
-
                             </label>
                         </div>
+
+
+
+
 
                     <?php endforeach ?>
 

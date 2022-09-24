@@ -15,18 +15,19 @@ CREATE TABLE IF NOT EXISTS tb_discipline (
     description VARCHAR(100),
     abbreviation VARCHAR(8),
     amount SMALLINT,
+    icone VARCHAR(25),
     CONSTRAINT id_pk PRIMARY KEY (id)
 ) ENGINE = INNODB;
-INSERT INTO tb_discipline (description, abbreviation, amount)
-VALUES ('GEOGRAFIA', 'GEO', 3),
-    ('HISTÓRIA', 'HIST', 4),
-    ('PORTUGUÊS', 'PORT', 5),
-    ('INGLÊS', 'ING', 2),
-    ('MATEMÁTICA', 'MAT', 5),
-    ('ARTES', 'ART', 2),
-    ('FILOSOFIA', 'FILO', 2),
-    ('EDUCAÇÃO FÍSICA', 'ED FÍS', 2),
-    ('CIÊNCIAS', 'CIÊ', 3);
+INSERT INTO tb_discipline (description, abbreviation, amount, icone)
+VALUES ('GEOGRAFIA', 'GEO', 3,'icon-geografia.png'),
+    ('HISTÓRIA', 'HIST', 4,'icon-historia.png'),
+    ('PORTUGUÊS', 'PORT', 5,'icon-historia.png'),
+    ('INGLÊS', 'ING', 2,'icon-historia.png'),
+    ('MATEMÁTICA', 'MAT', 5,'icon-matematica.png'),
+    ('ARTES', 'ART', 2,'icon-artes.png'),
+    ('FILOSOFIA', 'FILO', 2,'icon-filosofia.png'),
+    ('EDUCAÇÃO FÍSICA', 'ED FÍS', 2,'icon-edfisica.png'),
+    ('CIÊNCIAS', 'CIÊ', 3,'icon-ciencias.png');
 
 CREATE TABLE tb_teacher (
     id SMALLINT AUTO_INCREMENT NOT NULL,

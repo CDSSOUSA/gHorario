@@ -67,6 +67,7 @@ $routes->group('/discipline',['namespace'=>'App\Controllers\Discipline'],functio
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Discipline::create'); 
     $routes->post('update', 'Discipline::update'); 
+    $routes->post('del', 'Discipline::delete'); 
 });
 
 /* ROUTES TEACHER */

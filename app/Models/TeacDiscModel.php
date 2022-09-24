@@ -60,7 +60,7 @@ class TeacDiscModel extends Model
 
     public function getTeacherDisciplineByIdTeacher(int $idTeacher)
     {
-        return $this->select($this->table . '.color, ' . $this->table . '.id_teacher, d.description, d.abbreviation, ' . $this->table . '.id,' .$this->table . '.id_discipline,' . $this->table . '.amount')
+        return $this->select('d.icone, '.$this->table . '.color, ' . $this->table . '.id_teacher, d.description, d.abbreviation, ' . $this->table . '.id,' .$this->table . '.id_discipline,' . $this->table . '.amount')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->where($this->table . '.id_teacher', $idTeacher)
             ->where($this->table . '.id_year_school', session('session_idYearSchool'))
@@ -84,7 +84,7 @@ class TeacDiscModel extends Model
             ' . $this->table . '.id,
             ' . $this->table . '.id_teacher,
             ' . $this->table . '.amount,
-            ' . $this->table . '.color,
+            ' . $this->table . '.color,           
             d.abbreviation'
         )
             ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher')
