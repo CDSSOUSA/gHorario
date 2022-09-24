@@ -37,14 +37,20 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
         .then(response => {
             const data = response.data;
             data.forEach(element => {
-                divOpcao.innerHTML += `<div class="form-check-inline radio-toolbar text-white" style="background-color:${element.color}; border-radius: 5px; margin: 5px;">
-             <input class="form-check-input" type="radio" id="gridCheck1${element.id}" name= "nIdAlocacao" value="${element.id}"/>
-            <label class="form-check-label" for="gridCheck1${element.id}">
-            <div class="rotulo"><span class="abbreviation font-weight-bold">${element.abbreviation}</span>
-            <span class="icon-delete"><i class="fa fa-unlock" aria-hidden="true"></i>
-            </span></div><p class="font-weight-bold">${element.name.split(" ", 1)}</p>
-            </label></div>`
-                //console.log(element);
+                divOpcao.innerHTML += `                     
+                <div class="form-check-inline radio-toolbar text-white m-1 p-1" style="background-color:${element.color}; border-radius: 5px; margin: 5px; width="130px"">
+                    <input class="form-check-input" type="radio" id="gridCheck1${element.id}" name= "nIdAlocacao" value="${element.id}"/>
+                    <label class="form-check-label" for="gridCheck1${element.id}">
+                        <div class="d-flex">
+                                    <div>
+                                        <img src="${URL_BASE}/assets/img/${element.icone}" width="30px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                    </div>
+                                    <div class="my-auto">
+                                        <h6 class="mb-0 text-sm"> ${element.abbreviation} - ${element.name.split(" ", 1)}</h6>                                    
+                                    </div>
+                        </div>                       
+                    </label>
+                </div>`               
             });
         })
         .catch(error => console.log(error))
@@ -93,13 +99,14 @@ async function deleteSchedule(id) {
             if (data) {
                 deleteScheduleModal.show();
                 document.getElementById('idDelete').value = data.id              
-                document.getElementById('dayWeekDel').innerText = convertDayWeek(data.dayWeek)
-                document.getElementById('positonDel').innerText = data.position
+                document.getElementById('disciplineDel').innerHTML = `${data.abbreviation} - <span>${data.name.split(" ", 1)}</span> - <span id="idSerieDel">${getSeries(data.id_series, 'idSerieDel')}</span>`               
+                ;
+                document.getElementById('positonDel').innerText = `${data.position} ª AULA - `
+                document.getElementById('dayWeekDel').innerText = `${convertDayWeek(data.dayWeek)} - `
                 document.getElementById('shiftDel').innerText = convertShift(data.shift)
-                document.getElementById('disciplineDel').innerText = data.abbreviation
-                document.getElementById('nameDel').innerText = data.name.split(" ", 1)
+                //document.getElementById('nameDel').innerText = data.name.split(" ", 1)
                 document.getElementById('color').style.backgroundColor = data.color
-                getSeries(data.id_series, 'idSerieDel');
+                document.getElementById('image-disc').innerHTML = ` <img src="${URL_BASE}/assets/img/${data.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">`
             }
         })
         .catch(error => console.log(error))

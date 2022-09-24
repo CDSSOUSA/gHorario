@@ -123,40 +123,54 @@ echo $this->section('content');
                                                 <td class="text-left">
                                                     <?php
                                                     if ($allocationDisponivel != null && empty($horarioSegundas['id_allocation'])) {
-                                                        echo anchor('#', '<div class="rotulo"><span class="abbreviation"><i class="icons fas fa-book"></i> </span>
-                                                                    <span class="icon-delete"><i class="fa fa-plus"></i></span></div><p>DISPONÍVEL</p>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ',"' . $shift . '")', 'data-toggle' => 'modal', 'class' => 'btn btn-dark btn-sm ticket text-left']);
+                                                        echo anchor('#', '<div class="d-flex m-1 p-2 w-120" style="background-color: #343a40; color:white; border-radius: 5px;">
+                                                        <div>
+                                                            <img src="' . base_url() . '/assets/img/discipline-default.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+                                                        </div>
+                                                        <div class="my-auto">
+                                                            <h6 class="mb-0 text-sm font-weight-bold"> LIVRE</h6>                                                                    
+                                                        </div>
+                                                    </div>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ',"' . $shift . '")', 'data-toggle' => 'modal', 'class' => 'text-left']);
 
                                                         //echo anchor('horario/add_profissional_horario/' . $serie->id . '/' . $dw . '/' . $ps, "DISPONÍVEL", array('type' => 'button', 'class' => 'btn btn-success btn-sm ticket text-center'));
                                                     } else
                                                 if (empty($horarioSegundas['id_allocation'])) { ?>
 
-                                                        <div class="ticket-vague">
-                                                            <div class="rotulo">
-                                                                <span>VAGO</span>
-                                                                <span class="icon-vaguo"><i class="fa fa-lock"></i></span>
-                                                            </div>
-                                                            <p>SEM PROFESSOR</p>
+<div class="d-flex m-1 p-2 w-120" style="background-color: transparent; border: 1px solid #9a9a9c; color:black; border-radius: 5px;">
+                                                        <div>
+                                                            <img src="<?=base_url();?>/assets/img/discipline-vague.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
                                                         </div>
+                                                        <div class="my-auto">
+                                                            <h6 class="mb-0 text-sm font-weight-bold"> VAGO</h6>                                                                    
+                                                        </div>
+                                                    </div>
                                                     <?php
                                                     } else { ?>
-                                                        <div style="background-color:<?= $horarioSegundas['color'] ?>" class="ticket">
-                                                            <?php
-                                                            echo anchor(
-                                                                '#',
-                                                                '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
-                                                                        <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
-                                                <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
-                                                                array('type' => 'button', 'class' => 'text-white', 'onclick' => 'deleteSchedule(' . $horarioSegundas['id'] . ')', 'data-toggle' => 'modal', 'title' => 'Remover do horário?')
-                                                            );
-                                                            //                     echo anchor(
-                                                            //                         'horario/api/delete/' . $serie->id . '/' . $dw . '/' . $ps,
-                                                            //                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
-                                                            //                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
-                                                            // <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
-                                                            //                         array('type' => 'button', 'class' => 'text-white')
-                                                            //                     );
-                                                            ?>
-                                                        </div>
+
+
+                                                        <?php
+                                                        echo anchor(
+                                                            '#',
+                                                            '<div class="d-flex m-1 p-2 w-120" style="background-color:' . $horarioSegundas['color'] . ';color:white; border-radius: 5px;">
+                                                                <div>
+                                                                    <img src="' . base_url() . '/assets/img/' . $horarioSegundas['icone'] . '" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h6 class="mb-0 text-sm font-weight-bold"> ' . $horarioSegundas['abbreviation'] . '</h6>
+                                                                    <span class="mb-0 text-sm font-weight-bold">' . abbreviationTeacher($horarioSegundas['name']) . '</span>
+                                                                </div>
+                                                            </div>',
+                                                            array('type' => 'button', 'class' => 'text-white', 'onclick' => 'deleteSchedule(' . $horarioSegundas['id'] . ')', 'data-toggle' => 'modal', 'title' => 'Remover do horário?')
+                                                        );
+                                                        //                     echo anchor(
+                                                        //                         'horario/api/delete/' . $serie->id . '/' . $dw . '/' . $ps,
+                                                        //                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
+                                                        //                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
+                                                        // <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
+                                                        //                         array('type' => 'button', 'class' => 'text-white')
+                                                        //                     );
+                                                        ?>
+
 
                                                     <?php } ?>
                                                 </td>
@@ -248,7 +262,22 @@ echo $this->section('content');
             </div>
             <div class="modal-body">
                 <span id="msgAlertError"></span>
-                <div id="color" class="ticket-small">
+
+                <div class="d-flex m-1 p-2 b-radius-5 w-auto text-white" id="color">
+                    <div id="image-disc">                       
+                    </div>
+                    <div class="my-auto">
+                        <h6 id="disciplineDel" class="mb-0 text-sm font-weight-bold"></h6>
+                        <!-- <span id="nameDel" class="mb-0 text-sm font-weight-bold"></span> -->
+                        <!-- <span id="idSerieDel" class="mb-0 text-sm font-weight-bold"></span><br> -->
+                        <span id="positonDel" class="mb-0 text-sm font-weight-bold"></span>
+                        <span id="dayWeekDel" class="mb-0 text-sm font-weight-bold"></span>
+                        <span id="shiftDel" class="mb-0 text-sm font-weight-bold"></span>
+                    </div>
+                </div>
+
+
+                <!-- <div id="color" class="ticket-small">
                     <div class="rotulo">
                         <span id="disciplineDel" class="abbreviation font-weight-bold"></span>
                         <span class="icon-delete"><i class="fa fa-trash" aria-hidden="true"></i>
@@ -258,7 +287,9 @@ echo $this->section('content');
                     <hr>
                     <i class="fa fa-th"></i> <strong id="idSerieDel"></strong> - <strong id="shiftDel"></strong><br>
                     <i class="fa fa-calendar"></i> <strong id="positonDel"></strong>ª Aula - <strong id="dayWeekDel"></strong>
-                </div>
+                </div> -->
+
+
                 <?php echo form_open('horario/api/del', ['id' => 'deleteScheduleForm']) ?>
                 <input type="hidden" id="idDelete" name="id" />
 

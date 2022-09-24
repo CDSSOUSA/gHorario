@@ -35,7 +35,7 @@ function loadDataTeacher(data) {
         if (element.disciplines) {
             rowAllocation = ` <h6 class="dropdown-header text-left"><i></i>Alocação</h6>
             <a href="#" class="dropdown-item btn-sm" onclick="addAllocationTeacher(${element.id})">
-                                <i class="fa fa-plus" aria-hidden="true"></i> Nova </a><div class="dropdown-divider"></div>`
+                                <i class="fa fa-plus" aria-hidden="true"></i> Nova </a>`
         } else {
             rowAllocation = '';
 
@@ -43,12 +43,13 @@ function loadDataTeacher(data) {
 
         if (element.allocation) {
             rowAllocation += ` <a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="listAllocationTeacherDiscipline(${element.id})">
-            <i class="fa fa-list" aria-hidden="true"></i> Ver alocações</a> <div class="dropdown-divider"></div>`
+            <i class="fa fa-list" aria-hidden="true"></i> Ver alocações</a> `
         }
 
         let ticket = ` <h6 class="dropdown-header text-left"><i class="fa fa-book"></i> Disciplina</h6><a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="addTeacherDiscipline(${element.id})">
         <i class="fa fa-plus" aria-hidden="true"></i> Nova</a> <div class="dropdown-divider"></div>
         ${rowAllocation}
+        <div class="dropdown-divider"></div>
         <h6 class="dropdown-header text-left"><i class="fa fa-user"></i> Professor ::</h6><a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="editTeacher(${element.id})">
         <i class="fa fa-pen" aria-hidden="true"></i> Editar</a>
         <a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="delTeacher(${element.id})">
@@ -100,7 +101,7 @@ function listRowDisciplinesTeacher(data) {
         })
     } else {
 
-        row = `<div><div class="rounded m-1 p-2 w-25" style="background-color:#C5CCC7; color:white; border:2px #EAEAEA solid">
+        row = `<div><div class="rounded m-1 p-2 w-35" style="background-color:#C5CCC7; color:white;border-radius: 5px; #EAEAEA solid">
         SEM <br> DISCIPLINA 
      </div></div>`
     }
@@ -403,14 +404,14 @@ function listRowDisciplines(data) {
             row += ` <div class="form-check-inline radio-toolbar text-white  m-1 p-0" style="background-color:${e.color}; border-radius: 5px; margin: 5px; width: 120px;">            
                         <input name="nDisciplines[]" value="${e.id}" type="checkbox" id="flexSwitch${e.id}">
                         <label class="form-check-label" for="flexSwitch${e.id}">
-                        <div class="d-flex">
-                        <div>
-                            <img src="${URL_BASE}/assets/img/${e.icone}" width="28px" class="me-3 border-radius-lg p-1" alt="spotify">
-                        </div>
-                        <div class="my-auto">
-                            <h6 class="mb-0 text-sm"> ${e.abbreviation}</h6>
-                        </div>
-                    </div>
+                            <div class="d-flex">
+                                <div>
+                                    <img src="${URL_BASE}/assets/img/${e.icone}" width="28px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                </div>
+                                <div class="my-auto">
+                                    <h6 class="mb-0 text-sm"> ${e.abbreviation}</h6>
+                                </div>
+                            </div>
                         </label>
                     </div>`
 
@@ -574,7 +575,7 @@ const loadDataAllocation = (data) => {
         // //     console.log(element.status)
         // //     ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
         // // }
-        // TRABALHAR O MESMO LAYUTE DO ICONE
+       
         row +=
             `<tr>
                 <td class="align-middle">${indice + 1}</td>                  

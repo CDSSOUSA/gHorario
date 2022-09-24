@@ -44,7 +44,7 @@ class AllocationModel extends Model
     {
 
         $result = $this->select('tb_allocation.id,
-         p.name, d.abbreviation, pd.color, pd.id_teacher')
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
             ->join('tb_discipline d', 'pd.id_discipline = d.id')
@@ -76,7 +76,7 @@ class AllocationModel extends Model
     {
 
         $result = $this->select('tb_allocation.id,
-         p.name, d.abbreviation, pd.color, pd.id_teacher')
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
             ->join('tb_discipline d', 'pd.id_discipline = d.id')

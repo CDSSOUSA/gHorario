@@ -49,6 +49,7 @@ class SchoolScheduleModel extends Model
             pd.color, 
             pd.id_teacher,
             d.abbreviation,
+            d.icone,
             h.id'
         )
             ->from('tb_school_schedule h')
@@ -75,7 +76,7 @@ class SchoolScheduleModel extends Model
 
     public function getTotalDiscBySerie(int $idSerie)
     {
-        return $this->select('count(*) as total, d.description, d.id')
+        return $this->select('count(*) as total, d.description, d.id, d.icone')
             //->from('tb_school_schedule h')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
@@ -99,7 +100,7 @@ class SchoolScheduleModel extends Model
 
     public function getDataForDelete(int $id)
     {
-        return $this->select('d.abbreviation, 
+        return $this->select('d.abbreviation, d.icone, 
            ' . $this->table . '.id_series, 
            ' . $this->table . '.id, 
            ' . $this->table . '.position,
