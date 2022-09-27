@@ -50,6 +50,8 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     $routes->post('create','ApiHorario::create');    
     $routes->get('delete/(:any)','ApiHorario::deleteSchedule/$1');    
     $routes->post('del','ApiHorario::del');    
+    $routes->get('list','ApiHorario::list');    
+    $routes->get('listDPS/(:any)/(:any)/(:any)/(:any)','ApiHorario::listDPS/$1/$2/$3/$4');    
 });
 
 /* ROUTES PROFESSOR */

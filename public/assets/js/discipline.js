@@ -39,12 +39,12 @@ function loadDataDisciplines(data) {
             
                 <td class="align-middle">${indice + 1}</td>                
                 <td>
-                    <div class="d-flex px-2">
+                    <div class="d-flex px-2 w-35 b-radius-5 text-white font-size-8" style="background-color:#2e5b8e;">
                         <div>
                             <img src="${URL_BASE}/assets/img/${element.icone}" width="35px"  class="avatar avatar-sm me-3 border-radius-lg m-2" alt="spotify">
                         </div>
                         <div class="my-auto">
-                            <h6 class="mb-0 text-sm">${element.description}</h6>
+                        <h6 class="mb-0 text-sm">${element.description}</h6>
                         </div>
                     </div>
                 </td>

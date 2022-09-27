@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS tb_discipline (
 INSERT INTO tb_discipline (description, abbreviation, amount, icone)
 VALUES ('GEOGRAFIA', 'GEO', 3,'icon-geografia.png'),
     ('HISTÓRIA', 'HIST', 4,'icon-historia.png'),
-    ('PORTUGUÊS', 'PORT', 5,'icon-historia.png'),
-    ('INGLÊS', 'ING', 2,'icon-historia.png'),
+    ('PORTUGUÊS', 'PORT', 5,'icon-portugues.png'),
+    ('INGLÊS', 'ING', 2,'icon-ingles.png'),
     ('MATEMÁTICA', 'MAT', 5,'icon-matematica.png'),
     ('ARTES', 'ART', 2,'icon-artes.png'),
     ('FILOSOFIA', 'FILO', 2,'icon-filosofia.png'),

@@ -17,8 +17,27 @@ class Discipline extends BaseController
         $this->disciplineModel = new DisciplineModel();
         $this->teacDiscModel = new TeacDiscModel();
     }
+    // public function show()
+    // {
+    //     $data = [
+    //         'title' => '<i class="fa fa-book"></i> Listar Disciplinas :: ',
+    //         'breadcrumb' => [
+    //             '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
+    //             '<li class="breadcrumb-item active"> Listar </li>'
+    //         ],
+    //         'disciplines' => $this->disciplineModel->findAll(),
+
+    //     ];
+    //     //session()->set('dado',$data);
+    //     return view('discipline/list', $data);
+    // }
     public function show()
     {
+        $newJs = [
+            base_url() . "/assets/js/discipline.js",
+        ];
+        $js = array_merge($this->javascript, $newJs);
+
         $data = [
             'title' => '<i class="fa fa-book"></i> Listar Disciplinas :: ',
             'breadcrumb' => [
@@ -26,6 +45,9 @@ class Discipline extends BaseController
                 '<li class="breadcrumb-item active"> Listar </li>'
             ],
             'disciplines' => $this->disciplineModel->findAll(),
+            'css' => $this->style,
+            'js' => $js,
+
 
         ];
         //session()->set('dado',$data);

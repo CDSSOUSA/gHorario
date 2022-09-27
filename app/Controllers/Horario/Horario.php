@@ -56,7 +56,12 @@ class Horario extends BaseController
             'message' => '',
             'alert' => ''
         ];
-       // dd($this->yearSchoolActive);
+        //d($this->style);
+        $newJs = [
+            base_url() . "/assets/js/school-schedule.js",
+        ];
+        $js = array_merge($this->javascript, $newJs);
+        //d($js);
         $data = array(
             'title' => '<i class="fa fa-th"></i> Quadro de  Horário :: ' . turno($shift). ' - '.$this->yearSchoolActive->description,
             'breadcrumb' => [
@@ -70,7 +75,9 @@ class Horario extends BaseController
             'allocation' => $this->alocacaoProfessor,
             //'erro' => $this->erros,
             'teacherDiscipline' => $this->teacherDiscipline,
-            'shift' => $shift
+            'shift' => $shift,
+            'css' => $this->style,
+            'js' => $js,
         );
 
         return view('horario/horario', $data);

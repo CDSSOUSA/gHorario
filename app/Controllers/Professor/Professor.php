@@ -133,6 +133,11 @@ class Professor extends BaseController
             $msgs = $this->messageErro;
         }
 
+        $newJs = [
+            base_url() . "/assets/js/teacher.js",
+        ];
+        $js = array_merge($this->javascript, $newJs);
+
         $data = [
             'title' => '<i class="fa fa-user"></i> Listar Professores :: ',
             'breadcrumb' => [
@@ -143,6 +148,8 @@ class Professor extends BaseController
             'erro' => $this->erros,
             'disciplinas' => $this->disciplinaModel->findAll(),
             'teachers' => $this->professorModel->findAll(),
+            'css' => $this->style,
+            'js' => $js,
 
             //'series' => $this->series->getSeries()
             //'erro' => $this->erros

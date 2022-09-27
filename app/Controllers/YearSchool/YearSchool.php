@@ -33,6 +33,10 @@ class YearSchool extends BaseController
         if (session()->has('success')) {
             $msgs = $this->messageSuccess;
         }
+        $newJs = [
+            base_url() . "/assets/js/year-school.js",
+        ];
+        $js = array_merge($this->javascript, $newJs);
         $data = array(
             'title' => '<i class="fa fa-calendar-check"></i> Listar Ano Letivo :: ',
             'breadcrumb' => [
@@ -42,6 +46,8 @@ class YearSchool extends BaseController
             'msgs' => $msgs,
             'erro' => $this->erros,
             'error' => $this->error,
+            'css' => $this->style,
+            'js' => $js,
 
         );
         return view('yearSchool/list', $data);

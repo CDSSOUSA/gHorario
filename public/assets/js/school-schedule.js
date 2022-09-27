@@ -1,14 +1,122 @@
-var divLoad = document.querySelector('#load');
-var divLoader = document.querySelector('#loader');
-var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
-var bodySuccess = ' Operação realizada com sucesso';
-var success = 'success';
+// var divLoad = document.querySelector('#load');
+// var divLoader = document.querySelector('#loader');
+// var titleSuccess = '<strong class="me-auto">Parabéns!</strong>';
+// var bodySuccess = ' Operação realizada com sucesso';
+// var success = 'success';
 
+
+
+listSchedule();
+
+async function listSchedule() {
+    await axios.get(`${URL_BASE}/horario/api/list`)
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
+            //document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
+            //loadDataTable(data)
+        }
+        )
+        .catch(error => console.log(error))
+}
+
+function loadDataSchedule(data) {
+
+    let row = "";
+    // let dayShow = '';
+    // let rowColor = '';
+    for (let dw = 2; dw < 7; dw++) {
+        for (let ps = 1; ps < 7; ps++) {   
+
+            let dayShow = ps === 1 ? convertDayWeek(dw) : '';           
+            let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
+
+            row += `<tr class="${rowColor}"><th scope="row">${dayShow}</th>
+            <th>${ps}ª</th>`      
+            data.forEach((elem,indice) => {
+                row += `<td id="row${ps}${dw}${elem.id}" class="text-left">${listDPS(elem.id, dw, ps, 'M')}</td>`
+            })
+            row += `</tr>`
+               
+            
+        }
+    }
+
+    
+
+
+    // data.forEach((element, indice) => {
+    //     //console.log(data)
+
+    //     let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="far fa-circle nav-icon" aria-hidden="true"></i> Ativar</a>`;
+
+    //     if (element.status === "A") {
+    //         console.log(element.status)
+    //         ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
+    //     }
+    //     row +=
+    //         `<tr>
+    //             <td>${indice + 1}</td>
+    //             <td>${element.description}º ${element.classification} - ${convertShift(element.shift)} </td>
+    //             <td>${convertStatus(element.status)}</td>           
+    //             <td>${ticket}</td>        
+    //         </tr>`;
+
+    // });
+    return row;
+}
+
+function listDPS(idSerie, day,position,shift) {
+    axios.get(`${URL_BASE}/horario/api/listDPS/${idSerie}/${day}/${position}/${shift}`)
+    .then(response => {
+
+      if(response.data == 'vago') {
+            document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            
+            <div class="d-flex m-1 p-2 w-120" style="background-color: transparent; border: 1px solid #9a9a9c; color:black; border-radius: 5px;" data-toggle="tooltip" data-placement="top" title="Aguardando alocação!">
+            <div>
+                <img src="${URL_BASE}/assets/img/discipline-vague.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 text-sm font-weight-bold"> VAGO</h6>
+            </div>
+        </div>`
+        } else if(response.data != 'livre') {
+            console.log(response.data);
+            document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            <a href="#" onclick = "deleteSchedule(${response.data.id})" data-toggle="modal" data-placement="top" title="Clique para remover!">
+            <div class="d-flex m-1 p-2 w-120" style="background-color: ${response.data.color}; color:white; border-radius: 5px;">
+            <div>
+                <img src="${URL_BASE}/assets/img/${response.data.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 font-weight-bold font-size-11"> ${response.data.name}</h6>
+                <span class="mb-0 font-weight-bold text-sm">${response.data.abbreviation}</span>
+            </div>
+        </div></a>`
+            //loadDisc(response.data)
+        }  else {
+            document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            <a href="#" onclick = "addSchedule(${idSerie},${position},${day},'${shift}')" data-toggle = "modal" title="Clique para adicionar!">
+            <div class="d-flex m-1 p-2 w-120" style="background-color: #343a40; color:white; border-radius: 5px;">
+            <div>
+                <img src="${URL_BASE}/assets/img/discipline-default.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 text-sm font-weight-bold"> LIVRE</h6>
+            </div>
+        </div></a>`
+        }
+
+
+    })
+    .catch(error => console.log(error))
+
+}
+
+// Adicionar horario
 const addScheduleModal = new bootstrap.Modal(document.getElementById('addScheduleModal'));
-
-//var URL_BASE = 'http://localhost/gerenciador-horario/public';
-console.log(URL_BASE);
-
 async function addSchedule(idSerie, position, dayWeek, shift) {
     document.getElementById('msgAlertError').innerHTML = ''
     document.getElementById('fieldlertError').textContent = ''
@@ -38,19 +146,20 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
             const data = response.data;
             data.forEach(element => {
                 divOpcao.innerHTML += `                     
-                <div class="form-check-inline radio-toolbar text-white m-1 p-1" style="background-color:${element.color}; border-radius: 5px; margin: 5px; width="130px"">
+                <div class="form-check-inline radio-toolbar text-white m-1 p-1 w-120" style="background-color:${element.color}; border-radius: 5px; margin: 5px;">
                     <input class="form-check-input" type="radio" id="gridCheck1${element.id}" name= "nIdAlocacao" value="${element.id}"/>
                     <label class="form-check-label" for="gridCheck1${element.id}">
                         <div class="d-flex">
                                     <div>
-                                        <img src="${URL_BASE}/assets/img/${element.icone}" width="30px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                        <img src="${URL_BASE}/assets/img/${element.icone}" width="28px" class="discImagem me-3 border-radius-lg p-1" alt="spotify">
                                     </div>
                                     <div class="my-auto">
-                                        <h6 class="mb-0 text-sm"> ${element.abbreviation} - ${element.name.split(" ", 1)}</h6>                                    
+                                        <h6 class="mb-0 font-weight-bold font-size-11">${element.name.split(" ", 1)}</h6>          
+                                        <span class="mb-0 font-weight-bold font-size-11">${element.abbreviation}</span>                         
                                     </div>
                         </div>                       
                     </label>
-                </div>`               
+                </div>`
             });
         })
         .catch(error => console.log(error))
@@ -62,7 +171,7 @@ console.log(addScheduleForm);
 if (addScheduleForm) {
     addScheduleForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        load();
+        //load();
         const dataForm = new FormData(addScheduleForm);
         await axios.post(`${URL_BASE}/horario/api/create`, dataForm, {
             headers: {
@@ -71,7 +180,7 @@ if (addScheduleForm) {
         })
             .then(response => {
                 if (response.data.error) {
-                    stopLoad();
+                    //stopLoad();
                     console.log('errro')
                     document.getElementById('msgAlertError').innerHTML = response.data.msg
                     document.getElementById('fieldlertError').textContent = 'Escolha obrigatória!'
@@ -81,13 +190,17 @@ if (addScheduleForm) {
                     // //console.log(response.data)
                     addScheduleModal.hide();
                     loadToast(titleSuccess, bodySuccess, success);
-                    loada();
-                    location.reload();
+                    //loada();
+                    //location.reload();
+                    listSchedule();
                 }
             })
             .catch(error => console.log(error))
     })
 }
+
+// End adicionar horario
+
 
 const deleteScheduleModal = new bootstrap.Modal(document.getElementById('deleteScheduleModal'));
 
@@ -98,9 +211,9 @@ async function deleteSchedule(id) {
             console.log(data);
             if (data) {
                 deleteScheduleModal.show();
-                document.getElementById('idDelete').value = data.id              
-                document.getElementById('disciplineDel').innerHTML = `${data.abbreviation} - <span>${data.name.split(" ", 1)}</span> - <span id="idSerieDel">${getSeries(data.id_series, 'idSerieDel')}</span>`               
-                ;
+                document.getElementById('idDelete').value = data.id
+                document.getElementById('disciplineDel').innerHTML = `${data.name.split(" ", 1)} - <span>${data.abbreviation}</span> - <span id="idSerieDel">${getSeries(data.id_series, 'idSerieDel')}</span>`
+                    ;
                 document.getElementById('positonDel').innerText = `${data.position} ª AULA - `
                 document.getElementById('dayWeekDel').innerText = `${convertDayWeek(data.dayWeek)} - `
                 document.getElementById('shiftDel').innerText = convertShift(data.shift)
@@ -140,8 +253,9 @@ if (deleteScheduleForm) {
                     // document.getElementById('msgAlertSuccess').innerHTML = response.data.msg
                     deleteScheduleModal.hide();
                     loadToast(titleSuccess, bodySuccess, success);
-                    loada();
-                    location.reload();
+                    //loada();
+                    //location.reload();
+                    listSchedule();
 
                 }
             })
@@ -153,7 +267,7 @@ if (deleteScheduleForm) {
 
 }
 
-async function getSeries(id, locale){
+async function getSeries(id, locale) {
 
     await axios.get(`${URL_BASE}/series/show/${id}`)
         .then(response => {
@@ -163,16 +277,16 @@ async function getSeries(id, locale){
         .catch(error => console.log(error))
 }
 
-function load() {
-    divLoad.classList.add("loada");
-    divLoader.classList.add("loader");
-    $('.toast').append(`
-    <div class="text-center bg-success p-1"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    Atualizando</div>
-  `);
-}
-const stopLoad = () => {
-    divLoad.classList.remove("loada");
-    divLoader.classList.remove("loader");
-}
+// function load() {
+//     divLoad.classList.add("loada");
+//     divLoader.classList.add("loader");
+//     $('.toast').append(`
+//     <div class="text-center bg-success p-1"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+//     Atualizando</div>
+//   `);
+// }
+// const stopLoad = () => {
+//     divLoad.classList.remove("loada");
+//     divLoader.classList.remove("loader");
+// }
 

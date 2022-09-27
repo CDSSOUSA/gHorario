@@ -8,6 +8,7 @@ use App\Models\TeacDiscModel;
 use CodeIgniter\RESTful\ResourceController;
 use Exception;
 use App\Models\DisciplineModel;
+use App\Models\SeriesModel;
 
 class ApiHorario extends ResourceController
 {
@@ -15,12 +16,98 @@ class ApiHorario extends ResourceController
     private $schedule;
     private $teacDisc;
     private $discipline;
+    private $seriesModel;
     public function __construct()
     {
         $this->allocation = new AllocationModel();
         $this->schedule = new SchoolScheduleModel();
         $this->teacDisc = new TeacDiscModel();
         $this->discipline = new DisciplineModel();
+        $this->seriesModel = new SeriesModel();
+    }
+
+    public function listDPS($idSerie, $dw, $ps, $shift) 
+    {
+        try {
+            //define array limites
+            $limits = [];
+            // buscou as series
+            $dataSerie = $this->schedule->getTotalDiscBySerie($idSerie);
+
+            // if exitir
+            if ($dataSerie != null) {
+                //
+                foreach ($dataSerie as $d) {
+                    //busca o limite por serie da disciplina
+                    $limit = $this->discipline->getLimitClassroom($d->id);
+                    //if total limite da disciplina for menor igual a total de alocacao na 
+                    if ($limit->amount <= $d->total) {
+                        $limits[] = $d->id;
+                    }
+                }
+                if ($limits != null) {                   
+                    $allocationDisponivel = $this->allocation->getAllocationByDayWeek($idSerie, $dw, $ps, $shift, $limits);
+                } else {
+
+                    $allocationDisponivel = $this->allocation->getAllocationByDayWeekA($idSerie, $dw, $ps, $shift);
+                }
+            } else {
+                
+                $allocationDisponivel = $this->allocation->getAllocationByDayWeekA($idSerie, $dw, $ps, $shift);
+            }
+
+
+            $data = 'ocupada';
+
+            $horario = $this->schedule->getTimeDayWeek($dw, $idSerie, $ps);
+            
+
+            if($allocationDisponivel != null && empty($horario)) {
+                $data = 'livre';
+            } else if(empty($horario)) {
+                $data = 'vago';
+            } else {
+                $data = $horario;
+            }           
+
+            return $this->response->setJSON($data);
+
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
+    }
+    public function list()
+    {
+        try {
+         
+               
+
+            $dataSerie = $this->seriesModel->getSeries('M');
+
+           
+
+            // foreach ($data as $key => $item) {
+
+            //     $teacDisc = $this->teacDiscModel->where('id_discipline', $item->id)->get()->getResult();
+
+            //     if ($teacDisc) {
+            //         $data[$key]->teacDisc = true;
+            //     }
+            // }
+
+            return $this->response->setJSON($dataSerie);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
     }
 
     public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)

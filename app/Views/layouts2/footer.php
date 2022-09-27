@@ -10,42 +10,11 @@
 </div>
 
 
-
-<script src="<?= base_url(); ?>/assets/js/jquery.min.js"></script>
-<script src="<?= base_url(); ?>/assets/plugins/jquery-ui/jquery-ui.js"></script>
-
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-
-<script src="<?= base_url(); ?>/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script src="<?= base_url(); ?>/assets/plugins/moment/moment.min.js"></script>
-
-<script src="<?= base_url(); ?>/assets/plugins/summernote/summernote-bs4.min.js"></script>
-
-<script src="<?= base_url(); ?>/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-
-<script src="<?= base_url(); ?>/assets/plugins/bootstrap-switch/js/bootstrap-switch.js"></script>
-
-<script src="<?= base_url(); ?>/assets/plugins/toastr/toastr.min.js"></script>
-
-<script src="<?= base_url(); ?>/assets/dist/js/adminlte.js?v=3.2.0"></script>
-
-<script src="<?= base_url(); ?>/assets/js/jquery.mask.min.js"></script>
-
-
-<script src="<?= base_url(); ?>/assets/js/jquery.maskMoney.js"></script>
-<script src="<?= base_url(); ?>/assets/js/axios.min.js"></script>
-<script src="<?= base_url(); ?>/assets/js/utils.js"></script>
-<script src="<?= base_url(); ?>/assets/js/script.js"></script>
-<script src="<?= base_url(); ?>/assets/js/school-schedule.js"></script>
-<script src="<?= base_url(); ?>/assets/js/year-school.js"></script>
-<script src="<?= base_url(); ?>/assets/js/series.js"></script>
-<script src="<?= base_url(); ?>/assets/js/teacher.js"></script>
-<script src="<?= base_url(); ?>/assets/js/discipline.js"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+<?php
+    //dd($css);    
+   foreach ($js as $path) : ?>     
+      <script src="<?=$path;?>"></script>
+   <?php endforeach; ?>
 
 <script>
   $(document).ready(function() {
@@ -64,6 +33,7 @@
         //right: 1
       }
     });
+    $('[data-toggle="tooltip"]').tooltip()
   });
 
   $(document).ready(function() {
@@ -74,21 +44,22 @@
     }, 5000);
   });
 
-    $("input[type=checkbox]").bootstrapSwitch(
-      {
-          onText: '<i class="fa fa-check"></i>',
-          offText: '',
-          size: "mini",
-          onColor: "success"
-      }
-  );
+  $("input[type=checkbox]").bootstrapSwitch({
+    onText: '<i class="fa fa-check"></i>',
+    offText: '',
+    size: "mini",
+    onColor: "success"
+  });
   // $("input[type=checdkbox]").bootstrapSwitch({
   //   onText: '<i class="fa fa-check"></i>',
   //   offText: '',
   //   size: "mini",
   //   onColor: "success"
   // });
-  
+
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 </script>
 
 </body>

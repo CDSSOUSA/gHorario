@@ -94,6 +94,10 @@ class Series extends BaseController
         if (session()->has('success')) {
             $msgs = $this->messageSuccess;
         }
+        $newJs = [
+            base_url() . "/assets/js/series.js",
+        ];
+        $js = array_merge($this->javascript, $newJs);
         $data = array(
             'title' => '<i class="fa fa-calendar-check"></i> Listar Séries :: ',
             'breadcrumb' => [
@@ -103,6 +107,8 @@ class Series extends BaseController
             'msgs' => $msgs,
             'erro' => $this->erros,
             'error' => $this->error,
+            'css' => $this->style,
+            'js' => $js,
 
         );
         return view('series/list', $data);

@@ -1,11 +1,11 @@
-<?php
 
-use App\Models\HorarioModel;
+<?php
 use App\Models\DisciplineModel;
 
 echo $this->extend('layouts2/default');
 echo $this->section('content');
 ?>
+
 <div id="load">
     <div id="loader">
     </div>
@@ -48,7 +48,7 @@ echo $this->section('content');
                     </div>
 
                     <div class="card-body table-responsive p-0" style="height: auto;">
-                        <table id="example" class="table stripeeeee row-border order-column table-striped " style="width:100%">
+                        <table id="tb_schedule" class="table stripeeeee row-border order-column table-striped " style="width:100%">
                             <!-- <table class="table table-head-fixed text-nowrap table-striped"> -->
                             <thead class="table-primary">
                                 <tr>
@@ -63,121 +63,7 @@ echo $this->section('content');
                                     <?php endforeach; ?>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php
-                                for ($dw = 2; $dw < 7; $dw++) :
-                                    for ($ps = 1; $ps < 7; $ps++) : ?>
-                                        <tr class="<?= $dw %  2 == 0 ? 'table-secondary' : 'table-success'; ?>">
-                                            <th scope="row">
-                                                <?php if ($ps == 1) : ?>
-                                                    <?= diaSemanaExtenso($dw); ?>
-                                                <?php endif; ?>
-                                            </th>
-
-                                            <th><?= $ps . 'ª'; ?></th>
-                                            <?php foreach ($series as $serie) :
-
-                                                $datas = $horario->getTotalDiscBySerie($serie->id,);
-                                                $ar = 0;
-                                                $limits = [];
-                                                if ($datas != null) {
-
-                                                    foreach ($datas as $d) {
-
-                                                        $limit = $discipline->getLimitClassroom($d->id);
-                                                        if ($limit->amount <= $d->total) {
-                                                            $limits[] = $d->id;
-                                                        }
-                                                    }
-                                                    if ($limits != null) {
-
-                                                        //$data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift, $limits);
-                                                        $allocationDisponivel = $allocation->getAllocationByDayWeek($serie->id, $dw, $ps, $shift, $limits);
-                                                    } else {
-
-                                                        //$data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
-                                                        $allocationDisponivel = $allocation->getAllocationByDayWeekA($serie->id, $dw, $ps, $shift);
-                                                    }
-                                                } else {
-
-                                                    //$data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
-                                                    $allocationDisponivel = $allocation->getAllocationByDayWeekA($serie->id, $dw, $ps, $shift);
-                                                }
-
-                                                //$allocationDisponivel = $allocation->getAllocationByDayWeekA($serie->id, $dw, $ps, $shift);
-
-
-                                                //dd($allocationDisponivel);
-                                                $horarioSegundas = $horario->getTimeDayWeek($dw, $serie->id, $ps);
-
-                                                //$qtde = $teacherDiscipline->getTeacherDisciplineByIdTeacher($allocationDisponivel['id_teacher']);
-
-                                                //dd(count($qtde));
-                                                // if (!empty($horarioSegundas['id_allocation'])) {
-
-                                                //     $a = $allocation->getTeacherByIdAllocation($horarioSegundas['id_allocation']);
-                                                //     //dd($a);
-                                                // }
-
-                                            ?>
-                                                <td class="text-left">
-                                                    <?php
-                                                    if ($allocationDisponivel != null && empty($horarioSegundas['id_allocation'])) {
-                                                        echo anchor('#', '<div class="d-flex m-1 p-2 w-120" style="background-color: #343a40; color:white; border-radius: 5px;">
-                                                        <div>
-                                                            <img src="' . base_url() . '/assets/img/discipline-default.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
-                                                        </div>
-                                                        <div class="my-auto">
-                                                            <h6 class="mb-0 text-sm font-weight-bold"> LIVRE</h6>                                                                    
-                                                        </div>
-                                                    </div>', ['onclick' => 'addSchedule(' . $serie->id . ',' . $ps . ',' . $dw . ',"' . $shift . '")', 'data-toggle' => 'modal', 'class' => 'text-left']);
-
-                                                        //echo anchor('horario/add_profissional_horario/' . $serie->id . '/' . $dw . '/' . $ps, "DISPONÍVEL", array('type' => 'button', 'class' => 'btn btn-success btn-sm ticket text-center'));
-                                                    } else
-                                                if (empty($horarioSegundas['id_allocation'])) { ?>
-
-<div class="d-flex m-1 p-2 w-120" style="background-color: transparent; border: 1px solid #9a9a9c; color:black; border-radius: 5px;">
-                                                        <div>
-                                                            <img src="<?=base_url();?>/assets/img/discipline-vague.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
-                                                        </div>
-                                                        <div class="my-auto">
-                                                            <h6 class="mb-0 text-sm font-weight-bold"> VAGO</h6>                                                                    
-                                                        </div>
-                                                    </div>
-                                                    <?php
-                                                    } else { ?>
-
-
-                                                        <?php
-                                                        echo anchor(
-                                                            '#',
-                                                            '<div class="d-flex m-1 p-2 w-120" style="background-color:' . $horarioSegundas['color'] . ';color:white; border-radius: 5px;">
-                                                                <div>
-                                                                    <img src="' . base_url() . '/assets/img/' . $horarioSegundas['icone'] . '" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
-                                                                </div>
-                                                                <div class="my-auto">
-                                                                    <h6 class="mb-0 text-sm font-weight-bold"> ' . $horarioSegundas['abbreviation'] . '</h6>
-                                                                    <span class="mb-0 text-sm font-weight-bold">' . abbreviationTeacher($horarioSegundas['name']) . '</span>
-                                                                </div>
-                                                            </div>',
-                                                            array('type' => 'button', 'class' => 'text-white', 'onclick' => 'deleteSchedule(' . $horarioSegundas['id'] . ')', 'data-toggle' => 'modal', 'title' => 'Remover do horário?')
-                                                        );
-                                                        //                     echo anchor(
-                                                        //                         'horario/api/delete/' . $serie->id . '/' . $dw . '/' . $ps,
-                                                        //                         '<div class="rotulo"><span class="abbreviation">' . $horarioSegundas['abbreviation'] . '</span>
-                                                        //                         <span class="icon-delete"><i class="fa fa-trash"></i></span></div>
-                                                        // <p>' . abbreviationTeacher($horarioSegundas['name']) . '</p>',
-                                                        //                         array('type' => 'button', 'class' => 'text-white')
-                                                        //                     );
-                                                        ?>
-
-
-                                                    <?php } ?>
-                                                </td>
-                                            <?php endforeach; ?>
-                                        </tr>
-                                <?php endfor;
-                                endfor; ?>
+                            <tbody>                                
                             </tbody>
                         </table>
                         <!-- End Default Table Example -->
