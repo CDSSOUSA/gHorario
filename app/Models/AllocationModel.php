@@ -124,8 +124,9 @@ class AllocationModel extends Model
     }
     public function getAllocationTeacher(int $idTeacher)
     {
-        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, ' . $this->table . '.shift')
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, t.name, ' . $this->table . '.shift')
             ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
+            ->join('tb_teacher t', 't.id = pd.id_teacher')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('pd.id_teacher', $idTeacher)
             ->where($this->table . '.status', 'A')
@@ -138,8 +139,9 @@ class AllocationModel extends Model
 
     public function getTeacherByIdAllocation(int $idAlocacao)
     {
-        return $this->select('d.icone, pd.id_teacher, tb_allocation.id_teacher_discipline, pd.color, d.abbreviation,tb_allocation.dayWeek, tb_allocation.position')
+        return $this->select('t.name, d.icone, pd.id_teacher, tb_allocation.id_teacher_discipline, pd.color, d.abbreviation,tb_allocation.dayWeek, tb_allocation.position')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+            ->join('tb_teacher t', 't.id = pd.id_teacher')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
             ->where('tb_allocation.id', $idAlocacao)
             ->get()->getResult();

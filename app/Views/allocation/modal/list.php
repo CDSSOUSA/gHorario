@@ -2,7 +2,7 @@
 <div class="modal fade" id="listAllocationModal" tabindex="-1" role="dialog" aria-labelledby="listAllocationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
+            <div class="modal-header bg-default-discipline">
                 <h5 class="modal-title" id="listAllocationModalLabel"><i class="fa fa-user"></i> Alocação(ões) Realizada(s) ::</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

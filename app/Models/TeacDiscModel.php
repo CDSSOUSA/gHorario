@@ -63,7 +63,8 @@ class TeacDiscModel extends Model
         return $this->select('d.icone, '.$this->table . '.color, ' . $this->table . '.id_teacher, d.description, d.abbreviation, ' . $this->table . '.id,' .$this->table . '.id_discipline,' . $this->table . '.amount')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')
             ->where($this->table . '.id_teacher', $idTeacher)
-            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.id_year_school', session('session_idYearSchool')) 
+            ->orderBy('d.abbreviation','ASC')           
             ->findAll();
     }
     public function getTeacherWithoutDisciplineByIdTeacher(int $idTeacher)

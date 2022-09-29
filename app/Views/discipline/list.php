@@ -7,18 +7,13 @@ echo $this->extend('layouts2/default');
 echo $this->section('content'); ?>
 <div class="content-header">
     <div class="container">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0"> <small><?= $title ?></small></h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <?php
-                    foreach ($breadcrumb as $item) {
-                        echo $item;
-                    } ?>
-
-                </ol>
+        <div class="row mb-0 align-right">
+            <div class="col-sm-12">
+                <ul class="navbar-nav float-sm-right">
+                    <li class="nav-item d-flex"> 
+                        <?php echo anchor('#', 'Cadastrar Disciplina', ['onclick' => 'addDiscipline()', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Nova disciplina']); ?>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -27,42 +22,36 @@ echo $this->section('content'); ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <?php
-                        echo anchor('#', '<i class="icons fas fa-plus"></i> Nova disciplina', ['onclick' => 'addDiscipline()', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="d-flex bg-gradient-indigo shadow-primary b-radius-5 pt-4 pb-3">
+                            <h5 class="text-white font-weight-bold pl-3">Listar Disciplinas :: </h5>
 
+                        </div>
                     </div>
-
-                    <div class="card-body">
-                        <table id="tb_discipline" class="table table-bordered">
-                            <thead>
-                                <tr class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    <th>#</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Descrição :: </th>
-                                    <th class="text-left">Abreviação :: </th>
-                                    <th class="text-center">Quantidade :: </th>
-                                    <!-- <th>Qtde total aulas :: </th> -->
-                                    <th class="text-left">Ações :: </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="tb_discipline" class="table align-items-center mb-0 table-striped">
+                                <thead>                                    
+                                    <tr>
+                                        <th class="text-uppercase  text-xxs font-weight-bolder opacity-7">#</th>
+                                        <th class="text-uppercase text-xxs font-weight-bolder opacity-7">Descrição :: </th>
+                                        <th class="text-left text-uppercase text-xxs font-weight-bolder opacity-7">Abreviação :: </th>
+                                        <th class="text-center text-uppercase text-xxs font-weight-bolder opacity-7">Quantidade :: </th>
+                                        <!-- <th>Qtde total aulas :: </th> -->
+                                        <th class="text-center"></th>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
-                    <!-- <div class="card-footer clearfix">
-                    <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                </div> -->
                 </div>
             </div>
         </div>
+    
     </div>
 </div>
 

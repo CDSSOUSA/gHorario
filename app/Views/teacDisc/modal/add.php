@@ -2,8 +2,8 @@
 <div class="modal fade" id="addTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherDisciplineModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark font-weight-bold">
-                <h5 class="modal-title" id="addTeacherDisciplineModal">Cadastrar Professor/Disciplina :: </h5>
+            <div class="modal-header text-white font-weight-bold bg-default-discipline">
+                <h5 class="modal-title" id="addTeacherDisciplineModal"><i class="fa fa-user"></i> Cadastrar Disciplina/professor :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

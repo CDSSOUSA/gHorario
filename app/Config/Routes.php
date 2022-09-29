@@ -50,7 +50,7 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     $routes->post('create','ApiHorario::create');    
     $routes->get('delete/(:any)','ApiHorario::deleteSchedule/$1');    
     $routes->post('del','ApiHorario::del');    
-    $routes->get('list','ApiHorario::list');    
+    $routes->get('list/(:any)','ApiHorario::list/$1');    
     $routes->get('listDPS/(:any)/(:any)/(:any)/(:any)','ApiHorario::listDPS/$1/$2/$3/$4');    
 });
 
@@ -81,7 +81,9 @@ $routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($
     $routes->get('listDisciplinesByTeacher/(:any)','Teacher::listDisciplinesByTeacher/$1');
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Teacher::create'); 
+    $routes->post('update', 'Teacher::update'); 
     $routes->post('del', 'Teacher::del'); 
+    $routes->get('edit/(:any)', 'Teacher::show/$1'); 
     
 });
 /* ROUTES PROFESSOR DISCIPLINA */

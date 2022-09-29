@@ -50,7 +50,8 @@ function loadDataTeacher(data) {
         <i class="fa fa-plus" aria-hidden="true"></i> Nova</a> <div class="dropdown-divider"></div>
         ${rowAllocation}
         <div class="dropdown-divider"></div>
-        <h6 class="dropdown-header text-left"><i class="fa fa-user"></i> Professor ::</h6><a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="editTeacher(${element.id})">
+        <h6 class="dropdown-header text-left"><i class="fa fa-user"></i> Professor ::</h6>
+        <a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="editTeacher(${element.id})">
         <i class="fa fa-pen" aria-hidden="true"></i> Editar</a>
         <a href="#" class="btn btn-dark btn-sm dropdown-item" onclick="delTeacher(${element.id})">
         <i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>
@@ -63,9 +64,9 @@ function loadDataTeacher(data) {
         // }
         row +=
             `<tr>
-                <td class="align-middle">${indice + 1}</td>
-                <td class="align-middle">${element.name}</td>   
-                <td class="text-left discipline">${document.getElementsByClassName("discipline").innerHTML = listRowDisciplinesTeacher(element.disciplines)}</td>                     
+                <td class="align-middle font-weight-bold">${indice + 1}</td>
+                <td class="align-middle font-weight-bold">${element.name}</td>   
+                <td class="text-left font-weight-bold discipline">${document.getElementsByClassName("discipline").innerHTML = listRowDisciplinesTeacher(element.disciplines)}</td>                     
                 <td class="align-middle">                
                         <div class="dropdown dropstart">
                              <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -87,12 +88,12 @@ function listRowDisciplinesTeacher(data) {
     if (data != null) {
         data.forEach(e => {
             row += `   <div class="discipline-ticket">               
-                            <div class="d-flex m-1 p-2 w-35" style="background-color:${e.color}; color:white; border-radius: 5px;" onclick="editTeacherDiscipline(${e.id})">
+                            <div class="d-flex m-1 p-2 w-35" style="background-color:${e.color}; color:white; border-radius: 5px;" onclick="editTeacherDiscipline(${e.id})" title="Clique para editar!">
                                 <div>
                                     <img src="${URL_BASE}/assets/img/${e.icone}" width="25px"  class="me-3 border-radius-lg m-2" alt="spotify">
                                 </div>
                                 <div class="my-auto">
-                                    <h6 class="mb-0 text-sm"> ${e.abbreviation}</h6>
+                                    <h6 class="mb-0 text-sm font-weight-bold"> ${e.abbreviation}</h6>
                                     ${e.amount} - Aula(s) 
                                 </div>                    
                             </div>
@@ -177,6 +178,59 @@ if (addTeacherForm) {
     });
 }
 
+const editTeacherModal = new bootstrap.Modal(document.getElementById('editTeacherModal'));
+
+async function editTeacher(id) {
+
+    await axios.get(`${URL_BASE}/teacher/edit/${id}`)
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            if (data) {
+                editTeacherModal.show()
+                document.getElementById('idTeacherEdit').value = data.id
+                document.getElementById('nameEdit').value = data.name
+                document.getElementById('msgAlertErrorEditTeacher').innerText = ''
+                document.getElementById('fieldlertErrorEditName').innerText = ''
+            }
+        })
+        .catch()
+
+}
+
+
+const editTeacherForm = document.getElementById('editTeacherForm');
+console.log(editTeacherForm);
+
+if (editTeacherForm) {
+    editTeacherForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const dataForm = new FormData(editTeacherForm);
+        await axios.post(`${URL_BASE}/teacher/update`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                console.log(response.data);
+                if (response.data.error) {
+                    document.getElementById('msgAlertErrorEditTeacher').innerHTML = response.data.msg
+                    validateErros(response.data.msgs.name, 'fieldlertErrorEditName')
+                } else {
+                    editTeacherModal.hide();
+
+                    loadToast(titleSuccess, bodySuccess, success);
+                    //loada(); 
+                    //location.reload();
+                    listTeacDisc();
+                }
+            })
+            .catch(error => console.log(error))
+
+    })
+}
+
+
 const editModal = new bootstrap.Modal(document.getElementById('editTeacherDisciplineModal'));
 
 async function editTeacherDiscipline(id) {
@@ -195,6 +249,8 @@ async function editTeacherDiscipline(id) {
                 document.getElementById('id_discipline').value = data[0].description
                 document.getElementById('numeroAulas').value = data[0].amount
                 document.getElementById('corDestaque').value = data[0].color
+                document.getElementById('headerModal').style.backgroundColor = data[0].color
+                document.getElementById('headerModal').style.color = '#FFF'
                 if (data[0].amount_allocation == 0) {
                     document.getElementById('btnDelete').innerHTML = `<a herf="#" class="btn btn-danger" onclick="delTeacherDiscipline(${id})"><i class="fa fa-trash"></i> Excluir </a>`
                 }
@@ -386,7 +442,8 @@ async function getDataTeacherDiscipline(id) {
             console.log(data);
             if (data) {
                 //editModal.show();
-                //document.getElementById('idEdit').value = data[0].id
+                document.getElementById('heardAlocationModel').style.backgroundColor = data[0].color
+                document.getElementById('heardAlocationModel').style.color = '#FFF'
                 document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
 
                 //document.getElementById('id_discipline').value = data[0].description
@@ -575,7 +632,7 @@ const loadDataAllocation = (data) => {
         // //     console.log(element.status)
         // //     ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
         // // }
-       
+
         row +=
             `<tr>
                 <td class="align-middle">${indice + 1}</td>                  
@@ -588,7 +645,7 @@ const loadDataAllocation = (data) => {
                                             <img src="${URL_BASE}/assets/img/${el.icone}" width="30px" class="me-3 border-radius-lg p-1" alt="spotify">
                                         </div>
                                         <div class="my-auto">
-                                            <h6 class="mb-0 text-sm"> ${el.abbreviation} </h6>
+                                            <h6 class="mb-0 text-sm"> ${el.abbreviation} - ${el.name.split(" ", 1)} </h6>
                                             <span class="text-sm">${convertDayWeek(el.dayWeek)} - ${el.position} ª AULA - ${convertShift(el.shift)}</span>
                                         </div>
                                     </div>                     
@@ -650,14 +707,20 @@ async function delAllocationTeacher(idAllocationDel, dayWeekAllocationDel) {
                 //document.getElementById('idEdit').value = data[0].id
                 //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
                 document.getElementById('dataAllocation').innerHTML = `
-                        <div class="text-white ticket-small" style="background-color:${data[0].color}">
-                            <div class="rotulo">
-                                <span class="abbreviation font-weight-bold">${convertDayWeek(data[0].dayWeek)} - ${data[0].position}ª Aula</span>
-                                <span class="icon-delete"><i class="fa fa-book" aria-hidden="true"></i></span>
-                                <br>
-                                </div>
-                                <p>${data[0].abbreviation}</p>
-                        </div>`
+
+                <div class="text-white m-2 p-2 w-35" style="background-color:${data[0].color}; border-radius: 5px; margin: 5px;">
+                 
+                                        <div class="d-flex">
+                                        <div>
+                                            <img src="${URL_BASE}/assets/img/${data[0].icone}" width="30px" class="me-3 border-radius-lg p-1" alt="spotify">
+                                        </div>
+                                        <div class="my-auto">
+                                            <h6 class="mb-0 text-sm"> ${data[0].abbreviation} - ${data[0].name.split(" ", 1)} </h6>
+                                            <span class="text-sm">${convertDayWeek(data[0].dayWeek)} - ${data[0].position} ª Aula - ${convertShift(data[0].shift)}</span>
+                                        </div>
+                                    </div>        
+
+                        `
                 document.getElementById('id_teacher').value = data[0].id_teacher
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color

@@ -101,6 +101,74 @@ class Teacher extends BaseController
             return $this->response->setJSON($response);
         }
     }
+    public function update()
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('/admin/blog');
+        }
+        $val = $this->validate(
+            [
+                'name' => 'required|min_length[3]',               
+            ],
+            [
+                'name' => [
+                    'required' => 'Preenchimento obrigatório!',
+                    'min_length' => 'Mínimo permitido 3 caracteres!'
+                ],                
+            ]
+        );
+
+        if (!$val) {
+
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
+                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>',
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+        }
+
+
+        $teacher['name'] = mb_strtoupper($this->request->getPost('name'));
+        $teacher['id'] = mb_strtoupper($this->request->getPost('id'));
+        
+       
+        //$data['status'] = 'A';
+
+        // if ($data['description'] > getenv('YEAR.END')) {
+        //     return redirect()->back()->withInput()->with('error', 'Ano não permitido!');
+        // }
+
+        try {
+
+            $save = $this->teacherModel->save($teacher);
+    
+            if ($save) {
+                $response = [
+                    'status' => 'OK',
+                    'error' => false,
+                    'code' => 200,
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    //'data' => $this->list()
+                ];
+                return $this->response->setJSON($response);
+            }
+        } catch(Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+    }
 
     public function listDisciplinesByTeacher($id) {
         $data = $this->listTeacDisc($id);

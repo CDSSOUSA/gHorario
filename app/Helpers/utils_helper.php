@@ -82,7 +82,7 @@ function abbreviationTeacher(string $nomeCompleto): string
 
 function generateButtonRetro(string $adress): string
 {
-    return anchor($adress, '<i class="icons fas fa-arrow-circle-left"></i> Voltar', ['class' => 'btn btn-warning']);
+    return anchor($adress, '<i class="icons fas fa-arrow-circle-left"></i> Voltar', ['class' => 'btn btn-outline-warning']);
 }
 function generateButtonCloseModal(): string
 {
@@ -92,7 +92,7 @@ function generationButtonSave(string $title = null): string
 {
     if ($title == null)
         $title = 'Salvar';
-    return '<button type="submit" class="btn btn-success"> <i class="fa fa-check" aria-hidden="true"></i> ' . $title . '</button>
+    return '<button type="submit" class="btn btn-outline-success"> <i class="fa fa-check" aria-hidden="true"></i> ' . $title . '</button>
     ';
 }
 

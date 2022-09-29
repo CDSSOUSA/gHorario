@@ -81,13 +81,12 @@ class ApiHorario extends ResourceController
         }
 
     }
-    public function list()
+    public function list(string $shift)
     {
-        try {
-         
+        try {       
                
 
-            $dataSerie = $this->seriesModel->getSeries('M');
+            $dataSerie = $this->seriesModel->getSeries($shift);
 
            
 

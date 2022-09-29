@@ -39,7 +39,7 @@ class Discipline extends BaseController
         $js = array_merge($this->javascript, $newJs);
 
         $data = [
-            'title' => '<i class="fa fa-book"></i> Listar Disciplinas :: ',
+            'title' => 'LISTAR DISCIPLINAS :: ',
             'breadcrumb' => [
                 '<li class="breadcrumb-item">' . anchor('/', 'Home') . '</li>',
                 '<li class="breadcrumb-item active"> Listar </li>'
@@ -109,6 +109,7 @@ class Discipline extends BaseController
             [
                 'description' => 'required|min_length[3]|is_unique[tb_discipline.description]',
                 'amount' => 'required',
+                'icone' => 'required',
                 'abbreviation' => 'required|min_length[3]|max_length[6]|is_unique[tb_discipline.abbreviation]',
 
             ],
@@ -119,6 +120,9 @@ class Discipline extends BaseController
                     'is_unique' => 'Disciplina já utilizada!'
                 ],
                 'amount' => [
+                    'required' => 'Preenchimento obrigatório!',
+                ],
+                'icone' => [
                     'required' => 'Preenchimento obrigatório!',
                 ],
                 'abbreviation' => [
@@ -152,6 +156,7 @@ class Discipline extends BaseController
         $data['abbreviation'] = mb_strtoupper($this->request->getPost('abbreviation'));
         $data['description'] = mb_strtoupper($this->request->getPost('description'));
         $data['amount'] = mb_strtoupper($this->request->getPost('amount'));
+        $data['icone'] = $this->request->getPost('icone');
         try {
 
             $save = $this->disciplineModel->save($data);
@@ -164,7 +169,7 @@ class Discipline extends BaseController
                     'msg' => '<p>Operação realizada com sucesso!</p>',
                     //'data' => $this->list()
                 ];
-                return $this->response->setJSON($response);
+                return $this->response->setJSON($data);
             }
         } catch (Exception $e) {
 

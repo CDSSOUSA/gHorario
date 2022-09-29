@@ -1,5 +1,5 @@
-var divLoad = document.querySelector('#load');
-var divLoader = document.querySelector('#loader');
+// var divLoad = document.querySelector('#load');
+// var divLoader = document.querySelector('#loader');
 
 /*
 ** LISTAR DISCIPLINAS
@@ -25,32 +25,32 @@ function loadDataDisciplines(data) {
 
     data.forEach((element, indice) => {      
 
-        ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="editDiscipline(${element.id})"><i class="fa fa-pen" aria-hidden="true"></i> Editar</a> `;
+        ticket = `<a href="#" class="btn btn-outline-dark" onclick="editDiscipline(${element.id})" title="Editar"><i class="fa fa-pen" aria-hidden="true"></i></a> `;
 
         //Define botão de excluir
         if(!element.teacDisc){
-            ticket += `<a href="#" class="btn btn-dark btn-sm" onclick="delDiscipline(${element.id})"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>`
+            ticket += `<a href="#" class="btn btn-outline-dark" onclick="delDiscipline(${element.id})" title="Excluir"><i class="fa fa-trash" aria-hidden="true"></i></a>`
             } else {
-                ticket += `<a href="#" class="btn btn-dark btn-sm disabled"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</a>`
+                ticket += `<a href="#" class="btn btn-outline-dark disabled" title="Excluir"><i class="fa fa-trash" aria-hidden="true"></i></a>`
            
             }
        row +=
             `<tr class="text-sm text-secondary mb-0">
             
-                <td class="align-middle">${indice + 1}</td>                
+                <td class="align-middle font-weight-bold">${indice + 1}</td>                
                 <td>
                     <div class="d-flex px-2 w-35 b-radius-5 text-white font-size-8" style="background-color:#2e5b8e;">
                         <div>
                             <img src="${URL_BASE}/assets/img/${element.icone}" width="35px"  class="avatar avatar-sm me-3 border-radius-lg m-2" alt="spotify">
                         </div>
                         <div class="my-auto">
-                        <h6 class="mb-0 text-sm">${element.description}</h6>
+                        <h6 class="mb-0 text-sm font-weight-bold">${element.description}</h6>
                         </div>
                     </div>
                 </td>
-                <td class="align-middle">${element.abbreviation}</td>           
-                <td class="align-middle text-center">${element.amount}</td>           
-                <td class="align-middle">${ticket}</td>        
+                <td class="align-middle font-weight-bold">${element.abbreviation}</td>           
+                <td class="align-middle text-center font-weight-bold">${element.amount}</td>           
+                <td class="align-middle text-center">${ticket}</td>        
             </tr>`;
 
     });
@@ -78,6 +78,9 @@ async function addDiscipline() {
     document.getElementById('fieldlertErrorDescriptionDiscipline').innerHTML = ''
     document.getElementById('fieldlertErrorAbbreviation').innerHTML = ''
     document.getElementById('fieldlertErrorAmount').innerHTML = ''
+    document.getElementById('fieldlertErrorIcone').innerHTML = ''
+    document.getElementById('id_select2_examplee').value=0;
+    //document.querySelectorAll('#id_select2_examplde option').forEach(option => option.innerHTML='')
     addDisciplineForm.reset();
         $('#addDisciplineModal').on('shown.bs.modal', function () {
             $('#description').trigger('focus');
@@ -104,6 +107,7 @@ if (addDisciplineForm) {
                     validateErros(response.data.msgs.description, 'fieldlertErrorDescriptionDiscipline')
                     validateErros(response.data.msgs.abbreviation, 'fieldlertErrorAbbreviation')
                     validateErros(response.data.msgs.amount, 'fieldlertErrorAmount') 
+                    validateErros(response.data.msgs.icone, 'fieldlertErrorIcone') 
 
                 } else {
                     

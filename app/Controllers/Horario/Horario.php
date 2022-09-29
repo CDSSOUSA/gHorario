@@ -80,7 +80,7 @@ class Horario extends BaseController
             'js' => $js,
         );
 
-        return view('horario/horario', $data);
+        return view('schedule/horario', $data);
     }
   
     public function addProfissionalHorario(int $id_serie, int $dia_semana, int $posicao, string $shift): string

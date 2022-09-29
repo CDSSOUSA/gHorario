@@ -3,8 +3,8 @@
 <div class="modal fade" id="editTeacherDisciplineModal" tabindex="-1" role="dialog" aria-labelledby="editTeacherDisciplineModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
-                <h5 class="modal-title" id="editTeacherDisciplineModalLabel">Editar Professor/Disciplina :: </h5>
+            <div id="headerModal" class="modal-header">
+                <h5 class="modal-title" id="editTeacherDisciplineModalLabel"><i class="fa fa-user"></i> Editar Disciplina/professor :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -53,10 +53,13 @@
                                                                                         ?></span>
 
                     </div>
-                    <div class="row">
-                    </div>
+                    
 
-                    <div class="d-flex" style="width: 100%;">
+                    
+                </div>
+
+            </div>
+            <div class="d-flex card-footer" style="width: 100%;">
                         <div class="text-left p-2" style="width: 70%; align-items: left;
   justify-content: left;">
                             <?= generationButtonSave(); ?>
@@ -69,9 +72,6 @@
 
                     </div>
                     </form>
-                </div>
-
-            </div>
         </div>
 
     </div>

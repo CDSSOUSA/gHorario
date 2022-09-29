@@ -146,7 +146,7 @@ class Professor extends BaseController
             ],
             'msgs' => $msgs,
             'erro' => $this->erros,
-            'disciplinas' => $this->disciplinaModel->findAll(),
+            'disciplinas' => $this->disciplinaModel->orderBy('abbreviation')->findAll(),
             'teachers' => $this->professorModel->findAll(),
             'css' => $this->style,
             'js' => $js,

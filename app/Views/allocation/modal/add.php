@@ -2,7 +2,7 @@
 <div class="modal fade" id="addAllocationModal" tabindex="-1" role="dialog" aria-labelledby="addAllocationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
+            <div id="heardAlocationModel" class="modal-header">
                 <h5 class="modal-title" id="addAllocationModalLabel"><i class="fa fa-user"></i> Adicionar Alocação ::</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

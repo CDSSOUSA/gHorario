@@ -4,12 +4,13 @@
 // var bodySuccess = ' Operação realizada com sucesso';
 // var success = 'success';
 
-
+const urlParams = window.location.pathname.split('/');
+const shift = urlParams[5]
 
 listSchedule();
 
 async function listSchedule() {
-    await axios.get(`${URL_BASE}/horario/api/list`)
+    await axios.get(`${URL_BASE}/horario/api/list/${shift}`)
         .then(response => {
             const data = response.data;
             console.log(data);
@@ -33,9 +34,9 @@ function loadDataSchedule(data) {
             let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
 
             row += `<tr class="${rowColor}"><th scope="row">${dayShow}</th>
-            <th>${ps}ª</th>`      
+            <th scope="row">${ps}ª</th>`      
             data.forEach((elem,indice) => {
-                row += `<td id="row${ps}${dw}${elem.id}" class="text-left">${listDPS(elem.id, dw, ps, 'M')}</td>`
+                row += `<td id="row${ps}${dw}${elem.id}" class="text-left">${listDPS(elem.id, dw, ps, shift)}</td>`
             })
             row += `</tr>`
                
@@ -91,7 +92,7 @@ function listDPS(idSerie, day,position,shift) {
                 <img src="${URL_BASE}/assets/img/${response.data.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
             </div>
             <div class="my-auto">
-                <h6 class="mb-0 font-weight-bold font-size-11"> ${response.data.name}</h6>
+                <h6 class="mb-0 font-weight-bold font-size-11"> ${response.data.name.split(" ", 1)}</h6>
                 <span class="mb-0 font-weight-bold text-sm">${response.data.abbreviation}</span>
             </div>
         </div></a>`
@@ -219,6 +220,8 @@ async function deleteSchedule(id) {
                 document.getElementById('shiftDel').innerText = convertShift(data.shift)
                 //document.getElementById('nameDel').innerText = data.name.split(" ", 1)
                 document.getElementById('color').style.backgroundColor = data.color
+                document.getElementById('headerScheduleRemove').style.backgroundColor = data.color
+                document.getElementById('headerScheduleRemove').style.color = '#FFF'
                 document.getElementById('image-disc').innerHTML = ` <img src="${URL_BASE}/assets/img/${data.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">`
             }
         })
