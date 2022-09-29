@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="form-group col-6">
                         <label for="inputNanme4" class="form-label">Nome :: </label>
-                        <input type="text" id="nameEdit" class="form-control" id="firstName" placeholder="Nome" value="<?php //$nameTeacher 
+                        <input type="text" id="nameTeacherDisciEdit" class="form-control" placeholder="Nome" value="<?php //$nameTeacher 
                                                                                                                         ?>" disabled>
                         <span style="color:red" class="font-italic font-weight-bold"><?php //echo $erro !== '' ? $erro->getError('nNome') : ''; 
                                                                                         ?></span>

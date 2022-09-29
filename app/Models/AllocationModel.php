@@ -152,6 +152,44 @@ class AllocationModel extends Model
         $shift = $data['shift'];
         $allocation = $data['disciplines'];
         $dayWeek = $data['dayWeek'];
+        //$position = $data['position'];
+
+        $cont = 0;
+
+        foreach ($shift as $sh) {
+            foreach ($allocation as $item) {
+                foreach ($dayWeek as $day) {
+                    $dy = explode(';',$day);
+                    //foreach ($position as $posit) {
+                        $dataAllocation['id_teacher_discipline'] = $item;
+                        $dataAllocation['dayWeek'] = $dy[1];
+                        $dataAllocation['position'] = $dy[0];
+                        $dataAllocation['situation'] = 'L';
+                        $dataAllocation['status'] = 'A';
+                        $dataAllocation['shift'] = $sh;
+                        $dataAllocation['id_year_school'] = session('session_idYearSchool');;
+                        if ($this->validateAllocation($item, $dy[1], $dy[0], $sh) <= 0) {
+                            $save = $this->save($dataAllocation);
+                            if ($save) {
+                                $cont++;
+                            }
+                        }
+                    //}
+                }
+            }
+        }
+
+        if ($cont >= 1) {
+            return true;
+        }
+
+        return false;
+    }
+    public function saveAllocationOriginal(array $data)
+    {
+        $shift = $data['shift'];
+        $allocation = $data['disciplines'];
+        $dayWeek = $data['dayWeek'];
         $position = $data['position'];
 
         $cont = 0;

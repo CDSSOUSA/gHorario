@@ -28,44 +28,30 @@
                     </div>
                 </div>
                 <div class="row">
-                    <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span></span>
-                    <div class="card-body table-responsive p-0">
-                        <table class="table">
-                            <thead>
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <?php
-                                        for ($dw = 2; $dw < 7; $dw++) { ?>
-                                            <th class="text-center"><?= diaSemanaExtenso($dw); ?></th>
-                                        <?php } ?>
-                                    </tr>
+                    <div class="form-group col-6">
+                        <label for="inputEmail3" class="col-form-label" id="">Dia Semana :: <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span> </label>
+                        <?php for ($i = 2; $i <= 6; $i++) : ?>
 
-                                </thead>
-                            </thead>
-                            <tbody>
-
-                                <?php  //for ($dw = 2; $dw < 7; $dw++):
-                                for ($ps = 1; $ps < 7; $ps++) : ?>
-                                    <tr>
-                                        <td class="align-middle text-center"><span class="text-gray"><?= $ps; ?>ª aula</span><br><span class="text-gray" style="font-size: 10px;"><?=translateSchedule($ps);?></span>
-                                            </td>
-                                        <?php for ($dw = 2; $dw < 7; $dw++) : ?>
-                                            <td class="align-middle text-center">
-                                           
-                                                <input class="form-check-input checkbox" name="nDayWeek[]" value="<?= $ps; ?>;<?= $dw; ?>" type="checkbox" role="switch" id="dayWeek<?= $ps; ?><?= $dw; ?>">
-                                                <label class="form-check-label" for="dayWeek<?= $ps; ?><?= $dw; ?>"></label>
-                                            
-                                            <?php endfor; ?>
-                                    </tr>
-                                <?php endfor;
-                                //endfor;
-                                ?>
-                            </tbody>
-                        </table>
+                            <div class="form-check custom-switch">
+                                <input class="form-check-input checkbox" name="nDayWeek[]" value="<?= $i; ?>" <?= set_checkbox('nDayWeek', $i); ?> type="checkbox" role="switch" id="dayWeek<?= $i; ?>">
+                                <label class="form-check-label" for="dayWeek<?= $i; ?>"><?= diaSemanaExtenso($i); ?></label>
+                            </div>
+                        <?php endfor; ?>
+                        <span class="error invalid-feedback" id="fieldlertErrorDayWeek"></span>
                     </div>
-                    <span class="error invalid-feedback" id="fieldlertErrorDayWeek"></span>
-                    <span class="error invalid-feedback" id="fieldlertErrorPosition"></span>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-form-label">Posição Aula :: </label>
+                        <?php
+                        for ($i = 1; $i <= 6; $i++) : ?>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input checkbox" name="nPosition[]" value="<?= $i; ?>" <?= set_checkbox('nPosition', $i); ?> type="checkbox" role="switch" id="checboxPosicao<?= $i; ?>">
+                                <label class="form-check-label" for="checboxPosicao<?= $i; ?>"><?= $i . 'ª AULA'; ?></label>
+                            </div>
+                        <?php
+                        endfor; ?>
+                        <span class="error invalid-feedback" id="fieldlertErrorPosition"></span>
+                    </div>
                 </div>
                 <div class="row">
 
@@ -90,7 +76,7 @@
                         <span class="error invalid-feedback" id="fieldlertErrorShift"></span>
 
                     </div>
-                </div>
+                </div>               
             </div>
             <div class="modal-footer card-footer">
                 <?= generationButtonSave(); ?>

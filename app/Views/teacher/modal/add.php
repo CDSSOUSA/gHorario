@@ -2,7 +2,7 @@
 <div class="modal fade" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
+            <div class="modal-header bg-default-discipline">
                 <h5 class="modal-title" id="addTeacherModalLabel"><i class="fa fa-user"></i> Adicionar Professor ::</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="form-group col-12">
                         <label for="inputNanme4" class="form-label">Nome Completo :: </label>
-                        <input type="text" name="name" class="form-control" id="firstName" placeholder="Nome completo" value="<?= set_value('nNome') ?>" autofocus>
+                        <input type="text" name="name" class="form-control" id="nameTeacherAdd" placeholder="Nome completo" value="<?= set_value('nNome') ?>" autofocus>
                         <span class="error invalid-feedback" id="fieldlertErrorname"></span>
                     </div>
 

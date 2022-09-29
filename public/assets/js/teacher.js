@@ -64,9 +64,9 @@ function loadDataTeacher(data) {
         // }
         row +=
             `<tr>
-                <td class="align-middle font-weight-bold">${indice + 1}</td>
-                <td class="align-middle font-weight-bold">${element.name}</td>   
-                <td class="text-left font-weight-bold discipline">${document.getElementsByClassName("discipline").innerHTML = listRowDisciplinesTeacher(element.disciplines)}</td>                     
+                <td class="align-middle text-sm font-weight-bold">${indice + 1}</td>
+                <td class="align-middle text-sm font-weight-bold">${element.name}</td>   
+                <td class="text-left text-sm font-weight-bold discipline">${document.getElementsByClassName("discipline").innerHTML = listRowDisciplinesTeacher(element.disciplines)}</td>                     
                 <td class="align-middle">                
                         <div class="dropdown dropstart">
                              <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -123,7 +123,7 @@ async function addTeacher() {
     addTeacherForm.reset();
 
     $('#addTeacherModal').on('shown.bs.modal', function () {
-        $('#name').trigger('focus');
+        $('#nameTeacherAdd').trigger('focus');
     });
 
 }
@@ -245,7 +245,7 @@ async function editTeacherDiscipline(id) {
             if (data) {
                 editModal.show();
                 document.getElementById('idEdit').value = data[0].id
-                document.getElementById('nameEdit').value = data[0].name
+                document.getElementById('nameTeacherDisciEdit').value = data[0].name
                 document.getElementById('id_discipline').value = data[0].description
                 document.getElementById('numeroAulas').value = data[0].amount
                 document.getElementById('corDestaque').value = data[0].color

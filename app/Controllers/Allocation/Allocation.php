@@ -34,7 +34,7 @@ class Allocation extends BaseController
             [
                 'id_teacher' => 'required',
                 'nDisciplines' => 'required',
-                'nPosition' => 'required',
+                // 'nPosition' => 'required',
                 'nDayWeek' => 'required',
                 'nShift' => 'required',
             ],
@@ -42,9 +42,9 @@ class Allocation extends BaseController
                 'id_teacher' => [
                     'required' => 'Preenchimento obrigatório!',
                 ],
-                'nPosition' => [
-                    'required' => 'Preenchimento obrigatório!',
-                ],
+                // 'nPosition' => [
+                //     'required' => 'Preenchimento obrigatório!',
+                // ],
                 'nDayWeek' => [
                     'required' => 'Preenchimento obrigatório!',
 
@@ -80,7 +80,7 @@ class Allocation extends BaseController
         $idTeacher = $this->request->getPost('id_teacher');
         $data['dayWeek'] = $this->request->getPost('nDayWeek[]');
         $data['disciplines'] = $this->request->getPost('nDisciplines[]');
-        $data['position'] = $this->request->getPost('nPosition[]');
+        // $data['position'] = $this->request->getPost('nPosition[]');
         $data['shift'] = $this->request->getPost('nShift[]');
 
         

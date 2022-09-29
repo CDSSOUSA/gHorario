@@ -19,15 +19,13 @@ echo $this->section('content'); ?>
     </div>
 </div>
 <div class="content">
-    <div class="container">
-     
+    <div class="container">     
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="d-flex bg-gradient-indigo shadow-primary b-radius-5 pt-4 pb-3">
                             <h5 class="text-white font-weight-bold pl-3">Listar Professor :: </h5>
-
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -52,8 +50,6 @@ echo $this->section('content'); ?>
                 </div>
             </div>
         </div>
-    
- 
     </div>
 </div>
 

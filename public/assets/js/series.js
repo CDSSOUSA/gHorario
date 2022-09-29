@@ -25,17 +25,19 @@ function loadDataSeries(data) {
     data.forEach((element, indice) => {
         //console.log(data)
 
-        let ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="far fa-circle nav-icon" aria-hidden="true"></i> Ativar</a>`;
+        let ticket = `<a href="#" class="btn btn-outline-dark" onclick="activeSeries(${element.id})" title="Ativar série"><i class="fa fa-check" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-outline-dark disabled" title="Editar série"><i class="fa fa-pen"></i></a>`;
 
         if (element.status === "A") {
             console.log(element.status)
-            ticket = `<a href="#" class="btn btn-dark btn-sm" onclick="activeSeries(${element.id})"><i class="fa fa-check-circle"></i> Desativar</a>`;
+            ticket = `<a href="#" class="btn btn-outline-dark" onclick="activeSeries(${element.id})" title="Desativar série"><i class="fa fa-trash"></i></a>
+            <a href="#" class="btn btn-outline-dark" onclick="editSeries(${element.id})" title="Editar série"><i class="fa fa-pen"></i></a>`;
         }
         row +=
             `<tr>
-                <td>${indice + 1}</td>
-                <td>${element.description}º ${element.classification} - ${convertShift(element.shift)} </td>
-                <td>${convertStatus(element.status)}</td>           
+                <td class="align-middle text-sm font-weight-bold">${indice + 1}</td>
+                <td class="align-middle text-sm font-weight-bold">${element.description}º ${element.classification} - ${convertShift(element.shift)} </td>
+                <td class="align-middle text-sm font-weight-bold">${convertStatus(element.status)}</td>           
                 <td>${ticket}</td>        
             </tr>`;
 
@@ -178,6 +180,76 @@ async function getSeriess(id, locale) {
         })
         .catch(error => console.log(error))
 }
+
+const editSerieModal = new bootstrap.Modal(document.getElementById('editSerieModal'));
+const editSerieForm = document.getElementById('editSerieForm');
+async function editSeries(id) {
+
+    await axios.get(`${URL_BASE}/series/edit/${id}`)
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            if (data) {
+                editSerieModal.show()
+                editSerieForm.reset()
+                document.getElementById('idSerieEdit').value = id
+                document.getElementById('descriptionEdit').value = data[0].description
+                document.getElementById('classificationEdit').value = data[0].classification
+                                
+                const select = document.querySelector('#shift');
+                const optionShift = data[0].shift;
+               
+                if(select.options.length > 1) {
+                    document.querySelector('#shift option[value=M]').remove();
+                    document.querySelector('#shift option[value=T]').remove();
+                }
+                if(optionShift === 'M') {                   
+                    select.options[select.options.length] = new Option('Manhã','M');
+                    select.options[select.options.length] = new Option('Tarde','T');
+                    
+                   
+                } else {                    
+                    select.options[select.options.length] = new Option('Tarde','T');
+                    select.options[select.options.length] = new Option('Manhã','M');
+                }
+               
+                // document.getElementById('nameEdit').value = data.name
+                // document.getElementById('msgAlertErrorEditTeacher').innerText = ''
+                // document.getElementById('fieldlertErrorEditName').innerText = ''
+            }
+        })
+        .catch()
+
+}
+
+if (editSerieForm) {
+    editSerieForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dataForm = new FormData(editSerieForm);
+        await axios.post(`${URL_BASE}/series/update`, dataForm, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+            if (response.data.error) {
+                document.getElementById('msgAlertErrorEditSerie').innerHTML = response.data.msg
+                //validateErros(response.data.msgs.name, 'fieldlertErrorEditName')
+            } else {
+                editSerieModal.hide();
+
+                loadToast(titleSuccess, bodySuccess, success);
+                //loada(); 
+                //location.reload();
+                listSeries();
+            }
+        })
+
+    })
+}
+
 
 // const addYearSchoolModal = new bootstrap.Modal(document.getElementById('addYearSchoolModal'));
 // const activateYearSchoolModal = new bootstrap.Modal(document.getElementById('activateYearSchoolModal'));

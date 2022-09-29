@@ -54,6 +54,24 @@ function diaSemanaExtenso(int $diaSemana): string
     //         return null;
     // }
 }
+function translateSchedule(int $position, $shift=null): string
+{
+    $schedule = [
+        "13:00 - 13:45",
+        "13:45 - 14:30",
+        "14:30 - 15:15",
+        "15:15 - 16:00",
+        "16:00 - 16:45", 
+        "16:45 - 17:30"    
+    ];
+
+    foreach($schedule as $key => $item){
+        if($position === $key + 1)
+        return $item;
+    }
+    return null;
+   
+}
 function generationColor()
 {
     return '#'.sprintf("%02X%02X%02X", mt_rand(0,255), mt_rand(0,255), mt_rand(0,255));

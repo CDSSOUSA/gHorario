@@ -11,16 +11,13 @@ echo $this->section('content'); ?>
 <div class="content-header">
     <div class="container">
         <div class="row mb-2">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <?php
-                    foreach ($breadcrumb as $item) {
-                        echo $item;
-                    } ?>
-
-                </ol>
+            
+            <div class="col-sm-12">
+            <ul class="navbar-nav float-sm-right">
+                    <li class="nav-item d-flex"> 
+                        <?php echo anchor('#', 'Cadastrar Série', ['onclick' => 'addSeries()', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Nova série']); ?>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -28,27 +25,25 @@ echo $this->section('content'); ?>
 <div class="content">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <div class="card card-dark">
-                    <div class="card-header">
-                        <h3 class="card-title font-weight-bold"><i class="fa fa-users"></i> Listar séries :: </h3>
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <?php
-                                echo anchor('#', '<i class="icons fas fa-plus"></i> Nova Série', ['onclick' => 'addSeries()', 'data-toggle' => 'modal', 'class' => 'btn btn-secondary']); ?>
-                            </div>
+            <div class="col-12">
+                <div class="card my-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="d-flex bg-gradient-indigo shadow-primary b-radius-5 pt-4 pb-3">
+                            <h5 class="text-white font-weight-bold pl-3">Listar Séries :: </h5>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table table-responsive p-0">
-                            <table id="tb_series" class="table table-striped">
-                                <thead>
+                    <div class="card-body px-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="tb_series" class="table align-items-center mb-0 table-striped">
+                                <thead>                                    
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Descrição :: </th>
-                                        <th scope="col">Status ::</th>
-                                        <th scope="col">Ação :: </th>
-                                    </tr>
+                                        <th class="text-uppercase text-xxs font-weight-bolder opacity-7">#</th>
+                                        <th class="text-uppercase text-xxs font-weight-bolder opacity-7">Descrição :: </th>
+                                        <th class="text-left text-uppercase text-xxs font-weight-bolder opacity-7">Status :: </th>
+                                        <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantidade :: </th> -->
+                                        <!-- <th>Qtde total aulas :: </th> -->
+                                        <th class="text-center"></th>
+                                    </tr>                                    
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -58,6 +53,8 @@ echo $this->section('content'); ?>
                 </div>
             </div>
         </div>
+    
+    
     </div>
 </div>
 <!-- modal active -->
@@ -65,7 +62,7 @@ echo $this->section('content'); ?>
 <div class="modal fade" id="addSeriesModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark font-weight-bold">
+            <div class="modal-header bg-default-discipline">
                 <h5 class="modal-title" id="addSeriesModalLabel"><i class="fa fa-users"></i> Cadastrar Série :: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-bs-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -164,5 +161,6 @@ echo $this->section('content'); ?>
         </div>
     </div>
 </div>
+<?=view('series/modal/edit');?>
 
 <?= $this->endSection(); ?>
