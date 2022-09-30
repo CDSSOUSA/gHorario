@@ -26,7 +26,7 @@ class ApiHorario extends ResourceController
         $this->seriesModel = new SeriesModel();
     }
 
-    public function listDPS($idSerie, $dw, $ps, $shift) 
+    public function listDPS($idSerie, $dw, $ps, $shift)
     {
         try {
             //define array limites
@@ -34,6 +34,14 @@ class ApiHorario extends ResourceController
             // buscou as series
             $dataSerie = $this->schedule->getTotalDiscBySerie($idSerie);
 
+            $horario = $this->schedule->getTimeDayWeek($dw, $idSerie, $ps);
+
+            // if(!empty($horario)) {
+
+            //     $id_teacher = [$horario['id_teacher']];
+            // } else {
+            //     $id_teacher = ['0'];
+            // }
             // if exitir
             if ($dataSerie != null) {
                 //
@@ -45,33 +53,28 @@ class ApiHorario extends ResourceController
                         $limits[] = $d->id;
                     }
                 }
-                if ($limits != null) {                   
+                if ($limits != null) {
                     $allocationDisponivel = $this->allocation->getAllocationByDayWeek($idSerie, $dw, $ps, $shift, $limits);
                 } else {
 
                     $allocationDisponivel = $this->allocation->getAllocationByDayWeekA($idSerie, $dw, $ps, $shift);
                 }
             } else {
-                
+
                 $allocationDisponivel = $this->allocation->getAllocationByDayWeekA($idSerie, $dw, $ps, $shift);
             }
 
-
             $data = 'ocupada';
 
-            $horario = $this->schedule->getTimeDayWeek($dw, $idSerie, $ps);
-            
-
-            if($allocationDisponivel != null && empty($horario)) {
+            if ($allocationDisponivel != null && empty($horario)) {
                 $data = 'livre';
-            } else if(empty($horario)) {
+            } else if (empty($horario)) {
                 $data = 'vago';
             } else {
                 $data = $horario;
-            }           
+            }
 
             return $this->response->setJSON($data);
-
         } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',
@@ -79,16 +82,15 @@ class ApiHorario extends ResourceController
                 'error'    => $e->getMessage()
             ]);
         }
-
     }
     public function list(string $shift)
     {
-        try {       
-               
+        try {
+
 
             $dataSerie = $this->seriesModel->getSeries($shift);
 
-           
+
 
             // foreach ($data as $key => $item) {
 
@@ -111,10 +113,16 @@ class ApiHorario extends ResourceController
 
     public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)
     {
+        // if tem alguem na linha da aul
+        //exluir na montagem da tela
+        // criar uma funcao para teastar a alinha 
         try {
             $datas = $this->schedule->getTotalDiscBySerie($idSerie);
             $ar = 0;
             $limits = [];
+
+            $horario = $this->schedule->getTimeDayWeek($dayWeek, $idSerie, $position);
+
             if ($datas != null) {
 
                 foreach ($datas as $d) {
@@ -140,11 +148,11 @@ class ApiHorario extends ResourceController
                 return $this->response->setJSON($data);
             } else {
                 $data = [[
-                    'id'=> "0",
-                    'name'=> "SEM PROFESSOR",
-                    'abbreviation'=> "SH",
-                    'color'=> "#000000", 
-                    'id_teacher'=> "0"
+                    'id' => "0",
+                    'name' => "SEM PROFESSOR",
+                    'abbreviation' => "SH",
+                    'color' => "#000000",
+                    'id_teacher' => "0"
                 ]];
                 return $this->response->setJSON($data);
             }
@@ -164,7 +172,7 @@ class ApiHorario extends ResourceController
     {
         try {
 
-            $data = $this->schedule->getScheduleByIdAllocation($idAllocation);                      
+            $data = $this->schedule->getScheduleByIdAllocation($idAllocation);
 
             return $this->response->setJSON($data);
         } catch (Exception $e) {
@@ -174,7 +182,6 @@ class ApiHorario extends ResourceController
                 'error'    => $e->getMessage()
             ]);
         }
-            
     }
     public function create()
     {

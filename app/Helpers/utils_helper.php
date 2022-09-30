@@ -54,20 +54,34 @@ function diaSemanaExtenso(int $diaSemana): string
     //         return null;
     // }
 }
-function translateSchedule(int $position, $shift=null): string
+function translateSchedule(int $position, $shift=null)
 {
     $schedule = [
-        "13:00 - 13:45",
-        "13:45 - 14:30",
-        "14:30 - 15:15",
-        "15:15 - 16:00",
-        "16:00 - 16:45", 
-        "16:45 - 17:30"    
+        "M" => [
+            "07:00 - 07:45",
+            "07:45 - 08:30",
+            "08:30 - 09:15",
+            "09:15 - 10:00",
+            "10:00 - 10:45", 
+            "10:45 - 11:30" 
+        ],
+        "T" => [
+            "13:00 - 13:45",
+            "13:45 - 14:30",
+            "14:30 - 15:15",
+            "15:15 - 16:00",
+            "16:00 - 16:45", 
+            "16:45 - 17:30" 
+        ] 
     ];
+    //dd($schedule);
 
-    foreach($schedule as $key => $item){
-        if($position === $key + 1)
-        return $item;
+    foreach($schedule as $key => $item) {
+        foreach($item as $k => $it) {
+            if($position === $k + 1 && $key === $shift)
+            return $it;
+        }       
+       
     }
     return null;
    

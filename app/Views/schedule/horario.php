@@ -51,7 +51,7 @@ echo $this->section('content');
                                 <thead>
                                     <tr>
                                         <th scope="row" class="align-middle">Dias</th>
-                                        <th scope="row" class="align-middle">Aulas</th>
+                                        <th scope="row" class="align-middle text-center">Aulas</th>
                                         <?php
 
                                         foreach ($series as $serie) : ?>

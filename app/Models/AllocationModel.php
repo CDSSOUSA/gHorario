@@ -52,9 +52,10 @@ class AllocationModel extends Model
             ->where('tb_allocation.status', 'A')
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
-            ->where('tb_allocation.situation', 'L')
+            ->where('tb_allocation.situation', 'L')          
             ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
-            ->whereNotIn('pd.id_discipline', $disciplines)
+            ->whereNotIn('pd.id_discipline', $disciplines)            
+            //->whereNotIn('pd.id_teacher', [10])            
             ->orderBy('p.name')
             ->get()->getResultArray();
 
@@ -73,6 +74,7 @@ class AllocationModel extends Model
 
         //return !is_null($result) ? $result : [];
     }
+    
     public function getAllocationByDayWeekA(int $id_serie, int $diaSemana, int $posicao, string $shift)
     {
 
@@ -86,6 +88,7 @@ class AllocationModel extends Model
             ->where('tb_allocation.position', $posicao)
             ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')
+            //->whereNotIn('pd.id_teacher', [10])    
             ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
             ->orderBy('p.name')
             ->get()->getResultArray();
@@ -132,6 +135,20 @@ class AllocationModel extends Model
             ->where($this->table . '.status', 'A')
             ->where('pd.id_year_school', session('session_idYearSchool'))
             ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
+            ->get()->getResult();
+    }
+    public function getAllocationTeacherOcupation(int $idTeacher)
+    {
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, t.name, ' . $this->table . '.shift')
+            ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
+            ->join('tb_teacher t', 't.id = pd.id_teacher')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            ->where('pd.id_teacher', $idTeacher)
+            ->where($this->table . '.status', 'A')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->where($this->table .'.situation', 'O')
             ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }

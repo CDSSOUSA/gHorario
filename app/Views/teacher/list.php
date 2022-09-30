@@ -6,7 +6,7 @@ use App\Models\TeacDiscModel;
 echo $this->extend('layouts2/default');
 echo $this->section('content'); ?>
 <div class="content-header">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mb-0 align-right">
             <div class="col-sm-12">
                 <ul class="navbar-nav float-sm-right">
@@ -19,7 +19,7 @@ echo $this->section('content'); ?>
     </div>
 </div>
 <div class="content">
-    <div class="container">     
+    <div class="container-fluid">     
         <div class="row">
             <div class="col-12">
                 <div class="card my-4">

@@ -16,25 +16,6 @@
                     </div>
                 </div>
                 <div class="card-body table-responsive p-0" style="height: 50vh;">
-                    <table id="tb_allocationa"class="table">
-                        <thead>
-                            <thead>
-                                <tr>
-                                    <th class="align-middle text-center"> <a href="#" class="btn btn-outline-dark btn-sm" id="checkAll"><span><i class="fa fa-check-circle" title="Marcar todos"></i></span></a></th>
-                                    <?php
-                                    use App\Models\AllocationModel;
-                                    for ($dw = 2; $dw < 7; $dw++) { ?>
-                                        <th class="text-center"><?= diaSemanaExtenso($dw); ?></th>
-                                    <?php } ?>
-                                </tr>
-
-                            </thead>
-                        </thead>
-                        <tbody>
-
-                       
-                        </tbody>
-                    </table>
                     <table id="tb_allocation" class="table table-head-fixed text-nowrap table-striped">
                         <thead>
                             <tr>

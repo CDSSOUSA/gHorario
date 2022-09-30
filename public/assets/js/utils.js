@@ -3,14 +3,18 @@ var bodySuccess = ' Operação realizada com sucesso';
 var success = 'success';
 const checkAll = document.getElementById('checkAll');
 
-checkAll.addEventListener('click', () => {   
+checkAll.addEventListener('click', () => {
     $(".checkbox").each(
-        function() {
+        function () {
             if ($(this).bootstrapSwitch('state')) {
                 $(this).bootstrapSwitch('state', false);
+                // checkAll.style.backgroundColor = '#FFF'
+                // checkAll.style.color = '#000'
             } else {
-                $(this).bootstrapSwitch('state',true)
-            }            
+                $(this).bootstrapSwitch('state', true)
+                // checkAll.style.backgroundColor = 'green'
+                // checkAll.style.color = '#FFF'
+            }
         }
     );
 });
@@ -19,20 +23,20 @@ function marca(caller) {
     var checks = document.querySelectorAll('input[type="checkbox"]');
     for (let i = 0; i < checks.length; i++) {
         checks[i].checked = checks[i] == caller;
-    }  
-   
-        //     checks.addEventListener('click', () => {   
-        //     $(":checkbox").each(
-        //         function() {
-        //             if ($(this).bootstrapSwitch('state')) {
-        //                 $(this).bootstrapSwitch('state', false);
-        //             } else {
-        //                 $(this).bootstrapSwitch('state',true)
-        //             }            
-        //         }
-        //     );
-        // }
-        ;
+    }
+
+    //     checks.addEventListener('click', () => {   
+    //     $(":checkbox").each(
+    //         function() {
+    //             if ($(this).bootstrapSwitch('state')) {
+    //                 $(this).bootstrapSwitch('state', false);
+    //             } else {
+    //                 $(this).bootstrapSwitch('state',true)
+    //             }            
+    //         }
+    //     );
+    // }
+    ;
 
 }
 const URL_BASE = 'http://localhost/gerenciador-horario/public';
@@ -67,6 +71,38 @@ const convertDayWeek = (dia) => {
     return day;
 }
 
+function translateSchedule(position, shift) {
+    let textSchedule
+    var schedule = [];
+    schedule['M'] = [
+        "07:00 - 07:45",
+        "07:45 - 08:30",
+        "08:30 - 09:15",
+        "09:15 - 10:00",
+        "10:00 - 10:45",
+        "10:45 - 11:30"
+    ];
+    schedule['T'] = [
+        "13:00 - 13:45",
+        "13:45 - 14:30",
+        "14:30 - 15:15",
+        "15:15 - 16:00",
+        "16:00 - 16:45",
+        "16:45 - 17:30"
+    ];
+
+    //console.log(schedule)
+    schedule[shift].forEach((item, ind) => {
+        if (position == ind + 1) {
+            //console.log(item)
+             textSchedule = item
+        }
+    })
+    return textSchedule
+    
+
+}
+
 const convertShift = (turno) => {
     let shift = 'TARDE'
     if (turno === 'M')
@@ -74,8 +110,7 @@ const convertShift = (turno) => {
     return shift;
 }
 
-const convertSituation = (situation) =>
-{
+const convertSituation = (situation) => {
     if (situation === 'L')
         return 'LIVRE';
     if (situation === 'O')

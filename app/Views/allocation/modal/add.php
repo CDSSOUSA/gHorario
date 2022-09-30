@@ -1,6 +1,6 @@
 <!-- Modal addTeacher -->
 <div class="modal fade" id="addAllocationModal" tabindex="-1" role="dialog" aria-labelledby="addAllocationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div id="heardAlocationModel" class="modal-header">
                 <h5 class="modal-title" id="addAllocationModalLabel"><i class="fa fa-user"></i> Adicionar Alocação ::</h5>
@@ -17,7 +17,7 @@
                 echo form_input([
                     'id' => 'idTeacherAllocation',
                     'name' => 'id_teacher',
-                    'type' => 'text'
+                    'type' => 'hidden'
                 ]);
                 echo csrf_field()
                 ?>
@@ -28,13 +28,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <span id="checkAll"><i class="fa fa-check-double" title="Marcar todos"></i></span></span>
+                <div class="form-group col-12">
+                        <label for="exampleColorInput" class="form-label">Dias/Aulas :: </label>
+                   
                     <div class="card-body table-responsive p-0">
                         <table class="table">
                             <thead>
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th class="align-middle text-center"> <a href="#" class="btn btn-outline-dark btn-sm" id="checkAll"><span><i class="fa fa-check-circle" title="Marcar todos"></i></span></a></th>
                                         <?php
                                         for ($dw = 2; $dw < 7; $dw++) { ?>
                                             <th class="text-center"><?= diaSemanaExtenso($dw); ?></th>
@@ -48,7 +50,7 @@
                                 <?php  //for ($dw = 2; $dw < 7; $dw++):
                                 for ($ps = 1; $ps < 7; $ps++) : ?>
                                     <tr>
-                                        <td class="align-middle text-center"><span class="text-gray"><?= $ps; ?>ª aula</span><br><span class="text-gray" style="font-size: 10px;"><?=translateSchedule($ps);?></span>
+                                        <td class="align-middle text-center"><span class="text-gray"><?= $ps; ?>ª aula</span>
                                             </td>
                                         <?php for ($dw = 2; $dw < 7; $dw++) : ?>
                                             <td class="align-middle text-center">
@@ -64,8 +66,10 @@
                             </tbody>
                         </table>
                     </div>
+                    
                     <span class="error invalid-feedback" id="fieldlertErrorDayWeek"></span>
                     <span class="error invalid-feedback" id="fieldlertErrorPosition"></span>
+                </div>
                 </div>
                 <div class="row">
 
@@ -76,16 +80,16 @@
                         </div>
                         <span class="error invalid-feedback" id="fieldlertErrorDisciplines"></span>
                     </div>
+
                     <div class="form-group col-6">
                         <label for="inputEmail3" class="col-form-label">Turno :: </label>
 
                         <div class="form-check form-switch">
                             <input class="form-check-input checkbox" name="nShift[]" value="M" <?= set_checkbox('nShift', 'M'); ?> type="checkbox" role="switch" id="checboxShiftM">
-                            <label class="form-check-label" for="checboxShiftM">MANHÃ</label>
-                        </div>
-                        <div class="form-check form-switch">
+                            <label class="form-check-label font-weight-bold text-sm" for="checboxShiftM">MANHÃ</label>
+                            &nbsp;&nbsp;             
                             <input class="form-check-input checkbox" name="nShift[]" value="T" <?= set_checkbox('nShift', 'T'); ?> type="checkbox" role="switch" id="checboxShiftT">
-                            <label class="form-check-label" for="checboxShiftT">TARDE</label>
+                            <label class="form-check-label font-weight-bold text-sm" for="checboxShiftT">TARDE</label>
                         </div>
                         <span class="error invalid-feedback" id="fieldlertErrorShift"></span>
 

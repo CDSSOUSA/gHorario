@@ -137,7 +137,8 @@ class Allocation extends BaseController
     {
         try {
 
-            $data = $this->allocationModel->getAllocationTeacher($id);            
+            $data = $this->allocationModel->getAllocationTeacherOcupation($id);  
+            // atencao apra o metodo  getAllocationTeacher        
 
             return $this->response->setJSON($data);
         } catch (Exception $e) {

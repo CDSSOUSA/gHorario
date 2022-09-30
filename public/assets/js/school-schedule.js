@@ -34,7 +34,7 @@ function loadDataSchedule(data) {
             let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
 
             row += `<tr class="${rowColor}"><th scope="row">${dayShow}</th>
-            <th scope="row">${ps}ª</th>`      
+            <th scope="row" class="text-center align-middle">${ps}ª aula <p class="text-sm text-gray">${translateSchedule(ps,shift)}</p></th>`      
             data.forEach((elem,indice) => {
                 row += `<td id="row${ps}${dw}${elem.id}" class="text-left">${listDPS(elem.id, dw, ps, shift)}</td>`
             })

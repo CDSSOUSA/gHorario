@@ -597,7 +597,7 @@ const listAllocationTeacherDiscipline = async (id) => {
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
                 //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
-                document.querySelector("#tb_allocation > tbody").innerHTML = `${loadDataAllocation(data)}`;
+                document.querySelector("#tb_allocationa > tbody").innerHTML = `${loadDataSchedule(data)}`;
                 //document.getElementById('id_discipline').value = data[0].description
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
@@ -606,6 +606,89 @@ const listAllocationTeacherDiscipline = async (id) => {
         })
         .catch(error => console.log(error))
 
+
+}
+
+function loadDataSchedule(data) {
+
+    let row = "";
+    // let dayShow = '';
+    // let rowColor = '';
+    for (let ps = 1; ps < 7; ps++) {
+        row += `<tr>
+                <th scope="row" class="text-center align-middle">${ps}ª aula</th>`
+
+        // let dayShow = ps === 1 ? convertDayWeek(dw) : '';           
+        // let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
+
+        for (let dw = 2; dw < 7; dw++) {
+            //row += `<th scope="row">${dw}${ps}</th>`
+            row += `<td>`
+            data.forEach((elem, indice) => {
+
+                if (elem.situation == 'O' && elem.dayWeek == dw && elem.position == ps) {
+                    row += elem.abbreviation
+                } else {
+                    //row += `<td id="row${ps}${dw}${elem.id}" class="text-left">NÃO</td>`
+                }
+
+            })
+            row += `</td>`
+
+
+        }
+        row += `</tr>`
+    }
+
+
+    return row;
+}
+
+function listDPS(idSerie, day, position, shift) {
+    axios.get(`${URL_BASE}/horario/api/listDPS/${idSerie}/${day}/${position}/${shift}`)
+        .then(response => {
+
+            if (response.data == 'vago') {
+                document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            
+            <div class="d-flex m-1 p-2 w-120" style="background-color: transparent; border: 1px solid #9a9a9c; color:black; border-radius: 5px;" data-toggle="tooltip" data-placement="top" title="Aguardando alocação!">
+            <div>
+                <img src="${URL_BASE}/assets/img/discipline-vague.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 text-sm font-weight-bold"> VAGO</h6>
+            </div>
+        </div>`
+            } else if (response.data != 'livre') {
+                console.log(response.data);
+                document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            <a href="#" onclick = "deleteSchedule(${response.data.id})" data-toggle="modal" data-placement="top" title="Clique para remover!">
+            <div class="d-flex m-1 p-2 w-120" style="background-color: ${response.data.color}; color:white; border-radius: 5px;">
+            <div>
+                <img src="${URL_BASE}/assets/img/${response.data.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 font-weight-bold font-size-11"> ${response.data.name.split(" ", 1)}</h6>
+                <span class="mb-0 font-weight-bold text-sm">${response.data.abbreviation}</span>
+            </div>
+        </div></a>`
+                //loadDisc(response.data)
+            } else {
+                document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
+            <a href="#" onclick = "addSchedule(${idSerie},${position},${day},'${shift}')" data-toggle = "modal" title="Clique para adicionar!">
+            <div class="d-flex m-1 p-2 w-120" style="background-color: #343a40; color:white; border-radius: 5px;">
+            <div>
+                <img src="${URL_BASE}/assets/img/discipline-default.png" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+            </div>
+            <div class="my-auto">
+                <h6 class="mb-0 text-sm font-weight-bold"> LIVRE</h6>
+            </div>
+        </div></a>`
+            }
+
+
+        })
+        .catch(error => console.log(error))
 
 }
 
