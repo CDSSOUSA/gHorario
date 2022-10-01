@@ -72,6 +72,8 @@ function listDPS(idSerie, day,position,shift) {
     axios.get(`${URL_BASE}/horario/api/listDPS/${idSerie}/${day}/${position}/${shift}`)
     .then(response => {
 
+        console.log(response);
+
       if(response.data == 'vago') {
             document.getElementById(`row${position}${day}${idSerie}`).innerHTML = `
             
