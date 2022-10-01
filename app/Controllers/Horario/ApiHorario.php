@@ -49,13 +49,34 @@ class ApiHorario extends ResourceController
                     //busca o limite por serie da disciplina
                     $limit = $this->discipline->getLimitClassroom($d->id);
                     //if total limite da disciplina for menor igual a total de alocacao na 
+                    // $disciplineTeacher = $this->schedule->getDisciplineTeacher($d->id_series);
+
+                    // $dis = [];
+                    // $tea = [];
+                    // if($disciplineTeacher != null){
+
+                    //     foreach ($disciplineTeacher as $is) {    
+                    //         $dis[] = $is->id_discipline;
+                    //         $tea[] = $is->id_teacher;
+                    //     }
+                    // }
+
                     if ($limit->amount <= $d->total) {
                         $limits[] = $d->id;
                     }
+                    
                 }
                 if ($limits != null) {
+                    //$allocationDisponivel = $this->allocation->getAllocationByDayWeek($idSerie, $dw, $ps, $shift, $limits,$dis,$tea);
                     $allocationDisponivel = $this->allocation->getAllocationByDayWeek($idSerie, $dw, $ps, $shift, $limits);
-                } else {
+                } 
+                // else if($disciplineTeacher != null){
+
+                //     $data = $this->allocation->getAllocationByDayWeekABC($idSerie, $dw, $ps, $shift, $limits, $dis, $tea);
+                    
+                    
+                // }
+                else {
 
                     $allocationDisponivel = $this->allocation->getAllocationByDayWeekA($idSerie, $dw, $ps, $shift);
                 }
@@ -67,30 +88,30 @@ class ApiHorario extends ResourceController
             $horario2 = $this->schedule->getTimePosition($dw, $ps, $shift);
 
             $allocationDisponivel2 = 'vago';
-            if($horario2 != null) {
-                foreach($horario2 as $h) {
-                    $hor [] = $h->id_teacher;
+            if ($horario2 != null) {
+                foreach ($horario2 as $h) {
+                    $hor[] = $h->id_teacher;
                 }
 
                 $allocationDisponivel2 = $this->allocation->getAllocationByDayWeekAB($idSerie, $dw, $ps, $shift, $hor);
-          
+
                 //dd($allocationDisponivel2);
             }
 
 
- 
+
             //  if($horario2['id_teacher']) {
- 
+
             //      $allocationDisponivel = $this->allocation->getAllocationByDayWeekAB($idSerie, $dw, $ps, $shift, $horario2);
             //  }  
 
-             
+
 
             $data = 'ocupada';
 
             if ($allocationDisponivel != null && empty($horario) && !empty($allocationDisponivel2)) {
                 $data = 'livre';
-            } else if (empty($horario)){
+            } else if (empty($horario)) {
                 $data = 'vago';
             } else {
                 $data = $horario;
@@ -135,48 +156,62 @@ class ApiHorario extends ResourceController
 
     public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)
     {
-        // if tem alguem na linha da aul
-        //exluir na montagem da tela
-        // criar uma funcao para teastar a alinha 
         try {
             $datas = $this->schedule->getTotalDiscBySerie($idSerie);
             $ar = 0;
             $limits = [];
-
-           
 
             if ($datas != null) {
 
                 foreach ($datas as $d) {
 
                     $limit = $this->discipline->getLimitClassroom($d->id);
+                    // $disciplineTeacher = $this->schedule->getDisciplineTeacher($d->id_series);
+
+                    // $dis = [];
+                    // $tea = [];
+                    // if($disciplineTeacher != null) {
+
+                    //     foreach ($disciplineTeacher as $is) {
+    
+                    //         $dis[] = $is->id_discipline;
+                    //         $tea[] = $is->id_teacher;
+                    //     }
+                    // }
+
                     if ($limit->amount <= $d->total) {
                         $limits[] = $d->id;
                     }
                 }
                 if ($limits != null) {
                     $data = $this->allocation->getAllocationByDayWeek($idSerie, $dayWeek, $position, $shift, $limits);
-                } else {
-                    $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+                } 
+                // else if($disciplineTeacher != null){
+
+                //     $data = $this->allocation->getAllocationByDayWeekABC($idSerie, $dayWeek, $position, $shift, $limits, $dis, $tea);
                     
+                    
+                // }
+                else {
+                    $horario = $this->schedule->getTimePosition($dayWeek, $position, $shift);
+                    if ($horario) {
+
+                        foreach ($horario as $h) {
+                            $hor[] = $h->id_teacher;
+                        }
+
+                        $data = $this->allocation->getAllocationByDayWeekAB($idSerie, $dayWeek, $position, $shift, $hor);
+                    } else {
+
+                        $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+                    }
                 }
-            } else  {
+            } else {
 
                 $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
             }
 
-            $horario = $this->schedule->getTimePosition($dayWeek,$position, $shift);
 
-           //dd($horario);
-
-             if($horario != null) {
-
-                foreach($horario as $h) {
-                    $hor [] = $h->id_teacher;
-                }
-
-                $data = $this->allocation->getAllocationByDayWeekAB($idSerie, $dayWeek, $position, $shift, $hor);
-             }  
 
             if ($data != null) {
                 return $this->response->setJSON($data);

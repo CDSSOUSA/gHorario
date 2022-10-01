@@ -94,9 +94,18 @@ class SchoolScheduleModel extends Model
             ->get()->getRow();
     }
 
+    public function getDisciplineTeacher(int $idSerie)
+    {
+        return $this->select('td.id_teacher,td.id_discipline')
+        ->join('tb_allocation a', $this->table . '.id_allocation = a.id')            
+        ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+        ->where('id_series',$idSerie)
+        ->get()->getResult();
+    }
+
     public function getTotalDiscBySerie(int $idSerie)
     {
-        return $this->select('count(*) as total, d.description, d.id, d.icone')
+        return $this->select('count(*) as total, d.description, d.id, d.icone,'.$this->table.'.id_series')
             //->from('tb_school_schedule h')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')

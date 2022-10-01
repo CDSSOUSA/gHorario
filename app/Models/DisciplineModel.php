@@ -46,4 +46,5 @@ class DisciplineModel extends Model
         ->where('id',$id)
         ->get()->getRow();
     }
+  
 }

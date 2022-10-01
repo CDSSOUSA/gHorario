@@ -44,7 +44,7 @@ class AllocationModel extends Model
     {
 
         $result = $this->select('tb_allocation.id,
-         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone')
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone, pd.id_discipline')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
             ->join('tb_discipline d', 'pd.id_discipline = d.id')
@@ -54,6 +54,44 @@ class AllocationModel extends Model
             ->where('tb_allocation.shift', $shift)
             ->where('tb_allocation.situation', 'L')          
             ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
+            // ->whereIn('pd.id_discipline', $disc)            
+            // ->whereIn('pd.id_teacher', $tea)            
+            ->whereNotIn('pd.id_discipline', $disciplines)            
+            //->whereNotIn('pd.id_teacher', [10])            
+            ->orderBy('p.name')
+            ->get()->getResultArray();
+
+        return $result;
+
+
+
+        /*SELECT tp.nome FROM tb_teacher_discipline tpd 
+            join tb_allocation tap on tpd.id = tap.id_professor
+            join tb_professor tp on tp.id = tpd.id_professor
+            where tap.dayWeek = 2 AND 
+            tap.position = 3 AND 
+            tpd.id_serie = 1 AND 
+            tap.status = 'A' AND 
+            tap.situation = 'L';*/
+
+        //return !is_null($result) ? $result : [];
+    }
+    public function getAllocationByDayWeekABC(int $id_serie, int $diaSemana, int $posicao, string $shift, $disciplines,$disc,$tea)
+    {
+
+        $result = $this->select('tb_allocation.id,
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone, pd.id_discipline')
+            ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
+            ->join('tb_teacher p', 'p.id = pd.id_teacher')
+            ->join('tb_discipline d', 'pd.id_discipline = d.id')
+            ->where('tb_allocation.dayWeek', $diaSemana)
+            ->where('tb_allocation.status', 'A')
+            ->where('tb_allocation.position', $posicao)
+            ->where('tb_allocation.shift', $shift)
+            ->where('tb_allocation.situation', 'L')          
+            ->where('tb_allocation.id_year_school', session('session_idYearSchool'))
+            ->whereIn('pd.id_discipline', $disc)            
+            ->whereIn('pd.id_teacher', $tea)            
             ->whereNotIn('pd.id_discipline', $disciplines)            
             //->whereNotIn('pd.id_teacher', [10])            
             ->orderBy('p.name')
@@ -79,7 +117,7 @@ class AllocationModel extends Model
     {
 
         $result = $this->select('tb_allocation.id,
-         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone')
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone, pd.id_year_school')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
             ->join('tb_discipline d', 'pd.id_discipline = d.id')
@@ -98,7 +136,7 @@ class AllocationModel extends Model
     {
 
         $result = $this->select('tb_allocation.id,
-         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone')
+         p.name, d.abbreviation, pd.color, pd.id_teacher, d.icone, p.amount as coco')
             ->join('tb_teacher_discipline pd', 'pd.id = tb_allocation.id_teacher_discipline')
             ->join('tb_teacher p', 'p.id = pd.id_teacher')
             ->join('tb_discipline d', 'pd.id_discipline = d.id')
