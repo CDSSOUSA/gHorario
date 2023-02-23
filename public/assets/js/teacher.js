@@ -587,11 +587,13 @@ const listAllocationModal = new bootstrap.Modal(document.getElementById('listAll
 const listAllocationTeacherDiscipline = async (id) => {
 
     listAllocationModal.show();
+    console.log(id);
 
     await axios.get(`${URL_BASE}/allocation/showTeacher/${id}`)
+    
         .then(response => {
             const data = response.data;
-
+            
             console.log(data);
             if (data) {
                 //editModal.show();
@@ -622,14 +624,33 @@ function loadDataSchedule(data) {
         // let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
 
         for (let dw = 2; dw < 7; dw++) {
+            row += `<td style="border:1px solid">`
             //row += `<th scope="row">${dw}${ps}</th>`
-            row += `<td>`
-            data.forEach((elem, indice) => {
+            data.forEach((elem, indice) => {               
 
                 if (elem.situation == 'O' && elem.dayWeek == dw && elem.position == ps) {
-                    row += elem.abbreviation
+                    row +=`<div class="discipldsine-ticket">               
+                    <div class="d-flex m-1 p-2 w-10" style="background-color:${elem.color}; color:white; border-radius: 5px;">
+                        
+                        <div class="my-auto">
+                            <h6 class="mb-0 text-sm font-weight-bold">${elem.abbreviation}</h6>
+                            <h6 class="mb-0 text-sm font-weight-bold">${elem.description}ª ${elem.classification} </h6>
+                           
+                        </div>                    
+                    </div>
+                </div>`
+                    //row += elem.abbreviation
                 } else {
                     //row += `<td id="row${ps}${dw}${elem.id}" class="text-left">NÃO</td>`
+                //     row +=`<div class="discipline-ticket">               
+                //     <div class="d-flex m-1 p-2 w-10" style="background-color:#ccc; color:white; border-radius: 5px;">
+                        
+                //         <div class="my-auto">
+                //             <h6 class="mb-0 text-sm font-weight-bold">X</h6>
+                //             <h6 class="mb-0 text-sm font-weight-bold">X </h6>
+                //         </div>                    
+                //     </div>
+                // </div>`
                 }
 
             })

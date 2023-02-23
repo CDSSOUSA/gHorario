@@ -287,7 +287,9 @@ div.dataTables_wrapper {
   /* border: 1px solid #4c4; */
  
 }
-
+.w-10 {
+  width: 50px;
+}
 .w-35 {
   width: 200px;
 }

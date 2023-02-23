@@ -197,10 +197,12 @@ class AllocationModel extends Model
     }
     public function getAllocationTeacherOcupation(int $idTeacher)
     {
-        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, t.name, ' . $this->table . '.shift')
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, t.name, ss.description, ss.classification, ' . $this->table . '.shift')
             ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
             ->join('tb_teacher t', 't.id = pd.id_teacher')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            ->join('tb_school_schedule s', 's.id_allocation = ' . $this->table . '.id')
+            ->join('tb_series ss', 'ss.id = s.id_series')
             ->where('pd.id_teacher', $idTeacher)
             ->where($this->table . '.status', 'A')
             ->where('pd.id_year_school', session('session_idYearSchool'))
