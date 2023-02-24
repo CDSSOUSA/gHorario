@@ -110,6 +110,13 @@ const convertShift = (turno) => {
     return shift;
 }
 
+const convertShiftAbbreviation = (turno) => {
+    let shift = 'Tar'
+    if (turno === 'M')
+        shift = 'Man'
+    return shift;
+}
+
 const convertSituation = (situation) => {
     if (situation === 'L')
         return 'LIVRE';

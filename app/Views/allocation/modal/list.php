@@ -1,6 +1,6 @@
 <!-- modal list-->
 <div class="modal fade" id="listAllocationModal" tabindex="-1" role="dialog" aria-labelledby="listAllocationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-default-discipline">
                 <h5 class="modal-title" id="listAllocationModalLabel"><i class="fa fa-user"></i> Alocação(ões) Realizada(s) ::</h5>
@@ -15,41 +15,35 @@
                         <input id="nameDisciplineAllocation" disabled class="form-control">
                     </div>
                 </div>
-                <div class="card-body table-responsive p-0" style="height: 50vh;">
-                    <table id="tb_allocationa"class="table">
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label for="inputEmail3" class="col-form-label" id="">Quantidade de aulas::</label><br>
+                        <span style="font-size:23px" class="col-form-label" id="totalAllocation"></span>/<span style="font-size:23px" id="totalWorkload"></span>
+                        
+                       
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0" >
+                <label for="exampleColorInput" class="form-label">Dias/Aulas :: </label>
+                   
+                    <table id="tb_allocationa"class="table" style="width: 100%";>
                         <thead>
                             <thead>
                                 <tr>
-                                    <th class="align-middle text-center"> <a href="#" class="btn btn-outline-dark btn-sm" id="checkAll"><span><i class="fa fa-check-circle" title="Marcar todos"></i></span></a></th>
+                                    <th class="align-middle text-center"></th>
                                     <?php
                                     use App\Models\AllocationModel;
                                     for ($dw = 2; $dw < 7; $dw++) { ?>
-                                        <th class="text-center"><?= diaSemanaExtenso($dw); ?></th>
+                                        <th style="border:1px solid #eaeaea" class="text-center align-middle"><?= diaSemanaExtenso($dw); ?></th>
                                     <?php } ?>
                                 </tr>
 
                             </thead>
                         </thead>
-                        <tbody>
-
-                       
+                        <tbody>                       
                         </tbody>
                     </table>
-                    <table id="tb_allocation" class="table table-head-fixed text-nowrap table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <!-- <th scope="col">Dia :: </th> -->
-                                <th scope="col">Disciplina :: </th>
-                                <!-- <th scope="col">Posição ::</th> -->
-                                <th scope="col">Situação ::</th>
-                                <!-- <th scope="col">Turno ::</th> -->
-                                <th scope="col">Ações :: </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                   
                 </div>
             </div>
             <div class="modal-footer card-footer clearfix">

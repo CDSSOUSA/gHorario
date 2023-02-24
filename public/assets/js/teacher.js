@@ -426,6 +426,7 @@ async function getDataTeacher(id, locale) {
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
                 document.getElementById(locale).value = data.name
+                //document.getElementById(locale).innerHTML = data.amount
                 //document.getElementById('id_discipline').value = data[0].description
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
@@ -447,7 +448,7 @@ async function getDataTeacherDiscipline(id) {
                 document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
 
                 //document.getElementById('id_discipline').value = data[0].description
-                //document.getElementById('numeroAulas').value = data[0].amount
+                document.getElementById('totalWorkload').innerHTML = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
             }
         })
@@ -590,11 +591,12 @@ const listAllocationTeacherDiscipline = async (id) => {
     console.log(id);
 
     await axios.get(`${URL_BASE}/allocation/showTeacher/${id}`)
-    
+
         .then(response => {
             const data = response.data;
-            
+
             console.log(data);
+            let total = data.length;
             if (data) {
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
@@ -603,7 +605,9 @@ const listAllocationTeacherDiscipline = async (id) => {
                 //document.getElementById('id_discipline').value = data[0].description
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
+                document.getElementById('totalAllocation').innerHTML = total;
                 getDataTeacher(id, 'nameDisciplineAllocation');
+                getDataTeacherDiscipline(id);
             }
         })
         .catch(error => console.log(error))
@@ -614,54 +618,40 @@ const listAllocationTeacherDiscipline = async (id) => {
 function loadDataSchedule(data) {
 
     let row = "";
+  
     // let dayShow = '';
     // let rowColor = '';
     for (let ps = 1; ps < 7; ps++) {
         row += `<tr>
-                <th scope="row" class="text-center align-middle">${ps}ª aula</th>`
+                <th scope="row" class="text-center align-middle w-120">${ps}ª aula</th>`
 
         // let dayShow = ps === 1 ? convertDayWeek(dw) : '';           
         // let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
 
         for (let dw = 2; dw < 7; dw++) {
-            row += `<td style="border:1px solid">`
+            row += `<td style="border:1px solid #eaeaea; text-align: center; " class="text-center align-middle w-120">`
             //row += `<th scope="row">${dw}${ps}</th>`
-            data.forEach((elem, indice) => {               
 
-                if (elem.situation == 'O' && elem.dayWeek == dw && elem.position == ps) {
-                    row +=`<div class="discipldsine-ticket">               
-                    <div class="d-flex m-1 p-2 w-10" style="background-color:${elem.color}; color:white; border-radius: 5px;">
-                        
-                        <div class="my-auto">
-                            <h6 class="mb-0 text-sm font-weight-bold">${elem.abbreviation}</h6>
-                            <h6 class="mb-0 text-sm font-weight-bold">${elem.description}ª ${elem.classification} </h6>
-                           
-                        </div>                    
+            data.forEach((elem, indice) => {
+                if (elem.dayWeek == dw && elem.position == ps) {
+                  
+                    row += `<div style="background-color:${elem.color}; color:white; border-radius: 5px; text-align: center;" class="d-flex w-120 text-center mb-1 text-sm font-weight-bold">
+                    <div>
+                        <img src="${URL_BASE}/assets/img/${elem.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
                     </div>
-                </div>`
-                    //row += elem.abbreviation
-                } else {
-                    //row += `<td id="row${ps}${dw}${elem.id}" class="text-left">NÃO</td>`
-                //     row +=`<div class="discipline-ticket">               
-                //     <div class="d-flex m-1 p-2 w-10" style="background-color:#ccc; color:white; border-radius: 5px;">
-                        
-                //         <div class="my-auto">
-                //             <h6 class="mb-0 text-sm font-weight-bold">X</h6>
-                //             <h6 class="mb-0 text-sm font-weight-bold">X </h6>
-                //         </div>                    
-                //     </div>
-                // </div>`
-                }
 
+                    
+            <div class="my-auto text-center">
+                <h6 class="mb-0 text-sm font-weight-bold text-center">${elem.abbreviation}</h6>
+                            ${elem.description}ª${elem.classification} - ${convertShiftAbbreviation(elem.shift)}
+                            </div></div>`
+
+                }
             })
             row += `</td>`
-
-
         }
         row += `</tr>`
     }
-
-
     return row;
 }
 

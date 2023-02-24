@@ -57,6 +57,7 @@
                                            
                                                 <input class="form-check-input checkbox" name="nDayWeek[]" value="<?= $ps; ?>;<?= $dw; ?>" type="checkbox" role="switch" id="dayWeek<?= $ps; ?><?= $dw; ?>">
                                                 <label class="form-check-label" for="dayWeek<?= $ps; ?><?= $dw; ?>"></label>
+                                            </td>
                                             
                                             <?php endfor; ?>
                                     </tr>
