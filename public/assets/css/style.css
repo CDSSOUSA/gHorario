@@ -312,6 +312,9 @@ div.dataTables_wrapper {
   background-color: #2e5b8e;
   color: white;
 }
+.inconplete-schedule {
+  color: #da0d0d;
+}
 
 /* @keyframes is-rotating {
   to {

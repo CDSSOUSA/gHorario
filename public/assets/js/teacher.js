@@ -436,6 +436,7 @@ async function getDataTeacher(id, locale) {
 }
 
 async function getDataTeacherDiscipline(id) {
+    totalWorkload = 0;
     await axios.get(`${URL_BASE}/teacher/listDisciplinesByTeacher/${id}`)
         .then(response => {
             const data = response.data;
@@ -447,13 +448,48 @@ async function getDataTeacherDiscipline(id) {
                 document.getElementById('heardAlocationModel').style.color = '#FFF'
                 document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
 
+                data.forEach((elements, indice) => {
+                    totalWorkload = + elements.amount + totalWorkload
+                })
                 //document.getElementById('id_discipline').value = data[0].description
-                document.getElementById('totalWorkload').innerHTML = data[0].amount
+                document.getElementById('totalWorkload').innerHTML = totalWorkload
                 //document.getElementById('corDestaque').value = data[0].color
+                let totalAulaAlocada = document.getElementById('totalAllocation').value
+                //alert (totalAulaAlocada)
+                //alert(totalWorkload)
+                let newSpan = document.getElementById('totalAulaAllocation')
+                newSpan.innerHTML = ''
+                newSpan.innerHTML = totalAulaAlocada
+                if(totalAulaAlocada < totalWorkload) {
+                   newSpan.classList.add("inconplete-schedule","font-bold")
+                   
+                } else {
+                    newSpan.classList.remove("inconplete-schedule")
+
+                }
             }
         })
         .catch(error => console.log(error))
 }
+
+// function getTotalAulas(id) {
+//     let totalWorkload = 0;
+//     axios.get(`${URL_BASE}/teacher/listDisciplinesByTeacher/${id}`)
+//         .then(response => {
+//             const data = response.data;
+
+//             console.log(data);
+//             if (data) {
+//                 data.forEach((elements) => {
+//                     totalWorkload = + elements.amount + totalWorkload
+//                     return totalWorkload;
+//                 })
+//             }
+
+//         })
+//         .catch(error => console.log(error))
+// }
+
 function listRowDisciplines(data) {
 
     let row = '';
@@ -472,9 +508,6 @@ function listRowDisciplines(data) {
                             </div>
                         </label>
                     </div>`
-
-
-
         })
     }
     return row;
@@ -605,9 +638,10 @@ const listAllocationTeacherDiscipline = async (id) => {
                 //document.getElementById('id_discipline').value = data[0].description
                 //document.getElementById('numeroAulas').value = data[0].amount
                 //document.getElementById('corDestaque').value = data[0].color
-                document.getElementById('totalAllocation').innerHTML = total;
+                document.getElementById('totalAllocation').value = total;
                 getDataTeacher(id, 'nameDisciplineAllocation');
                 getDataTeacherDiscipline(id);
+
             }
         })
         .catch(error => console.log(error))
@@ -618,12 +652,17 @@ const listAllocationTeacherDiscipline = async (id) => {
 function loadDataSchedule(data) {
 
     let row = "";
-  
+
     // let dayShow = '';
     // let rowColor = '';
     for (let ps = 1; ps < 7; ps++) {
         row += `<tr>
-                <th scope="row" class="text-center align-middle w-120">${ps}ª aula</th>`
+           <th scope="row" class="text-center align-middle w-120">
+           ${ps}ª aula <p class="text-sm text-gray">${translateSchedule(ps,'M')} 
+           <br>ou<br>
+          ${translateSchedule(ps,'T')}</p>
+           
+           </th>`
 
         // let dayShow = ps === 1 ? convertDayWeek(dw) : '';           
         // let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
@@ -634,7 +673,7 @@ function loadDataSchedule(data) {
 
             data.forEach((elem, indice) => {
                 if (elem.dayWeek == dw && elem.position == ps) {
-                  
+
                     row += `<div style="background-color:${elem.color}; color:white; border-radius: 5px; text-align: center;" class="d-flex w-120 text-center mb-1 text-sm font-weight-bold">
                     <div>
                         <img src="${URL_BASE}/assets/img/${elem.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">

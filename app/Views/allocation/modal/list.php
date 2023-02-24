@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-6">
                         <label for="inputEmail3" class="col-form-label" id="">Nome completo :: </label><br>
                         <input id="nameDisciplineAllocation" disabled class="form-control">
                     </div>
@@ -18,7 +18,8 @@
                 <div class="row">
                     <div class="form-group col-3">
                         <label for="inputEmail3" class="col-form-label" id="">Quantidade de aulas::</label><br>
-                        <span style="font-size:23px" class="col-form-label" id="totalAllocation"></span>/<span style="font-size:23px" id="totalWorkload"></span>
+                        <input type ="hidden" class="form-control" id="totalAllocation"> 
+                        <span style="font-size:23px" id="totalAulaAllocation"></span> de <span style="font-size:23px" id="totalWorkload"></span>
                         
                        
                     </div>
