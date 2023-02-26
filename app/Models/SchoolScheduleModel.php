@@ -126,6 +126,32 @@ class SchoolScheduleModel extends Model
 
 
     }
+    public function geSerieSchedule(int $idSerie)
+    {
+        return $this->select('d.icone, d.abbreviation, p.name, td.color, '.$this->table.'.position, '.$this->table.'.dayWeek')
+            //->from('tb_school_schedule h')
+            ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
+            ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+            ->join('tb_discipline d', 'td.id_discipline = d.id')
+            //->join('tb_teacher_discipline pd', 'ap.id_teacher_discipline = pd.id')
+            //->join('tb_discipline d', 'pd.id_discipline = d.id')
+            ->join('tb_teacher p', 'td.id_teacher = p.id')
+            ->where($this->table . '.id_series', $idSerie)
+            ->where($this->table . '.status', 'A')
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            //->groupBy('td.id_discipline')
+            ->get()->getResult();
+
+
+        // SELECT count(*) as total, td.description  FROM tb_school_schedule tss
+        // JOIN tb_allocation ta ON tss.id_allocation = ta.id
+        // JOIN tb_teacher_discipline ttd ON ta.id_teacher_discipline = ttd.id
+        // JOIN tb_discipline td ON ttd.id_discipline = td.id 
+        // WHERE tss.id_series = 1
+        // GROUP BY ttd.id_discipline ; 
+
+
+    }
 
     public function getDataForDelete(int $id)
     {

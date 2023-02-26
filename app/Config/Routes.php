@@ -52,6 +52,7 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     $routes->post('del','ApiHorario::del');    
     $routes->get('list/(:any)','ApiHorario::list/$1');    
     $routes->get('listDPS/(:any)/(:any)/(:any)/(:any)','ApiHorario::listDPS/$1/$2/$3/$4');    
+    $routes->get('listSeries/(:any)','ApiHorario::listSeries/$1');    
 });
 
 /* ROUTES PROFESSOR */

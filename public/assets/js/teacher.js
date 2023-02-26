@@ -92,7 +92,7 @@ function listRowDisciplinesTeacher(data) {
                                 </div>
                                 <div class="my-auto">
                                     <h6 class="mb-0 text-sm font-weight-bold"> ${e.abbreviation}</h6>
-                                    ${e.amount} - Aula(s) 
+                                    ${writeZero(e.amount)} - Aula(s) 
                                 </div>                    
                             </div>
                         </div>
@@ -423,7 +423,7 @@ async function getDataTeacher(id, locale) {
             if (data) {
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
-                document.getElementById(locale).value = data.name
+                document.getElementById(locale).innerText = data.name
                 //document.getElementById(locale).innerHTML = data.amount
                 //document.getElementById('id_discipline').value = data[0].description
                 //document.getElementById('numeroAulas').value = data[0].amount
@@ -450,14 +450,15 @@ async function getDataTeacherDiscipline(id) {
                     totalWorkload = + elements.amount + totalWorkload
                 })
                 //document.getElementById('id_discipline').value = data[0].description
-                document.getElementById('totalWorkload').innerHTML = totalWorkload
+               
                 //document.getElementById('corDestaque').value = data[0].color
                 let totalAulaAlocada = document.getElementById('totalAllocation').value
+                
                 //alert (totalAulaAlocada)
                 //alert(totalWorkload)
                 let newSpan = document.getElementById('totalAulaAllocation')
                 newSpan.innerHTML = ''
-                newSpan.innerHTML = totalAulaAlocada
+                newSpan.innerHTML = writeZero(totalAulaAlocada)
                 if(totalAulaAlocada < totalWorkload) {
                    newSpan.classList.add("inconplete-schedule","font-bold")
                    
@@ -465,6 +466,9 @@ async function getDataTeacherDiscipline(id) {
                     newSpan.classList.remove("inconplete-schedule")
 
                 }
+                let a = totalWorkload.toString();
+                document.getElementById('totalWorkload').innerHTML = writeZero(a)
+                console.log(typeof totalWorkload);
             }
         })
         .catch(error => console.log(error))
@@ -926,7 +930,7 @@ async function delTeacherDiscipline(id) {
                                 </div>
                                 <div class="my-auto">
                                     <h6 class="mb-0 text-sm font-weight-bold"> ${data[0].abbreviation}</h6>
-                                    <span class="mb-0 text-sm font-weight-bold">${data[0].amount} - Aula(s) </span>
+                                    <span class="mb-0 text-sm font-weight-bold">${writeZero(data[0].amount)} - Aula(s) </span>
                                 </div>                    
                             </div>
                         </div>`

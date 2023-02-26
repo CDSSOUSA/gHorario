@@ -153,6 +153,23 @@ class ApiHorario extends ResourceController
             ]);
         }
     }
+    public function listSeries(int $idSerie)
+    {
+        try {
+
+            //$data = $this->schedule->getTimeDayWeek($dw, $idSerie, $ps);
+
+            $data = $this->schedule->geSerieSchedule($idSerie);
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+    }
 
     public function getAllocation(int $idSerie, int $dayWeek, int $position, string $shift)
     {

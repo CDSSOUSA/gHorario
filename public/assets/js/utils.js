@@ -153,3 +153,12 @@ const validateErros = (errors, locale) => {
     }
     return r;
 }
+
+const writeZero = (values) => {
+    let a = values.length
+    if(a <= 1){
+        return `0${values}`;
+    }
+   return values;
+
+}

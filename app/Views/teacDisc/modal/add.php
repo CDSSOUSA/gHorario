@@ -17,19 +17,20 @@
                 echo form_input([
                     'id' => 'idTeac',
                     'name' => 'id_teacher',
-                    'type' => 'text'
+                    'type' => 'hidden'
                 ]);
                 echo form_input([
                     'name' => 'status',
-                    'type' => 'text',
+                    'type' => 'hidden',
                     'value' => 'A'
                 ]);
                 echo csrf_field()
                 ?>
                 <div class="row">
                     <div class="form-group col-6">
-                        <label for="nameDiscipline" class="form-label">Nome :: </label>
-                        <input class="form-control" id="nameDiscipline" disabled>
+                        <!-- <label for="nameDiscipline" class="form-label">Nome :: </label> -->
+                        <label class="col-form-label">Nome completo :: <label class="col-form-label" id="nameDiscipline"></label></label>
+                        <!-- <input class="form-control" id="nameDiscipline" disabled> -->
                     </div>
                 </div>
                 <div class="form-group col-12">

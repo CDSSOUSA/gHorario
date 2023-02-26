@@ -27,7 +27,67 @@ const listScheduleSeriesModal = new bootstrap.Modal(document.getElementById('lis
 async function listScheduleSeries(idSerie) {
     
     listScheduleSeriesModal.show();
+    
+    getSeries(idSerie, 'descriptionSerieFake')
+    //getSeries(idSerie, 'descriptionFake');
+
+    await axios.get(`${URL_BASE}/horario/api/listSeries/${idSerie}`)
+        .then(response => {
+            const data = response.data;
+            console.log(data);
+            document.querySelector("#tb_series_schedule > tbody").innerHTML = `${loadDataScheduleSerie(data)}`;
+            //document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
+            //loadDataTable(data)
+        }
+        )
+        .catch(error => console.log(error))
+
     console.log(idSerie)
+}
+
+function loadDataScheduleSerie(data){
+
+    let row = "";
+
+    // let dayShow = '';
+    // let rowColor = '';
+    for (let ps = 1; ps < 7; ps++) {
+        row += `<tr>
+           <th scope="row" class="text-center align-middle w-120">
+           ${ps}ª aula <p class="text-sm text-gray">${translateSchedule(ps,shift)} 
+           </p>           
+           </th>`
+
+        // let dayShow = ps === 1 ? convertDayWeek(dw) : '';           
+        // let rowColor = dw % 2 === 0 ? 'table-secondary' : 'table-success'
+
+        for (let dw = 2; dw < 7; dw++) {
+            row += `<td style="border:1px solid #eaeaea; text-align: center; " class="text-center align-middle w-120">`
+            //row += `<th scope="row">${dw}${ps}</th>`
+
+            data.forEach((elem, indice) => {
+                if (elem.dayWeek == dw && elem.position == ps) {
+
+                    row += `<div style="background-color:${elem.color}; color:white; border-radius: 5px; text-align: center;" class="d-flex w-120 text-center mb-1 text-sm font-weight-bold">
+                    <div>
+                        <img src="${URL_BASE}/assets/img/${elem.icone}" width="28px" class="me-3 border-radius-lg m-2" alt="spotify">
+                    </div>
+
+                    
+            <div class="my-auto text-center">
+                <h6 class="mb-0 text-sm font-weight-bold text-center">${elem.abbreviation}</h6>
+                            ${elem.name}
+                            </div></div>`
+
+                }
+            })
+            row += `</td>`
+        }
+        row += `</tr>`
+    }
+    return row;
+
+
 }
 
 function loadDataSchedule(data) {
@@ -285,7 +345,7 @@ async function getSeries(id, locale) {
     await axios.get(`${URL_BASE}/series/show/${id}`)
         .then(response => {
             console.log(response.data)
-            document.getElementById(locale).innerText = `${response.data[0].description}º ${response.data[0].classification}`
+            document.getElementById(locale).innerText = `${response.data[0].description}º ${response.data[0].classification} - ${convertShift(response.data[0].shift)}`
         })
         .catch(error => console.log(error))
 }
