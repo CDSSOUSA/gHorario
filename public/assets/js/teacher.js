@@ -23,8 +23,6 @@ async function listTeacDisc() {
         .catch(error => console.log(error))
 }
 
-
-
 function loadDataTeacher(data) {
     let row = "";
     let rowAllocation = '';
@@ -630,7 +628,7 @@ const listAllocationTeacherDiscipline = async (id) => {
 
             console.log(data);
             let total = data.length;
-            if (data) {
+            if (data) { 
                 //editModal.show();
                 //document.getElementById('idEdit').value = data[0].id
                 //document.getElementById('disc').innerHTML = `${listRowDisciplines(data)}`
@@ -642,12 +640,13 @@ const listAllocationTeacherDiscipline = async (id) => {
                 getDataTeacher(id, 'nameDisciplineAllocation');
                 getDataTeacherDiscipline(id);
 
-            }
+            } 
         })
         .catch(error => console.log(error))
 
 
 }
+
 
 function loadDataSchedule(data) {
 
@@ -917,12 +916,20 @@ async function delTeacherDiscipline(id) {
             const data = response.data;
             if (data) {
                 console.log(data);
-
                 deleteModal.show();
                 document.getElementById('idDelete').value = data[0].id
-                document.getElementById('dataDeleteTeacDisc').innerHTML = `<div class="rounded m-1 p-2 w-25" style="background-color:${data[0].color}; color:white; border:1px #EAEAEA solid">
-                ${data[0].abbreviation} :: <br> ${data[0].amount} - Aula(s) 
-             </div>`
+                document.getElementById('dataDeleteTeacDisc').innerHTML = `
+                <div class="discipline-ticket">               
+                            <div class="d-flex m-1 p-2 w-35" style="background-color:${data[0].color}; color:white; border-radius: 5px;">
+                                <div>
+                                    <img src="${URL_BASE}/assets/img/${data[0].icone}" width="25px"  class="me-3 border-radius-lg m-2" alt="logo">
+                                </div>
+                                <div class="my-auto">
+                                    <h6 class="mb-0 text-sm font-weight-bold"> ${data[0].abbreviation}</h6>
+                                    <span class="mb-0 text-sm font-weight-bold">${data[0].amount} - Aula(s) </span>
+                                </div>                    
+                            </div>
+                        </div>`
 
             }
         })

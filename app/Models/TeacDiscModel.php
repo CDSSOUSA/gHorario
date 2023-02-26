@@ -86,7 +86,8 @@ class TeacDiscModel extends Model
             ' . $this->table . '.id_teacher,
             ' . $this->table . '.amount,
             ' . $this->table . '.color,           
-            d.abbreviation'
+            d.abbreviation,
+            d.icone'
         )
             ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')           

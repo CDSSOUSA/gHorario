@@ -22,6 +22,14 @@ async function listSchedule() {
         .catch(error => console.log(error))
 }
 
+const listScheduleSeriesModal = new bootstrap.Modal(document.getElementById('listScheduleSeriesModal'));
+
+async function listScheduleSeries(idSerie) {
+    
+    listScheduleSeriesModal.show();
+    console.log(idSerie)
+}
+
 function loadDataSchedule(data) {
 
     let row = "";
