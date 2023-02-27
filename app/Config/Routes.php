@@ -29,6 +29,12 @@ $routes->setAutoRoute(true);
  * --------------------------------------------------------------------
  */
 
+//$routes->get('/pdf', 'Series::pdf');
+$routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],function ($routes){
+    $routes->get('series/(:any)','Series::series/$1');
+      
+});
+
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 //$routes->get('/(:any)', 'Horario::index/$1');

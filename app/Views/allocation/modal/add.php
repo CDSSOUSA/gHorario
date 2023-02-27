@@ -23,8 +23,9 @@
                 ?>
                 <div class="row">
                     <div class="form-group col-6">
-                        <label for="nameAllocation" class="form-label">Nome :: </label>
-                        <input class="form-control" id="nameAllocation" disabled>
+                        <!-- <label for="nameAllocation" class="form-label">Nome :: </label>
+                        <input class="form-control" id="nameAllocation" disabled> -->
+                        <label class="col-form-label">Nome :: <label class="col-form-label" id="nameAllocation"></label></label>
                     </div>
                 </div>
                 <div class="row">

@@ -22,6 +22,7 @@ class Alocacao extends BaseController
     public $alocacao;
     public $professorDisciplina;
     private $teacDiscModel;
+    private $schedule;
 
     public function __construct()
     {

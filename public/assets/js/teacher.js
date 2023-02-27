@@ -91,7 +91,7 @@ function listRowDisciplinesTeacher(data) {
                                     <img src="${URL_BASE}/assets/img/${e.icone}" width="25px"  class="me-3 border-radius-lg m-2" alt="spotify">
                                 </div>
                                 <div class="my-auto">
-                                    <h6 class="mb-0 text-sm font-weight-bold"> ${e.abbreviation}</h6>
+                                    <h6 class="mb-0 text-sm font-weight-bold"> ${e.description}</h6>
                                     ${writeZero(e.amount)} - Aula(s) 
                                 </div>                    
                             </div>
@@ -929,7 +929,7 @@ async function delTeacherDiscipline(id) {
                                     <img src="${URL_BASE}/assets/img/${data[0].icone}" width="25px"  class="me-3 border-radius-lg m-2" alt="logo">
                                 </div>
                                 <div class="my-auto">
-                                    <h6 class="mb-0 text-sm font-weight-bold"> ${data[0].abbreviation}</h6>
+                                    <h6 class="mb-0 text-sm font-weight-bold"> ${data[0].description}</h6>
                                     <span class="mb-0 text-sm font-weight-bold">${writeZero(data[0].amount)} - Aula(s) </span>
                                 </div>                    
                             </div>

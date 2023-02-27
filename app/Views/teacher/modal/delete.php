@@ -17,7 +17,7 @@
                 echo csrf_field()
                 ?>
                 <div class="row col-6">
-                    <label class="col-form-label">Nome completo :: <label class="col-form-label" id="nameTeacher"></label></label>
+                    <label class="col-form-label">Nome :: <label class="col-form-label" id="nameTeacher"></label></label>
                     <!-- <input type="text" id="nameTeacher" disabled class="form-control"> -->
                     <input type="hidden" id="idDeleteTeacher" name="id">
                 </div>

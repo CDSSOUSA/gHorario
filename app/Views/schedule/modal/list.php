@@ -42,6 +42,8 @@
             <div class="modal-footer card-footer clearfix">
                 <div class="float-right">
                     <?= generateButtonCloseModal(); ?>
+                    <?php echo anchor(base_url().'/report/series/1', '<i class="fa fa-print"></i> Imprimir', ['class' => 'btn btn-outline-dark', 'title' => 'Imprimir','target'=>'_blank']); ?>
+
                 </div>
             </div>
             <?= form_close(); ?>

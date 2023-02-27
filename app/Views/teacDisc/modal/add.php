@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="form-group col-6">
                         <!-- <label for="nameDiscipline" class="form-label">Nome :: </label> -->
-                        <label class="col-form-label">Nome completo :: <label class="col-form-label" id="nameDiscipline"></label></label>
+                        <label class="col-form-label">Nome :: <label class="col-form-label" id="nameDiscipline"></label></label>
                         <!-- <input class="form-control" id="nameDiscipline" disabled> -->
                     </div>
                 </div>
