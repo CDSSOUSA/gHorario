@@ -643,12 +643,20 @@ const listAllocationTeacherDiscipline = async (id) => {
                 document.getElementById('totalAllocation').value = total;
                 getDataTeacher(id, 'nameDisciplineAllocation');
                 getDataTeacherDiscipline(id);
+                document.getElementById('btn_print').setAttribute('onclick', `printReportTeacher(${id})`)
 
             } 
         })
         .catch(error => console.log(error))
 
 
+}
+
+function printReportTeacher(id) 
+{
+    listAllocationModal.hide();
+
+    window.open(`${URL_BASE}/report/teacher/${id}`);
 }
 
 

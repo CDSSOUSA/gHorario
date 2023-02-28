@@ -55,6 +55,8 @@
             <div class="modal-footer card-footer clearfix">
                 <div class="float-right">
                     <?= generateButtonCloseModal(); ?>
+                    <a id="btn_print"  class="btn btn-outline-dark" title="Imprimir" target="_blank"> 
+                        <i class="fa fa-print"></i> Imprimir </a>
                 </div>
             </div>
         </div>

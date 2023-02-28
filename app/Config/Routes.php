@@ -32,6 +32,7 @@ $routes->setAutoRoute(true);
 //$routes->get('/pdf', 'Series::pdf');
 $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],function ($routes){
     $routes->get('series/(:any)','Series::series/$1');
+    $routes->get('teacher/(:any)','Teacher::teacher/$1');
       
 });
 
