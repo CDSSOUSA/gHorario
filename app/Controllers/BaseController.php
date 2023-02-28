@@ -36,7 +36,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['utils', 'form'];
+    protected $helpers = ['utils', 'form','text_helper'];
     
     /**
      * messageErro

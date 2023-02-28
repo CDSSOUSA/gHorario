@@ -128,7 +128,7 @@ class SchoolScheduleModel extends Model
     }
     public function geSerieSchedule(int $idSerie)
     {
-        return $this->select('d.icone, d.abbreviation, p.name, td.color, '.$this->table.'.position, '.$this->table.'.dayWeek')
+        return $this->select('d.icone, d.description, d.abbreviation, p.name, td.color, '.$this->table.'.position, '.$this->table.'.dayWeek')
             //->from('tb_school_schedule h')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')

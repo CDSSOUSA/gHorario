@@ -51,10 +51,11 @@ class SeriesModel extends Model
 
     public function getDescription(int $id)
     {
-        $return = $this->select('description,classification,shift,status')
+        $return = $this->select('description,classification,shift,status,id_year_school')
             ->where('id', $id)
             ->get()
             ->getResult();
+            
         return $return;
     }
 

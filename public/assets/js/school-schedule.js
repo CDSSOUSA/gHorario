@@ -38,6 +38,10 @@ async function listScheduleSeries(idSerie) {
             document.querySelector("#tb_series_schedule > tbody").innerHTML = `${loadDataScheduleSerie(data)}`;
             //document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
             //loadDataTable(data)
+            //document.getElementById('btn_print').setAttribute('href', `${URL_BASE}/report/series/${idSerie}`)
+            document.getElementById('btn_print').setAttribute('onclick', `printReport(${idSerie})`)
+
+            //onclick = "printReport()"
         }
         )
         .catch(error => console.log(error))
@@ -76,7 +80,7 @@ function loadDataScheduleSerie(data){
                     
             <div class="my-auto text-center">
                 <h6 class="mb-0 text-sm font-weight-bold text-center">${elem.abbreviation}</h6>
-                            ${elem.name}
+                            ${elem.name.split(" ", 1)}
                             </div></div>`
 
                 }
@@ -88,6 +92,13 @@ function loadDataScheduleSerie(data){
     return row;
 
 
+}
+
+function printReport(idSerie) 
+{
+    listScheduleSeriesModal.hide();
+
+    window.open(`${URL_BASE}/report/series/${idSerie}`);
 }
 
 function loadDataSchedule(data) {

@@ -95,4 +95,10 @@ class YearSchoolModel extends Model
         }
         return false;
     }
+
+    public function getYearById(int $id)
+    {
+       
+        return $this->where('id',$id)->find()[0];
+    }
 }

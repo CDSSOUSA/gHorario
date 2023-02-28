@@ -31,7 +31,8 @@ function loadDataSeries(data) {
         if (element.status === "A") {
             console.log(element.status)
             ticket = `<a href="#" class="btn btn-outline-dark" onclick="activeSeries(${element.id})" title="Desativar série"><i class="fa fa-trash"></i></a>
-            <a href="#" class="btn btn-outline-dark" onclick="editSeries(${element.id})" title="Editar série"><i class="fa fa-pen"></i></a>`;
+            <a href="#" class="btn btn-outline-dark" onclick="editSeries(${element.id})" title="Editar série"><i class="fa fa-pen"></i></a>
+            <a class="btn btn-outline-dark" onclick="printReportSerie(${element.id})" title="Horário por série"><i class="fa fa-th"></i></a>`;
         }
         row +=
             `<tr>

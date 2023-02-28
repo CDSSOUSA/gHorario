@@ -23,8 +23,7 @@
                             <thead>
                                 <tr>
                                     <th class="align-middle text-center"> <label for="exampleColorInput" class="form-label">Dias/Aulas :: </label></th>
-                                    <?php
-                                    
+                                    <?php                                      
                                     for ($dw = 2; $dw < 7; $dw++) { ?>
                                         <th style="border:1px solid #eaeaea" class="text-center align-middle"><?= diaSemanaExtenso($dw); ?></th>
                                     <?php } ?>
@@ -42,8 +41,8 @@
             <div class="modal-footer card-footer clearfix">
                 <div class="float-right">
                     <?= generateButtonCloseModal(); ?>
-                    <?php echo anchor(base_url().'/report/series/1', '<i class="fa fa-print"></i> Imprimir', ['class' => 'btn btn-outline-dark', 'title' => 'Imprimir','target'=>'_blank']); ?>
-
+                    <a id="btn_print"  class="btn btn-outline-dark" title="Imprimir" target="_blank"> 
+                        <i class="fa fa-print"></i> Imprimir </a>
                 </div>
             </div>
             <?= form_close(); ?>

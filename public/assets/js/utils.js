@@ -162,3 +162,10 @@ const writeZero = (values) => {
    return values;
 
 }
+
+function printReportSerie(idSerie) 
+{
+    //listScheduleSeriesModal.hide();
+
+    window.open(`${URL_BASE}/report/series/${idSerie}`);
+}

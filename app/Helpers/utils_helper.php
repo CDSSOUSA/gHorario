@@ -109,7 +109,7 @@ function describeTeacher(string $nomeCompleto, string $disciplina): string
 
 function abbreviationTeacher(string $nomeCompleto): string
 {
-    return word_limiter($nomeCompleto, 1, '');
+    return word_limiter($nomeCompleto, 1, ' ');
 }
 
 function generateButtonRetro(string $adress): string
@@ -159,4 +159,31 @@ function generateButtonClear()
 {
     return '<button type="reset" class="btn btn-secondary"><i class="fa fa-minus-circle" aria-hidden="true"></i> Limpar</button>
     ';
+}
+
+
+/**
+ * Method convertHexaToRGB
+ *
+ * @param string $string [explicite description]
+ *
+ * @return string
+ */
+function convertHexaToRGB(string $string): string
+{
+
+
+    $string = str_replace("#","",$string);   
+
+    if(strlen($string) <= 6) {
+        return '0,0,0' ;
+    }
+    
+    $r = hexdec (substr($string,0,2));
+    $g = hexdec (substr($string,2,2));
+    $b = hexdec (substr($string,4,2));
+
+    return $r.','.$g.','.$b;
+
+
 }

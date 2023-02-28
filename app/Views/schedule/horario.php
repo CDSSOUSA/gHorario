@@ -19,7 +19,7 @@ echo $this->section('content');
                         <li class="nav-item align-items-center m-1">
                             <?php echo anchor('#', '<i class="fa fa-cogs"></i> Consistência', ['onclick' => 'addTeacher()', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Consistência']); ?>
                         </li>
-
+                        
                         <li class="nav-item align-items-center m-1">
                             <?php echo anchor('#', '<i class="fa fa-print"></i> Imprimir', ['onclick' => 'addTeacher()', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Imprimir']); ?>
 

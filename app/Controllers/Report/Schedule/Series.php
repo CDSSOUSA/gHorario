@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use App\Libraries\fpdf\Fpdf;
 use App\Libraries\SchedulePDF;
 use App\Models\SchoolScheduleModel;
+use App\Models\SeriesModel;
+use App\Models\YearSchoolModel;
 
 //use FPDF;
 //use FPDF2;
@@ -14,6 +16,19 @@ class Series extends BaseController
 {
     public function series(int $idSerie)
     {
+        $series = new SeriesModel();
+        $seriesData = $series->getDescription($idSerie);
+     
+
+        $description = $seriesData[0]->description;
+        $clasfication = $seriesData[0]->classification;
+        $shift = $seriesData[0]->shift;
+        $idYearSchool = $seriesData[0]->id_year_school;
+
+        $yearSchool = new YearSchoolModel();
+        $year = $yearSchool->getYearById($idYearSchool);
+        $yearDescription = $year->description;
+
         $LINE_HEIGHT = 15;
 
         // // initiate PDF
@@ -48,7 +63,7 @@ class Series extends BaseController
 
         $pdf->AliasNbPages();
 
-        $pdf->SetTitle("OpenGisCRM Report Leads");
+       
         $pdf->SetLeftMargin(15);
         $pdf->SetRightMargin(15);
         $pdf->SetFillColor(200, 200, 200);
@@ -65,7 +80,7 @@ class Series extends BaseController
         // $pdf->Cell(40, 5, 'By OpenGisCRM :', 'TB', 0, 'L', '1');
         // $pdf->Cell(40, 5, 'https://opengiscrm.com/', 'B', 0, 'L', 0);
         $pdf->Ln(15);
-        $serie = '7ºA - MANHÃ :: 2023';
+        $serie = $description.'º'. $clasfication.' - '.turno($shift).' :: '.$yearDescription;
 
          /* CABECALHO DA TERMO */
          $pdf->SetFont('Courier', 'B', 12);
@@ -75,7 +90,7 @@ class Series extends BaseController
          $pdf->SetX(15);
          $pdf->MultiCell(0, 4, utf8_decode($textoTituloFicha), 0, 'L');
          $pdf->Ln(5);
-
+         $pdf->SetTitle(utf8_decode($textoTituloFicha));
          /* FIM */
  
         //ob_end_clean();
@@ -89,7 +104,8 @@ class Series extends BaseController
         $pdf->Ln($LINE_HEIGHT+2);
         
         for ($ps = 1; $ps < 7; $ps++) {
-            $pdf->Cell(40, $LINE_HEIGHT, $ps . utf8_decode('ª Aula'), 'TBLR', 0, 'C', 1);
+            $dataTicketAula = $ps."ª Aula \n".translateSchedule($ps,$shift);
+            $pdf->Cell(40, $LINE_HEIGHT,  utf8_decode($dataTicketAula), 'TBLR', 0, 'C', 1);
             //$pdf->Ln(6);
             $data = new SchoolScheduleModel();
             $result = $data->geSerieSchedule($idSerie);
@@ -100,7 +116,7 @@ class Series extends BaseController
 
             //$pdf->Cell(40, 5, $pos, 'TBLR', 0, 'C', 1);
             //dd($result);
-            $casa = '';
+            $dataSchedule = '';
 
             for ($dw = 2; $dw < 7; $dw++) {
 
@@ -109,14 +125,21 @@ class Series extends BaseController
                 foreach ($result as $item) {
                     if ($item->position == $ps && $item->dayWeek == $dw) {
 
-                        $casa = $item->abbreviation.' - '. $item->name;
+                        
+
+                        $pdf->SetTextColorHexa($item->color);
+                        //$pdf->Image(base_url() . "/assets/img/{$item->icone}", 15, 5, 45); // importa uma imagem
+       
+                        $dataSchedule = utf8_decode($item->description)."\n".abbreviationTeacher($item->name);
+                       
                     }
                     
                 }
                 //$pdf->SetFillColor(0, 169, 169);
-                $pdf->Cell(40, $LINE_HEIGHT, $casa, 1, 0, 'C', 0);
+                $pdf->Cell(40, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', 0);
                 //$pdf->Cell(40, 5, ' ', 1, 0, 'C', 0);
-                $casa = '';
+                $pdf->SetTextColor(0,0,0);
+                $dataSchedule = '';
                 
                 
             }
@@ -129,7 +152,7 @@ class Series extends BaseController
         //$pdf->Ln(6);
 
         ob_get_clean();
-        $pdf->Output("OpenGisCRM Report leads.pdf", 'I');
+        $pdf->Output(convert_accented_characters($textoTituloFicha), 'I');
         exit;
     }
 
