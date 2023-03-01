@@ -98,7 +98,7 @@ class Series extends BaseController
         $pdf->Cell(40, $LINE_HEIGHT, 'DIAS/AULAS', 'TBLR', 0, 'C', 1);
 
         for ($dw = 2; $dw < 7; $dw++) {
-            $pdf->Cell(40, $LINE_HEIGHT, diaSemanaExtenso($dw), 'TBLR', 0, 'C', 1);
+            $pdf->Cell(40, $LINE_HEIGHT, utf8_decode(diaSemanaExtenso($dw)), 'TBLR', 0, 'C', 1);
         }
 
         $pdf->Ln($LINE_HEIGHT+2);
@@ -116,7 +116,7 @@ class Series extends BaseController
 
             //$pdf->Cell(40, 5, $pos, 'TBLR', 0, 'C', 1);
             //dd($result);
-            $dataSchedule = '';
+            $dataSchedule = '-';
 
             for ($dw = 2; $dw < 7; $dw++) {
 
@@ -130,7 +130,7 @@ class Series extends BaseController
                         $pdf->SetTextColorHexa($item->color);
                         //$pdf->Image(base_url() . "/assets/img/{$item->icone}", 15, 5, 45); // importa uma imagem
        
-                        $dataSchedule = utf8_decode($item->description)."\n".abbreviationTeacher($item->name);
+                        $dataSchedule = utf8_decode($item->description)."\n".utf8_decode(abbreviationTeacher($item->name));
                        
                     }
                     
@@ -139,7 +139,7 @@ class Series extends BaseController
                 $pdf->Cell(40, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', 0);
                 //$pdf->Cell(40, 5, ' ', 1, 0, 'C', 0);
                 $pdf->SetTextColor(0,0,0);
-                $dataSchedule = '';
+                $dataSchedule = '-';
                 
                 
             }

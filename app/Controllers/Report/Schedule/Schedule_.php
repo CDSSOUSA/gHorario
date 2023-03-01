@@ -12,6 +12,7 @@ use App\Models\TeacDiscModel;
 use App\Models\TeacherModel;
 use App\Models\YearSchoolModel;
 
+
 //use FPDF;
 //use FPDF2;
 
@@ -24,7 +25,7 @@ class Schedule extends BaseController
 
 
         // $name = $teacherData[0]->name;
-         $year = session('session_idYearSchool');
+        $year = session('session_idYearSchool');
         // // $clasfication = $seriesData[0]->classification;
         // // $shift = $seriesData[0]->shift;
         // // $idYearSchool = $seriesData[0]->id_year_school;
@@ -32,17 +33,19 @@ class Schedule extends BaseController
         $yearSchool = new YearSchoolModel();
         $year = $yearSchool->getYearById($year);
         $yearDescription = $year->description;
-        //$yearDescription = 1;
+        //$yearDescription = 1;      
 
-        $LINE_HEIGHT = 7.4;
+        $LINE_HEIGHT = 4.7;
         $CELL_WIDTH = 30;
 
         $pdf = new SchedulePDF();
         $data = new AllocationModel();
         //$resultManha = $data->getAllocationTeacherOcupationByShift($idSerie, 'M');
 
+
+
         //if ($resultManha) {
-        $sizeReport = mb_strtoupper($shift) === 'M' ? 'A3' : 'A4';
+        $sizeReport = mb_strtoupper($shift) === 'M' ? 'A4' : 'A4';
         $orietationReport = mb_strtoupper($shift) === 'M' ? 'L' : 'P';
 
         $pdf->AddPage($orietationReport, $sizeReport);
@@ -51,14 +54,14 @@ class Schedule extends BaseController
         $pdf->SetRightMargin(15);
         $pdf->SetFillColor(200, 200, 200);
 
-        $pdf->SetFont('Arial', 'B', 9);
+        
         $pdf->Ln(1);
         //$title = $name . ' - ' . turno('M') . ' :: ' . $yearDescription;
         $title = turno($shift) . ' :: ' . $yearDescription;
 
 
         /* CABECALHO DA TERMO */
-        $pdf->SetFont('Courier', 'B', 10);
+        //$pdf->SetFont('Courier', 'B', 10);
         $textoTituloFicha = 'QUADRO DE HORÁRIO :: ' . $title;
         $pdf->SetFont('Courier', 'B', 9);
         //$ficha->SetY(80);
@@ -68,24 +71,25 @@ class Schedule extends BaseController
         $pdf->SetTitle(utf8_decode('QUADRO DE HORÁRIO :: ' . $title));
         /* FIM */
         $pdf->SetFont('Courier', 'B', 8);
+
         //ob_end_clean();
         //ob_get_clean();
-        $pdf->Cell($CELL_WIDTH-10, $LINE_HEIGHT, 'DIAS', 'TBLR', 0, 'C', 1);
-        $pdf->Cell($CELL_WIDTH-10, $LINE_HEIGHT, 'AULAS', 'TBLR', 0, 'C', 1);
+        $pdf->Cell($CELL_WIDTH - 22, $LINE_HEIGHT, 'DIAS', 'TBLR', 0, 'C', 1);
+        $pdf->Cell($CELL_WIDTH - 22, $LINE_HEIGHT, 'AULAS', 'TBLR', 0, 'C', 1);
 
         $series = new SeriesModel();
         $dataSeries = $series->getSeries($shift);
 
         foreach ($dataSeries as $item) {
 
-            $pdf->SetFillColor(236,126,49);
+            $pdf->SetFillColor(236, 126, 49);
 
-            $pdf->Cell($CELL_WIDTH, $LINE_HEIGHT, ($item->description . utf8_decode('º') . $item->classification), 'TBLR', 0, 'C', 1);
+            $pdf->Cell($CELL_WIDTH - 7, $LINE_HEIGHT, ($item->description . utf8_decode('º') . $item->classification), 'TBLR', 0, 'C', 1);
         }
         $pdf->SetFillColor(200, 200, 200);
         $pdf->Ln($LINE_HEIGHT + 2);
         $data = new SchoolScheduleModel();
-        $dataSchedule = '-';
+        $dataSchedule = '';
 
         for ($dw = 2; $dw < 7; $dw++) {
             // $pdf->Cell( $CELL_WIDTH , $LINE_HEIGHT, diaSemanaExtenso($dw), 'TBLR', 0, 'C', 1);
@@ -94,24 +98,24 @@ class Schedule extends BaseController
                 $dayShow = '';
                 $LINE_HEIGHT_CELL = $LINE_HEIGHT;
                 $rowColor = $dw % 2 == 0 ? 0 : 1;
-                if($ps == 3){
+                if ($ps == 3) {
                     //$LINE_HEIGHT_CELL = 15; 
-                    $dayShow = diaSemanaExtenso($dw); 
+                    $dayShow = diaSemanaExtenso($dw, true);
                     //$rowColor = 0;
-                } 
+                }
 
                 $borderShow = 'L';
-                if($ps == 1){
+                if ($ps == 1) {
                     $borderShow = 'TL';
-                } else if($ps == 6) {
-                    
+                } else if ($ps == 6) {
+
                     $borderShow = 'BL';
-                } 
+                }
                 //$borderShow = $ps == 1 ? 'TL' : 'L';     
-                      
+
                 //$pdf->SetFillColor(0, 200, 0);
-                $pdf->Cell($CELL_WIDTH-10, $LINE_HEIGHT_CELL, utf8_decode($dayShow), $borderShow, 0, 'C', $rowColor);
-                $pdf->Cell($CELL_WIDTH-10, $LINE_HEIGHT, $ps . utf8_decode('ª'), 'TBLR', 0, 'C', $rowColor);
+                $pdf->Cell($CELL_WIDTH - 22, $LINE_HEIGHT_CELL, utf8_decode($dayShow), $borderShow, 0, 'C', $rowColor);
+                $pdf->Cell($CELL_WIDTH - 22, $LINE_HEIGHT, $ps . utf8_decode('ª'), 'TBLR', 0, 'C', $rowColor);
                 //$pdf->Ln($LINE_HEIGHT);
 
                 foreach ($dataSeries as $item) {
@@ -125,10 +129,10 @@ class Schedule extends BaseController
                             $dataSchedule = utf8_decode(abbreviationTeacher($iten->name)) . "-" . utf8_decode($iten->abbreviation);
                         }
                     }
-                    $pdf->Cell($CELL_WIDTH, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', $rowColor);
+                    $pdf->Cell($CELL_WIDTH - 7, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', $rowColor);
                     //$pdf->Cell(40, 5, ' ', 1, 0, 'C', 0);
                     $pdf->SetTextColor(0, 0, 0);
-                    $dataSchedule = '-';
+                    $dataSchedule = '';
                 }
                 $pdf->Ln($LINE_HEIGHT);
             }

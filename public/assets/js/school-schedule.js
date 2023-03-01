@@ -17,6 +17,7 @@ async function listSchedule() {
             document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
             //document.querySelector("#tb_schedule > tbody").innerHTML = `${loadDataSchedule(data)}`;
             //loadDataTable(data)
+            document.getElementById('btn_print_schedule').setAttribute('onclick', `printReportSchedule('${shift}')`)
         }
         )
         .catch(error => console.log(error))
@@ -94,6 +95,12 @@ function loadDataScheduleSerie(data){
 
 }
 
+function printReportSchedule(shift) 
+{
+    //listScheduleSeriesModal.hide();
+    console.log(shift)
+    window.open(`${URL_BASE}/report/schedule/${shift}`);
+}
 function printReport(idSerie) 
 {
     listScheduleSeriesModal.hide();

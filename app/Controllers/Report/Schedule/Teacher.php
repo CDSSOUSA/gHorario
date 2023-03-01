@@ -42,7 +42,7 @@ class Teacher extends BaseController
         if ($resultManha) {
 
 
-            $pdf->AddPage('L', 'A3');
+            $pdf->AddPage('L', 'A4');
             $pdf->AliasNbPages();
             $pdf->SetLeftMargin(15);
             $pdf->SetRightMargin(15);
@@ -69,7 +69,7 @@ class Teacher extends BaseController
             $pdf->Cell(40, $LINE_HEIGHT, 'DIAS/AULAS', 'TBLR', 0, 'C', 1);
 
             for ($dw = 2; $dw < 7; $dw++) {
-                $pdf->Cell(40, $LINE_HEIGHT, diaSemanaExtenso($dw), 'TBLR', 0, 'C', 1);
+                $pdf->Cell(40, $LINE_HEIGHT, utf8_decode(diaSemanaExtenso($dw)), 'TBLR', 0, 'C', 1);
             }
 
             $pdf->Ln($LINE_HEIGHT + 2);
@@ -155,7 +155,7 @@ class Teacher extends BaseController
             $pdf->Cell(40, $LINE_HEIGHT, 'DIAS/AULAS', 'TBLR', 0, 'C', 1);
 
             for ($dw = 2; $dw < 7; $dw++) {
-                $pdf->Cell(40, $LINE_HEIGHT, diaSemanaExtenso($dw), 'TBLR', 0, 'C', 1);
+                $pdf->Cell(40, $LINE_HEIGHT, utf8_decode(diaSemanaExtenso($dw)), 'TBLR', 0, 'C', 1);
             }
 
             $pdf->Ln($LINE_HEIGHT + 2);
@@ -175,7 +175,7 @@ class Teacher extends BaseController
 
                 //$pdf->Cell(40, 5, $pos, 'TBLR', 0, 'C', 1);
                 //dd($result);
-                $dataSchedule = '';
+                $dataSchedule = '-';
 
                 for ($dw = 2; $dw < 7; $dw++) {
 
@@ -194,7 +194,7 @@ class Teacher extends BaseController
                     $pdf->Cell(40, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', 0);
                     //$pdf->Cell(40, 5, ' ', 1, 0, 'C', 0);
                     $pdf->SetTextColor(0, 0, 0);
-                    $dataSchedule = '';
+                    $dataSchedule = '-';
                 }
                 //$pdf->SetFillColor(0,0,0);
 

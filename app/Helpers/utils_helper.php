@@ -19,17 +19,22 @@ function toDataMsql($data)
 }
 
 
+
 /**
  * Method diaSemanaExtenso
  *
  * @param int $diaSemana [explicite description]
+ * @param bool $status [define abbreviation]
  *
  * @return string
  */
-function diaSemanaExtenso(int $diaSemana): string
-{
-    $days = [
+function diaSemanaExtenso(int $diaSemana, bool $status = false): string
+{  
+    $status == true ? $days = [
         "SEG","TER","QUA","QUI","SEX"
+    ] :
+    $days = [
+        "SEGUNDA","TERÇA","QUARTA","QUINTA","SEXTA"
     
     ];
 
@@ -92,6 +97,7 @@ function generationColor()
 }
 function turno($turno): string
 {
+    $turno = mb_strtoupper($turno);
     if (empty($turno) || $turno !== 'T') {
         return 'MANHÃ';
     }
@@ -127,8 +133,6 @@ function generationButtonSave(string $title = null): string
     return '<button type="submit" class="btn btn-outline-success"> <i class="fa fa-check" aria-hidden="true"></i> ' . $title . '</button>
     ';
 }
-
-
 
 /**
  * [Description for convertSituation]

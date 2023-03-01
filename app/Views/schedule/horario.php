@@ -21,7 +21,10 @@ echo $this->section('content');
                         </li>
                         
                         <li class="nav-item align-items-center m-1">
-                            <?php echo anchor(base_url().'/report/schedule/1', '<i class="fa fa-print"></i> Imprimir', ['target'=>'_blank', 'class' => 'btn btn-outline-dark', 'title' => 'Imprimir']); ?>
+
+                        <a id="btn_print_schedule" class="btn btn-outline-dark" title="Imprimir" target="_blank"> 
+                        <i class="fa fa-print"></i> Imprimir </a>
+                            <?php //echo anchor(base_url().'/report/schedule/1', '<i class="fa fa-print"></i> Imprimir', ['target'=>'_blank', 'class' => 'btn btn-outline-dark', 'title' => 'Imprimir']); ?>
 
                         </li>
 
@@ -56,7 +59,7 @@ echo $this->section('content');
 
                                         foreach ($series as $serie) : ?>
                                             <th class="text-center">
-                                                <?php echo anchor('#', $serie->description . 'º ' . $serie->classification, ['onclick' => 'listScheduleSeries(' . $serie->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-success', 'title' => 'Nova disciplina']); ?>
+                                                <?php echo anchor('#', '<span class="font-weight-bold"><i class="fa fa-users" aria-hidden="true"></i> '.$serie->description . 'º ' . $serie->classification.'</span>', ['onclick' => 'listScheduleSeries(' . $serie->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Nova disciplina']); ?>
                                             </th>
                                         <?php endforeach; ?>
                                     </tr>

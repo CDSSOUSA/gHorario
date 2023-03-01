@@ -46,8 +46,7 @@ VALUES ('LÍBIO', '#3C0BF3', 'A', 4),
     ('MICHILLYS', '#FF1400', 'A', 2),
     ('ROSILENE', '#FF1400', 'A', 2),
     ('MARCIO', '#FF1400', 'A', 2),
-    ('JOSILÂNDIA', '#FF1400', 'A', 2),
-    ('MÁRCIO', '#FF1400', 'A', 2),
+    ('JOSILÂNDIA', '#FF1400', 'A', 2),    
     ('ALEX', '#FF1400', 'A', 2),
     ('TESSÁLIA', '#FF1400', 'A', 2),
     ('LUÍS', '#FF1400', 'A', 2),
@@ -57,7 +56,8 @@ VALUES ('LÍBIO', '#3C0BF3', 'A', 4),
     ('VANDA', '#FF1400', 'A', 2),
     ('JOSIELMA', '#FF1400', 'A', 2),
     ('ISRAEL', '#FF1400', 'A', 2),
-    ('JOSMARA', '#FF1400', 'A', 2);
+    ('JOSMARA', '#FF1400', 'A', 2),
+    ('ÉLLYDA', '#FF1400', 'A', 2);
     
 
 CREATE TABLE tb_teacher_discipline(
@@ -102,10 +102,10 @@ CREATE TABLE tb_series(
 )ENGINE = INNODB;
 
 INSERT INTO tb_series(description,classification,shift,id_year_school,status) VALUES
-('6','A','M',1,'A'),
-('6','B','M',1,'A'),
-('6','C','M',1,'A'),
-('6','D','M',1,'A'),
+('6','A','T',1,'A'),
+('6','B','T',1,'A'),
+('6','C','T',1,'A'),
+('6','D','T',1,'A'),
 ('7','A','M',1,'A'),
 ('7','B','M',1,'A'),
 ('7','C','M',1,'A'),
@@ -113,10 +113,10 @@ INSERT INTO tb_series(description,classification,shift,id_year_school,status) VA
 ('9','A','M',1,'A'),
 ('9','B','M',1,'A'),
 ('9','C','M',1,'A'),
-('8','A','T',1,'A'),
-('8','B','T',1,'A'),
-('8','C','T',1,'A'),
-('8','D','T',1,'A');
+('8','A','M',1,'A'),
+('8','B','M',1,'A'),
+('8','C','M',1,'A'),
+('8','D','M',1,'A');
 
 CREATE TABLE tb_school_schedule(
     id INT AUTO_INCREMENT NOT NULL,
