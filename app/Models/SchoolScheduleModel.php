@@ -64,6 +64,33 @@ class SchoolScheduleModel extends Model
             ->get()->getRowArray();
         return $result;
     }
+    public function getTimeDayWeekOcupation(int $diaSemana, int $idSerie, int $posicao)
+    {
+
+        $result = $this->select(
+            'p.name, 
+            h.id_allocation, 
+            pd.color, 
+            pd.id_teacher,
+            d.abbreviation,
+            d.icone,
+            h.id,
+            h.position,
+            h.dayWeek'
+        )
+            ->from('tb_school_schedule h')
+            ->join('tb_allocation ap', 'h.id_allocation = ap.id')
+            ->join('tb_teacher_discipline pd', 'ap.id_teacher_discipline = pd.id')
+            ->join('tb_discipline d', 'pd.id_discipline = d.id')
+            ->join('tb_teacher p', 'pd.id_teacher = p.id')
+            ->where('h.dayWeek', $diaSemana)
+            ->where('h.id_series', $idSerie)
+            ->where('h.position', $posicao)
+            ->where('h.id_year_school', session('session_idYearSchool'))
+            ->get()->getResult();
+        return $result;
+    }
+    
     public function getTimePosition(int $day, int $posicao, $shift)
     {
 

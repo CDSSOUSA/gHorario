@@ -21,7 +21,7 @@ echo $this->section('content');
                         </li>
                         
                         <li class="nav-item align-items-center m-1">
-                            <?php echo anchor('#', '<i class="fa fa-print"></i> Imprimir', ['onclick' => 'addTeacher()', 'data-toggle' => 'modal', 'class' => 'btn btn-outline-dark', 'title' => 'Imprimir']); ?>
+                            <?php echo anchor(base_url().'/report/schedule/1', '<i class="fa fa-print"></i> Imprimir', ['target'=>'_blank', 'class' => 'btn btn-outline-dark', 'title' => 'Imprimir']); ?>
 
                         </li>
 
@@ -56,7 +56,7 @@ echo $this->section('content');
 
                                         foreach ($series as $serie) : ?>
                                             <th class="text-center">
-                                                <?php echo anchor('#', $serie->description . 'º ' . $serie->classification, ['onclick' => 'listScheduleSeries(' . $serie->id . ')', 'data-toggle' => 'modal', 'class' => '', 'title' => 'Nova disciplina']); ?>
+                                                <?php echo anchor('#', $serie->description . 'º ' . $serie->classification, ['onclick' => 'listScheduleSeries(' . $serie->id . ')', 'data-toggle' => 'modal', 'class' => 'btn btn-success', 'title' => 'Nova disciplina']); ?>
                                             </th>
                                         <?php endforeach; ?>
                                     </tr>

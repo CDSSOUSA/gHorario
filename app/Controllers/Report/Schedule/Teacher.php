@@ -42,7 +42,7 @@ class Teacher extends BaseController
         if ($resultManha) {
 
 
-            $pdf->AddPage('L', 'A4');
+            $pdf->AddPage('L', 'A3');
             $pdf->AliasNbPages();
             $pdf->SetLeftMargin(15);
             $pdf->SetRightMargin(15);

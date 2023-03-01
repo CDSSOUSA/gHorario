@@ -58,10 +58,10 @@ class SchedulePDF extends \FPDF
     function Footer()
     {
         /* LOCALIDADE */
-        $this->Ln(10);
+        $this->Ln(1);
         $this->SetX(25);
-        $textoCidade = 'Campina Grande, ' . (strftime(' %d de %B de %Y', strtotime(date('Y-m-d')))) . '.';
-        $this->MultiCell(170, 6, utf8_decode($textoCidade), 0, 'R');
+        $textoCidade = 'Campina Grande,' . (strftime('%d de %B de %Y', strtotime(date('Y-m-d')))) . '.';
+        $this->MultiCell(0, 6, utf8_decode($textoCidade), 0, 'C');
         /* FIM */
         // Position at 1.5 cm from bottom
         $this->SetY(-15);
