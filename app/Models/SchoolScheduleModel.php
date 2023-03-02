@@ -127,6 +127,7 @@ class SchoolScheduleModel extends Model
         ->join('tb_allocation a', $this->table . '.id_allocation = a.id')            
         ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
         ->where('id_series',$idSerie)
+        ->where('a.situation','O')
         ->get()->getResult();
     }
 

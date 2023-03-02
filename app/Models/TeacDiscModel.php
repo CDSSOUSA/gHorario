@@ -92,7 +92,7 @@ class TeacDiscModel extends Model
         )
             ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher')
             ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')           
-            ->where($this->table . '.id', $id)
+            ->where($this->table . '.id_teacher', $id)
             ->orderBy('t.name')
             ->get()->getResultObject();
         //dd($a);

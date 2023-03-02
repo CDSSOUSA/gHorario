@@ -89,7 +89,7 @@ class Teacher extends BaseController
 
                 //$pdf->Cell(40, 5, $pos, 'TBLR', 0, 'C', 1);
                 //dd($result);
-                $dataSchedule = '';
+                $dataSchedule = '-';
 
                 for ($dw = 2; $dw < 7; $dw++) {
 
@@ -106,7 +106,7 @@ class Teacher extends BaseController
                     $pdf->Cell(40, $LINE_HEIGHT, $dataSchedule, 1, 0, 'C', 0);
                     //$pdf->Cell(40, 5, ' ', 1, 0, 'C', 0);
                     $pdf->SetTextColor(0, 0, 0);
-                    $dataSchedule = '';
+                    $dataSchedule = '-';
                 }
                 //$pdf->SetFillColor(0,0,0);
 

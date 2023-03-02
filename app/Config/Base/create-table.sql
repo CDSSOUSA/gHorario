@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS tb_year_school (
     status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
     CONSTRAINT id_pk PRIMARY KEY (id)
 ) ENGINE = INNODB;
-INSERT INTO tb_year_school (description, status) VALUES ('2022','A');
+INSERT INTO tb_year_school (description, status) VALUES ('2023','A');
 
 CREATE TABLE IF NOT EXISTS tb_discipline (
     id SMALLINT AUTO_INCREMENT NOT NULL,
