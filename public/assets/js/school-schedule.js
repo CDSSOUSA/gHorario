@@ -215,8 +215,8 @@ async function addSchedule(idSerie, position, dayWeek, shift) {
     document.getElementById('position').value = position
     document.getElementById('dayWeek').value = dayWeek
     document.getElementById('shift').value = shift
-    document.getElementById('shiftFake').innerText = convertShift(shift)
-    document.getElementById('dayWeekFake').innerText = convertDayWeek(dayWeek)
+    //document.getElementById('shiftFake').innerText = convertShift(shift)
+    document.getElementById('dayWeekFake').innerText = convertDayWeek(dayWeek,true)
     document.getElementById('positionFake').innerText = `${position}ª`
     const divOpcao = document.getElementById('divOpcao')
     divOpcao.innerHTML = ''
@@ -363,7 +363,7 @@ async function getSeries(id, locale) {
     await axios.get(`${URL_BASE}/series/show/${id}`)
         .then(response => {
             console.log(response.data)
-            document.getElementById(locale).innerText = `${response.data[0].description}º ${response.data[0].classification} - ${convertShift(response.data[0].shift)}`
+            document.getElementById(locale).innerText = `${response.data[0].description}º${response.data[0].classification} - ${convertShift(response.data[0].shift)}`
         })
         .catch(error => console.log(error))
 }

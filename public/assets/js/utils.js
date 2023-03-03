@@ -54,15 +54,28 @@ const convertStatusRotulo = (status) => {
     return _shift;
 }
 
-const convertDayWeek = (dia) => {
+const convertDayWeek = (dia, status) => {
+   
     let day
-    const data = [
+    let data = [
         "SEG",
         "TER",
         "QUA",
         "QUI",
         "SEX"
     ]
+    console.log(status);
+
+    if (status === true) {
+        data = [];
+        data = [
+            "SEGUNDA",
+            "TERÇA",
+            "QUARTA",
+            "QUINTA",
+            "SEXTA"
+        ]
+    }
     data.forEach((item, indice) => {
         if (dia == indice + 2) {
             day = item
@@ -95,11 +108,11 @@ function translateSchedule(position, shift) {
     schedule[shift].forEach((item, ind) => {
         if (position == ind + 1) {
             //console.log(item)
-             textSchedule = item
+            textSchedule = item
         }
     })
     return textSchedule
-    
+
 
 }
 
@@ -156,15 +169,14 @@ const validateErros = (errors, locale) => {
 
 const writeZero = (values) => {
     let a = values.length
-    if(a <= 1){
+    if (a <= 1) {
         return `0${values}`;
     }
-   return values;
+    return values;
 
 }
 
-function printReportSerie(idSerie) 
-{
+function printReportSerie(idSerie) {
     //listScheduleSeriesModal.hide();
 
     window.open(`${URL_BASE}/report/series/${idSerie}`);

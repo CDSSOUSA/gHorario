@@ -251,6 +251,7 @@ class ApiHorario extends ResourceController
 
                 // }
                 else {
+                    //var_dump('aqui sem limite');
                     $horario = $this->schedule->getTimePosition($dayWeek, $position, $shift);
                     //dd($horario);
                     if ($horario) {
@@ -262,11 +263,13 @@ class ApiHorario extends ResourceController
                         //$hor[] = $tea;
                         //var_dump($hor);
                         //exit();
+                        //var_dump('tem horario');
 
                         $data = $this->allocation->getAllocationByDayWeekAB($idSerie, $dayWeek, $position, $shift, $hor);
                     } else {
-
-                        $data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+                        //var_dump('sem horario');
+                        //$data = $this->allocation->getAllocationByDayWeekA($idSerie, $dayWeek, $position, $shift);
+                        $data = $this->allocation->getAllocationByDayWeekABCDE($idSerie, $dayWeek, $position, $shift, $tea);
                     }
                 }
             } else {
