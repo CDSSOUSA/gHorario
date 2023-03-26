@@ -108,7 +108,7 @@ class Horario extends BaseController
             //'series' => $this->series->getSeries()
             //'erro' => $this->erros
         );
-        return view('horario/add-profissional-horario', $data);
+        return view('horadrio/add-profissional-horario', $data);
     }
 
     public function add()

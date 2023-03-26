@@ -51,7 +51,7 @@ class SeriesModel extends Model
 
     public function getDescription(int $id)
     {
-        $return = $this->select('description,classification,shift,status,id_year_school')
+        $return = $this->select('description,classification,shift,status,id_year_school,id')
             ->where('id', $id)
             ->get()
             ->getResult();
@@ -85,5 +85,14 @@ class SeriesModel extends Model
             return true;
         }
         return false;
+    }
+
+    public function getEndSerie (){
+        return $this->select('id')
+            ->where('status','A')
+            ->limit(1)
+            ->orderBy('id','DESC')
+            ->get()
+            ->getResult();
     }
 }

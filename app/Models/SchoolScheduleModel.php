@@ -90,7 +90,7 @@ class SchoolScheduleModel extends Model
             ->get()->getResult();
         return $result;
     }
-    
+
     public function getTimePosition(int $day, int $posicao, $shift)
     {
 
@@ -115,8 +115,8 @@ class SchoolScheduleModel extends Model
     public function getScheduleByIdAllocation(int $idAllocation)
     {
         return $this->select('s.description, s.classification, s.shift')
-        ->join('tb_series s','s.id = '.$this->table.'.id_series')
-        ->where($this->table.'.id_allocation', $idAllocation)
+            ->join('tb_series s', 's.id = ' . $this->table . '.id_series')
+            ->where($this->table . '.id_allocation', $idAllocation)
             //->where('id_year_school', session('session_idYearSchool'))
             ->get()->getRow();
     }
@@ -124,16 +124,27 @@ class SchoolScheduleModel extends Model
     public function getDisciplineTeacher(int $idSerie)
     {
         return $this->select('td.id_teacher,td.id_discipline')
-        ->join('tb_allocation a', $this->table . '.id_allocation = a.id')            
-        ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
-        ->where('id_series',$idSerie)
-        ->where('a.situation','O')
-        ->get()->getResult();
+            ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
+            ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+            ->where('id_series', $idSerie)
+            ->where('a.situation', 'O')
+            ->get()->getResult();
+    }
+    public function getTotalScheduleByDiscipline(int $idDiscipline)
+    {
+        return $this->join('tb_allocation a', $this->table . '.id_allocation = a.id')
+            ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
+            ->join('tb_discipline d', 'td.id_discipline = d.id')
+            ->where('d.id', $idDiscipline)
+            ->where($this->table . '.status', 'A')
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->where('a.situation', 'O')
+            ->countAllResults();
     }
 
     public function getTotalDiscBySerie(int $idSerie)
     {
-        return $this->select('count(*) as total, d.description, d.id, d.icone,'.$this->table.'.id_series')
+        return $this->select('count(*) as total, d.description, d.id, d.icone,' . $this->table . '.id_series')
             //->from('tb_school_schedule h')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
@@ -156,7 +167,7 @@ class SchoolScheduleModel extends Model
     }
     public function geSerieSchedule(int $idSerie)
     {
-        return $this->select('d.icone, d.description, d.abbreviation, p.name, td.color, '.$this->table.'.position, '.$this->table.'.dayWeek')
+        return $this->select('d.icone, d.description, d.abbreviation, p.name, td.color, ' . $this->table . '.position, ' . $this->table . '.dayWeek')
             //->from('tb_school_schedule h')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_teacher_discipline td', 'a.id_teacher_discipline = td.id')
@@ -183,6 +194,7 @@ class SchoolScheduleModel extends Model
 
     public function getDataForDelete(int $id)
     {
+
         return $this->select('d.abbreviation, d.icone, 
            ' . $this->table . '.id_series, 
            ' . $this->table . '.id, 
@@ -190,6 +202,7 @@ class SchoolScheduleModel extends Model
            ' . $this->table . '.dayWeek,           
            s.shift,
            t.name,
+           t.id as id_teacher,
            td.color')
             ->join('tb_allocation a', $this->table . '.id_allocation = a.id')
             ->join('tb_series s', $this->table . '.id_series = s.id')

@@ -319,6 +319,22 @@ class ApiHorario extends ResourceController
             ]);
         }
     }
+
+    public function getTotalScheduleByDiscipline($idDiscipline){
+        try {
+
+            $data = $this->schedule->getTotalScheduleByDiscipline($idDiscipline);
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
+    }
     public function create()
     {
         if ($this->request->getMethod() !== 'post') {
@@ -342,12 +358,13 @@ class ApiHorario extends ResourceController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-  <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button>
-</div>'
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>'
             ];
 
             return $this->response->setJSON($response);

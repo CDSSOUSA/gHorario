@@ -61,6 +61,7 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     $routes->get('list/(:any)','ApiHorario::list/$1');    
     $routes->get('listDPS/(:any)/(:any)/(:any)/(:any)','ApiHorario::listDPS/$1/$2/$3/$4');    
     $routes->get('listSeries/(:any)','ApiHorario::listSeries/$1');    
+    $routes->get('listDisciplines/(:any)','ApiHorario::getTotalScheduleByDiscipline/$1');    
 });
 
 /* ROUTES PROFESSOR */
@@ -72,9 +73,10 @@ $routes->group('/professor',['namespace'=>'App\Controllers\Professor'],function 
 });
 /* ROUTES DISCIPLINES */
 $routes->group('/discipline',['namespace'=>'App\Controllers\Discipline'],function ($routes){
-    $routes->get('/','Discipline::show');
+    //$routes->get('/','Discipline::show');
     $routes->get('list','Discipline::list');
-    $routes->get('edit/(:any)','Discipline::edit/$1');
+    //$routes->get('edit/(:any)','Discipline::edit/$1');
+    $routes->get('show/(:any)','Discipline::show/$1');
     //$routes->get('add_profissional_horario/(:any)/(:any)/(:any)','Horario::addProfissionalHorario/$1/$2/$3');   
     $routes->post('create', 'Discipline::create'); 
     $routes->post('update', 'Discipline::update'); 
@@ -126,6 +128,7 @@ $routes->group('/series',['namespace'=>'App\Controllers\Series',/*'filter'=>'acc
     $routes->get('show/(:any)', 'Series::show/$1');
     $routes->get('/', 'Series::list');
     $routes->get('list', 'Series::listSeries');
+    $routes->get('list/shift/(:any)', 'Series::listSeriesByShift/$1');
     $routes->get('edit/(:any)', 'Series::show/$1');
     $routes->post('active', 'Series::active');
     $routes->post('create', 'Series::create');
@@ -148,6 +151,8 @@ $routes->group('/allocation',['namespace'=>'App\Controllers\Allocation',/*'filte
     //$routes->get('list', 'YearSchool::list');
     $routes->post('create', 'Allocation::create');
     $routes->get('showTeacher/(:any)', 'Allocation::showTeacher/$1');
+    $routes->get('showTeacherChecked/(:any)', 'Allocation::showTeacherChecked/$1');
+    $routes->get('getTotalAllocationTeacher/(:any)', 'Allocation::getTotalAllocationTeacher/$1');
     $routes->get('show/(:any)', 'Allocation::show/$1');
     $routes->post('del', 'Allocation::allocationDel');
     //$routes->post('active', 'YearSchool::active');

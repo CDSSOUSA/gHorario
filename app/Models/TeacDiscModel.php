@@ -98,6 +98,27 @@ class TeacDiscModel extends Model
         //dd($a);
         return $a;
     }
+    public function getByIdTeacherDiscipline(int $id)
+    {
+        $a = $this->select(
+            't.name, 
+            d.description,
+            ' . $this->table . '.id,
+            ' . $this->table . '.id_teacher,
+            ' . $this->table . '.amount,
+            ' . $this->table . '.color,
+            ' . $this->table . '.id_year_school,           
+            d.abbreviation,
+            d.icone'
+        )
+            ->join('tb_teacher t', 't.id =' . $this->table . '.id_teacher')
+            ->join('tb_discipline d', 'd.id =' . $this->table . '.id_discipline')           
+            ->where($this->table . '.id', $id)
+            ->orderBy('t.name')
+            ->get()->getResultObject();
+        //dd($a);
+        return $a;
+    }
 
     public function saveTeacherDiscipline(array $data)
     {

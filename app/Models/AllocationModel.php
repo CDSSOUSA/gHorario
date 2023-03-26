@@ -241,6 +241,19 @@ class AllocationModel extends Model
             ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }
+    public function getAllocationTeacherAll(int $idTeacher)
+    {
+        return $this->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
+            ->join('tb_teacher t', 't.id = pd.id_teacher')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            ->where('pd.id_teacher', $idTeacher)
+            ->where($this->table . '.status', 'A')
+            ->where($this->table . '.situation', 'L')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            //->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
+            ->get()->getNumRows();
+    }
     public function getAllocationTeacher(int $idTeacher)
     {
         return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.abbreviation, pd.color, d.icone, t.name, ' . $this->table . '.shift')
@@ -256,7 +269,7 @@ class AllocationModel extends Model
     }
     public function getAllocationTeacherOcupation(int $idTeacher)
     {
-        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.description as nameDiscipline, d.abbreviation, pd.color, d.icone, t.name, ss.description, ss.classification, ' . $this->table . '.shift')
+        return $this->select($this->table . '.id, ' . $this->table . '.dayWeek, ' . $this->table . '.position, ' . $this->table . '.situation, d.description as nameDiscipline, d.abbreviation, pd.color, d.icone, t.name, ss.description, ss.classification, s.id as id_schedule, t.id as id_teachaer, ' . $this->table . '.shift')
             ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
             ->join('tb_teacher t', 't.id = pd.id_teacher')
             ->join('tb_discipline d', 'd.id = pd.id_discipline')
@@ -268,6 +281,22 @@ class AllocationModel extends Model
             ->where($this->table . '.id_year_school', session('session_idYearSchool'))
             ->where($this->table . '.situation', 'O')
             ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
+            ->get()->getResult();
+    }
+    public function getAllocationTeacherFree(int $idTeacher)
+    {
+        return $this->select($this->table . '.id')
+            ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
+            ->join('tb_teacher t', 't.id = pd.id_teacher')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            //->join('tb_school_schedule s', 's.id_allocation = ' . $this->table . '.id')
+            //->join('tb_series ss', 'ss.id = s.id_series')
+            ->where('pd.id_teacher', $idTeacher)
+            ->where($this->table . '.status', 'A')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.situation', 'L')
+            //->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }
     public function getAllocationTeacherOcupationByShift(int $idTeacher, string $shift)
@@ -309,18 +338,18 @@ class AllocationModel extends Model
         $cont = 0;
 
         foreach ($shift as $sh) {
-            foreach ($allocation as $item) {
+            //foreach ($allocation as $item) {
                 foreach ($dayWeek as $day) {
                     $dy = explode(';', $day);
                     //foreach ($position as $posit) {
-                    $dataAllocation['id_teacher_discipline'] = $item;
+                    $dataAllocation['id_teacher_discipline'] = $allocation;
                     $dataAllocation['dayWeek'] = $dy[1];
                     $dataAllocation['position'] = $dy[0];
                     $dataAllocation['situation'] = 'L';
                     $dataAllocation['status'] = 'A';
                     $dataAllocation['shift'] = $sh;
                     $dataAllocation['id_year_school'] = session('session_idYearSchool');;
-                    if ($this->validateAllocation($item, $dy[1], $dy[0], $sh) <= 0) {
+                    if ($this->validateAllocation($allocation, $dy[1], $dy[0], $sh) <= 0) {
                         $save = $this->save($dataAllocation);
                         if ($save) {
                             $cont++;
@@ -328,7 +357,7 @@ class AllocationModel extends Model
                     }
                     //}
                 }
-            }
+            //}
         }
 
         if ($cont >= 1) {

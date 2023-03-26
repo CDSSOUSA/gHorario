@@ -5,17 +5,20 @@ namespace App\Controllers\Discipline;
 use App\Controllers\BaseController;
 use App\Models\DisciplineModel;
 use App\Models\TeacDiscModel;
+use Config\Services;
 use Exception;
 
 class Discipline extends BaseController
 {
     private $disciplineModel;
     private $teacDiscModel;
+    private $validateToken;
 
     public function __construct()
     {
         $this->disciplineModel = new DisciplineModel();
         $this->teacDiscModel = new TeacDiscModel();
+        $this->validateToken = new Services();
     }
     // public function show()
     // {
@@ -31,7 +34,7 @@ class Discipline extends BaseController
     //     //session()->set('dado',$data);
     //     return view('discipline/list', $data);
     // }
-    public function show()
+    public function _show()
     {
         $newJs = [
             base_url() . "/assets/js/discipline.js",
@@ -52,6 +55,27 @@ class Discipline extends BaseController
         ];
         //session()->set('dado',$data);
         return view('discipline/list', $data);
+    }
+
+    public function show($id) {
+        try {
+
+            $data = $this->disciplineModel->find($id);
+
+            // $teacDisc = $this->teacDiscModel->where('id_discipline', $id)->get()->getResult();
+
+            // if($teacDisc) {
+            //     $data->teacDisc = true;
+            // }
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
     }
     public function list()
     {
@@ -102,6 +126,10 @@ class Discipline extends BaseController
 
     public function create()
     {
+        $tokenHeader = $this->request->getHeaderLine('Authorization');
+
+     
+
         if ($this->request->getMethod() !== 'post') {
             return redirect()->to('/admin/blog');
         }
@@ -141,16 +169,24 @@ class Discipline extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
             return $this->response->setJSON($response);
+        }
+        
+        if(!$this->validateToken->validateToken($tokenHeader)){
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 500,
+                'msg' => '',
+                //'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+            
         }
 
         $data['abbreviation'] = mb_strtoupper($this->request->getPost('abbreviation'));
@@ -167,9 +203,10 @@ class Discipline extends BaseController
                     'error' => false,
                     'code' => 200,
                     'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'id' =>  $this->disciplineModel->getInsertID()
                     //'data' => $this->list()
                 ];
-                return $this->response->setJSON($data);
+                return $this->response->setJSON($response);
             }
         } catch (Exception $e) {
 
@@ -184,6 +221,21 @@ class Discipline extends BaseController
 
     public function update()
     {
+        $tokenHeader = $this->request->getHeaderLine('Authorization');
+
+        if(!$this->validateToken->validateToken($tokenHeader)){
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 500,
+                'msg' => '',
+                //'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+            
+        }
+
         if ($this->request->getMethod() !== 'post') {
             return redirect()->to('/admin/blog');
         }
@@ -219,12 +271,7 @@ class Discipline extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -245,6 +292,7 @@ class Discipline extends BaseController
                     'error' => false,
                     'code' => 200,
                     'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'token' => $tokenHeader,
                     //'data' => $this->list()
                 ];
                 return $this->response->setJSON($response);
@@ -265,14 +313,18 @@ class Discipline extends BaseController
         $id = $this->request->getPost('id');
 
         try {
+
             $delete = $this->disciplineModel->where('id', $id)->delete();
+
+            $last = $this->disciplineModel->select('id')->orderBy('id','desc')->limit(1)->get()->getRow();
 
             if ($delete) {
                 $response = [
                     'status' => 'OK',
                     'error' => false,
                     'code' => 200,
-                    'msg' => '<p>Operação realizada com sucesso!</p>'
+                    'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'idEnd' =>  $last->id 
                 ];
                 return $this->response->setJSON($response);
             }

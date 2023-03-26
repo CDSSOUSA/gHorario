@@ -16,7 +16,7 @@ class Series extends BaseController
     {
         $this->series = new SeriesModel();
     }
-    public function show(int $id)
+    public function show($id)
     {
         try {
 
@@ -35,6 +35,23 @@ class Series extends BaseController
         try {
 
             $data = $this->series->orderBy('shift ASC, description ASC ,classification ASC')->findAll();
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+    }
+    public function listSeriesByShift(string $shift)
+    {
+        try {
+
+            $data = $this->series->where('shift',$shift)
+                                ->where('status','A')
+                                ->orderBy('shift ASC, description ASC,classification ASC')
+                                ->findAll();
             return $this->response->setJSON($data);
         } catch (Exception $e) {
             return $this->response->setJSON([
@@ -64,6 +81,7 @@ class Series extends BaseController
                     'error' => false,
                     'code' => 200,
                     'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'idEnd' => $this->series->getEndSerie(),
                     //'data' => $this->list()
                 ];
                 return $this->response->setJSON($response);
@@ -148,12 +166,7 @@ class Series extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -176,6 +189,7 @@ class Series extends BaseController
                     'error' => false,
                     'code' => 200,
                     'msg' => '<p>Operação realizada com sucesso!</p>',
+                    'id' =>  $this->series->getInsertID()
                     //'data' => $this->list()
                 ];
                 return $this->response->setJSON($response);
@@ -185,12 +199,7 @@ class Series extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => $e->getCode(),
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>',
+                'msg' => $this->messageError,
                 'msgs' => [
                     'series' => 'Série, turma e turno já cadastrados!'
                 ]
@@ -231,12 +240,7 @@ class Series extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -268,12 +272,7 @@ class Series extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => $e->getCode(),
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>',
+                'msg' => $this->messageError,
                 'msgs' => [
                     'series' => 'Série, turma e turno já cadastrados!'
                 ]

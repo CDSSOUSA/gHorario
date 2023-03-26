@@ -33,7 +33,7 @@ class Allocation extends BaseController
         $val = $this->validate(
             [
                 'id_teacher' => 'required',
-                'nDisciplines' => 'required',
+                'disciplinesTeacher' => 'required',
                 // 'nPosition' => 'required',
                 'nDayWeek' => 'required',
                 'nShift' => 'required',
@@ -53,7 +53,7 @@ class Allocation extends BaseController
                     'required' => 'Preenchimento obrigatório!',
 
                 ],
-                'nDisciplines' => [
+                'disciplinesTeacher' => [
                     'required' => 'Preenchimento obrigatório!',
                 ],
             ]
@@ -65,12 +65,13 @@ class Allocation extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -79,9 +80,11 @@ class Allocation extends BaseController
 
         $idTeacher = $this->request->getPost('id_teacher');
         $data['dayWeek'] = $this->request->getPost('nDayWeek[]');
-        $data['disciplines'] = $this->request->getPost('nDisciplines[]');
+        $data['disciplines'] = $this->request->getPost('disciplinesTeacher');
         // $data['position'] = $this->request->getPost('nPosition[]');
         $data['shift'] = $this->request->getPost('nShift[]');
+
+        
 
         
         
@@ -107,13 +110,14 @@ class Allocation extends BaseController
                     'status' => 'ERROR',
                     'error' => true,
                     'code' => '',
-                    'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                    <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong> Disponibilidade(s) já foi(ram) alocada(s)!! 
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                    <span class="alert-text"><strong>Ops! </strong> Disponibilidade(s) já foi(ram) alocada(s)!! </span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>',
-                    
+               
                 ]);
             }
         } catch (Exception $e) {
@@ -121,10 +125,11 @@ class Allocation extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => $e->getCode(),
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! catc </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>',
                 'msgs' => $e->getMessage()
@@ -138,6 +143,40 @@ class Allocation extends BaseController
         try {
 
             $data = $this->allocationModel->getAllocationTeacherOcupation($id);  
+            // atencao apra o metodo  getAllocationTeacher        
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
+    }
+    public function showTeacherChecked(int $id)
+    {
+        try {
+
+            $data = $this->allocationModel->getAllocationTeacher($id);  
+            // atencao apra o metodo  getAllocationTeacher        
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+
+    }
+    public function getTotalAllocationTeacher(int $id)
+    {
+        try {
+
+            $data = $this->allocationModel->getAllocationTeacherAll($id);  
             // atencao apra o metodo  getAllocationTeacher        
 
             return $this->response->setJSON($data);
@@ -169,11 +208,33 @@ class Allocation extends BaseController
 
     public function allocationDel()
     {
-        $idAlocacao = $this->request->getPost('id');
+        //$idAlocacao = $this->request->getPost('id_teacher"');
+        $data['id'] = $this->request->getPost('id_teacher');
+        $data['nIdsAllocation'] = $this->request->getPost('nIdsAllocation[]');
+
+        $allocationProtected = [];
+
+        if($data['nIdsAllocation'] ) {
+            
+            foreach ($data['nIdsAllocation'] as $item){
+                array_push($allocationProtected, $item);
+            }
+        }
+
 
         
         try {
-            $delete = $this->allocationModel->where('id', $idAlocacao)->delete();
+
+            $allocationFree = $this->allocationModel->getAllocationTeacherFree($data['id']);
+
+            foreach($allocationFree as $idAllocation ) {
+
+                if(!in_array($idAllocation->id,$allocationProtected)){
+                    
+                    $delete = $this->allocationModel->where('id', $idAllocation->id)->delete();
+                }
+
+            }
 
             if ($delete) {
                 $response = [
@@ -183,15 +244,20 @@ class Allocation extends BaseController
                     'msg' => '<p>Operação realizada com sucesso!</p>',
                     //'data' => $this->list()
                 ];
-                return $this->response->setJSON($idAlocacao);
-            } 
-                 
+                return $this->response->setJSON($data);
+            }     
 
             
         } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',
-                'msg'      => 'Não foi possível executar a operação',
+                'msg'      => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong> Precisa desmarcar pelo menos uma opção!!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
                 'error'    => $e->getMessage()
             ]);
         }

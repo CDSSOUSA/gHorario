@@ -8,17 +8,20 @@ use App\Models\DisciplineModel;
 use App\Models\TeacherModel;
 use Exception;
 use App\Models\TeacDiscModel;
+use Config\Services;
 
 class Teacher extends BaseController
 {
 
     public $erros = '';
     public $disciplineModel;
-  
+
     private $teacherModel;
     private $teacDiscModel;
 
     private $allocationModel;
+
+    private $validateToken;
 
     public function __construct()
     {
@@ -26,7 +29,11 @@ class Teacher extends BaseController
         $this->disciplineModel = new DisciplineModel();
         $this->teacDiscModel = new TeacDiscModel();
         $this->allocationModel = new AllocationModel();
+        $this->validateToken = new Services();
     }
+
+
+
     public function create()
     {
         if ($this->request->getMethod() !== 'post') {
@@ -63,12 +70,7 @@ class Teacher extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -78,10 +80,26 @@ class Teacher extends BaseController
 
         $teacher['name'] = mb_strtoupper($this->request->getPost('name'));
         $teacher['amount'] = $this->request->getPost('amount');
-        $teacher['color'] = $this->request->getPost('color') == '#000000' ? generationColor() : $this->request->getPost('color') ;
+        $teacher['color'] = $this->request->getPost('color') == '#000000' ? generationColor() : $this->request->getPost('color');
         $teacher['disciplines'] = $this->request->getPost('disciplines[]');
         $teacher['status'] = 'A';
         $teacher['id_year_school'] = session('session_idYearSchool');
+
+        $token = $this->request->getPost('token');       
+
+        if(!$this->validateToken->validateToken($token)){
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 500,
+                'msg' => $this->messageError,
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+        }
+
+
         //$data['status'] = 'A';
 
         // if ($data['description'] > getenv('YEAR.END')) {
@@ -90,12 +108,15 @@ class Teacher extends BaseController
 
         $save = $this->teacherModel->saveProfessor($teacher);
 
+        ;
+
         if ($save) {
             $response = [
                 'status' => 'OK',
                 'error' => false,
                 'code' => 200,
                 'msg' => '<p>Operação realizada com sucesso!</p>',
+                'id' =>  $this->teacherModel->getInsertID()
                 //'data' => $this->list()
             ];
             return $this->response->setJSON($response);
@@ -108,13 +129,13 @@ class Teacher extends BaseController
         }
         $val = $this->validate(
             [
-                'name' => 'required|min_length[3]',               
+                'name' => 'required|min_length[3]',
             ],
             [
                 'name' => [
                     'required' => 'Preenchimento obrigatório!',
                     'min_length' => 'Mínimo permitido 3 caracteres!'
-                ],                
+                ],
             ]
         );
 
@@ -124,12 +145,7 @@ class Teacher extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -139,8 +155,8 @@ class Teacher extends BaseController
 
         $teacher['name'] = mb_strtoupper($this->request->getPost('name'));
         $teacher['id'] = mb_strtoupper($this->request->getPost('id'));
-        
-       
+
+
         //$data['status'] = 'A';
 
         // if ($data['description'] > getenv('YEAR.END')) {
@@ -150,7 +166,7 @@ class Teacher extends BaseController
         try {
 
             $save = $this->teacherModel->save($teacher);
-    
+
             if ($save) {
                 $response = [
                     'status' => 'OK',
@@ -161,7 +177,7 @@ class Teacher extends BaseController
                 ];
                 return $this->response->setJSON($response);
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',
                 'msg'      => 'Não foi possível executar a operação',
@@ -170,34 +186,34 @@ class Teacher extends BaseController
         }
     }
 
-    public function listDisciplinesByTeacher($id) {
+    public function listDisciplinesByTeacher($id)
+    {
         $data = $this->listTeacDisc($id);
         return $this->response->setJSON($data);
     }
 
 
     public function list()
-    {       
+    {
         try {
 
-            $data = $this->teacherModel->orderBy('name','ASC')->findAll();
+            $data = $this->teacherModel->orderBy('name', 'ASC')->findAll();
 
             //$dat = [];
-            foreach($data as $d){
+            foreach ($data as $d) {
                 $dat = $this->listTeacDisc($d->id);
-                foreach($dat as $ab){
-                    
+                foreach ($dat as $ab) {
+
                     $d->disciplines = $dat;
 
                     $al = $this->allocationModel->getCountByIdTeacDisc($ab->id);
-                    if($al >= 1){
+                    if ($al >= 1) {
                         $d->allocation = $al;
                     }
                 }
-            }        
+            }
 
             return $this->response->setJSON($data);
-
         } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',
@@ -218,7 +234,7 @@ class Teacher extends BaseController
     {
         try {
 
-            $data = $this->teacherModel->find($id);            
+            $data = $this->teacherModel->find($id);
 
             return $this->response->setJSON($data);
         } catch (Exception $e) {
@@ -228,27 +244,29 @@ class Teacher extends BaseController
                 'error'    => $e->getMessage()
             ]);
         }
-
     }
 
     public function del()
     {
         $id = $this->request->getPost('id');
 
-       
+
         $delete = $this->teacherModel->where('id', $id)
             ->delete();
+
+        $last = $this->teacherModel->select('id')->orderBy('id','desc')->limit(1)->get()->getRow();
 
         if ($delete) {
             $response = [
                 'status' => 'OK',
                 'error' => false,
                 'code' => 200,
-                'msg' => '<p>Operação realizada com sucesso!</p>'
+                'msg' => '<p>Operação realizada com sucesso!</p>',
+                'idEnd' =>  (int)$last->id 
             ];
             return $this->response->setJSON($response);
         }
-        
+
         $response = [
             'status' => 'ERROR',
             'error' => true,
@@ -258,4 +276,3 @@ class Teacher extends BaseController
         return $this->response->setJSON($response);
     }
 }
-

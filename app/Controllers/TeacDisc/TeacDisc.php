@@ -61,7 +61,7 @@ class TeacDisc extends BaseController
     public function edit(int $id)
     {
 
-        $data = $this->teacDiscModel->getTeacherDisciplineById($id);
+        $data = $this->teacDiscModel->getByIdTeacherDiscipline($id);
 
         $amountAllocation = $this->allocation->getCountByIdTeacDisc($id);
         $data[0]->amount_allocation = $amountAllocation;
@@ -162,7 +162,7 @@ class TeacDisc extends BaseController
         $val = $this->validate(
             [
                 'id_teacher' => 'required',
-                'amount' => 'required',
+                'amount' => 'required|numeric',
                 'color' => 'required|is_unique[tb_teacher_discipline.color]',
                 'disciplinesTeacher' => 'required',
             ],
@@ -173,6 +173,7 @@ class TeacDisc extends BaseController
                 ],
                 'amount' => [
                     'required' => 'Preenchimento obrigatório!',
+                    'numeric' => ' Apenas número!'
                 ],
                 'color' => [
                     'required' => 'Preenchimento obrigatório!',
@@ -190,12 +191,13 @@ class TeacDisc extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -233,10 +235,11 @@ class TeacDisc extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => $e->getCode(),
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>', 
                 'msgs' => [
@@ -251,8 +254,8 @@ class TeacDisc extends BaseController
     {
         // testar se a exite alocação para esta teacDisc
 
-        $data = $this->teacDiscModel->getTeacherDisciplineById($id);
-        //dd($data);
+        $data = $this->teacDiscModel->getByIdTeacherDiscipline($id);
+        // dd($id);
         return $this->response->setJSON($data);
     }
 
@@ -327,13 +330,14 @@ class TeacDisc extends BaseController
 
         $val = $this->validate(
             [
-                'nNumeroAulas' => 'required',
+                'nNumeroAulas' => 'required|numeric',
                 'nCorDestaque' => 'required',
 
             ],
             [
                 'nNumeroAulas' => [
                     'required' => 'Preenchimento obrigatório!',
+                    'numeric' => ' Apenas número!',
                 ],
                 'nCorDestaque' => [
                     'required' => 'Preenchimento obrigatório!',
@@ -348,15 +352,14 @@ class TeacDisc extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Ops!</strong> Erro(s) no preenchimento do formulário! 
-  <button type="button" class="close" data-bs-dismiss="alert" aria-bs-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button>
-</div>
-               
-              </div>'
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário! </span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
+            'msgs' => $this->validator->getErrors()
             ];
 
             return $this->response->setJSON($response);

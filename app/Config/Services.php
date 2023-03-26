@@ -29,4 +29,30 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    public static function getSecretKey()
+    {
+        return getenv('TOKEN_JWT');
+    }
+
+    public function validateToken($token)
+    {
+        $dados = explode('.', $token);
+
+        $header = $dados[0];
+        $payload = $dados[1];
+        $signature = $dados[2];
+
+        $key = Services::getSecretKey();
+
+        $validate = base64_encode(hash_hmac('sha256', $header . '.' . $payload, $key, true));
+        $time_exp = json_decode(base64_decode($payload));      
+        
+        if ($signature == $validate && $time_exp->exp > time()) {            
+            
+            return true;
+        }
+        return false;
+    }
+    
 }
