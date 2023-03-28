@@ -517,4 +517,66 @@ class ApiHorario extends ResourceController
         //     return $this->response->setJSON($response);
         // }
     }
+
+    public function replace()
+    {
+        $val = $this->validate(
+            [
+                'idTeacher' => 'required',
+                'newTeacher' => 'required',
+            ],
+            [
+                'idTeacher' => [
+                    'required' => 'Preenchimento Obrigatório!',
+                ],
+                'newTeacher' => [
+                    'required' => 'Preenchimento Obrigatório!',
+                ],
+            ]
+        );
+
+        if (!$val) {
+
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => '<div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+                <span class="alert-icon"><i class="fa fa-thumbs-down"></i></span>
+                <span class="alert-text"><strong>Ops! </strong>Erro(s) no preenchimento do formulário!</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>',
+            ];
+
+            return $this->response->setJSON($response);
+        }
+
+        $horario['idTeacher'] = $this->request->getPost('idTeacher');
+        $horario['idNewTeacher'] = $this->request->getPost('newTeacher');
+
+        $allocationTeacher = $this->allocation->getAllocationTeacherOcupationReplace($horario['idTeacher']);
+
+        foreach($allocationTeacher as $item) {
+
+            $this->allocation->set('situation', 'L')
+                    ->where('id', $item->id)
+                    ->where('situation', 'O')
+                    ->where('id_year_school', session('session_idYearSchool'))
+                    ->update();
+
+            $this->schedule->where('id_allocation',$item->id)->delete();            
+
+        }
+        $response = [
+            'status' => 'OK',
+            'error' => false,
+            'code' => 200,
+            'msg' => '<p>Operação realizada com sucesso!</p>',
+            'idTeacher' => $horario['idTeacher'],
+            'idNewTeacher' => $horario['idNewTeacher'],
+        ];
+        return $this->response->setJSON($allocationTeacher);
+    }
 }

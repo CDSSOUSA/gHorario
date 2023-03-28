@@ -130,6 +130,14 @@ class SchoolScheduleModel extends Model
             ->where('a.situation', 'O')
             ->get()->getResult();
     }
+    public function getTotalOcupationSerie(int $idSerie)
+    {
+        return $this->where($this->table.'.id_series', $idSerie)
+            ->where($this->table . '.status', 'A')
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            //->where('a.situation', 'O')
+            ->countAllResults();
+    }
     public function getTotalScheduleByDiscipline(int $idDiscipline)
     {
         return $this->join('tb_allocation a', $this->table . '.id_allocation = a.id')

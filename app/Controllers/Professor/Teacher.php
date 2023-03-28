@@ -223,6 +223,37 @@ class Teacher extends BaseController
         }
     }
 
+    public function listOff($id)
+    {
+        try {
+
+            $data = $this->teacherModel->where('id !=', $id)-> orderBy('name', 'ASC')->findAll();
+
+            //$dat = [];
+            foreach ($data as $d) {
+                $dat = $this->listTeacDisc($d->id);
+                foreach ($dat as $ab) {
+
+                    $d->disciplines = $dat;
+
+                    $al = $this->allocationModel->getCountByIdTeacDisc($ab->id);
+                    if ($al >= 1) {
+                        $d->allocation = $al;
+                    }
+                }
+            }
+
+            return $this->response->setJSON($data);
+        } catch (Exception $e) {
+            return $this->response->setJSON([
+                'response' => 'Erros',
+                'msg'      => 'Não foi possível executar a operação',
+                'error'    => $e->getMessage()
+            ]);
+        }
+    }
+
+
     public function listTeacDisc(int $id)
     {
         $data = $this->teacDiscModel->getTeacherDisciplineByIdTeacher($id);

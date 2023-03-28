@@ -283,6 +283,19 @@ class AllocationModel extends Model
             ->orderBy($this->table . '.situation DESC, ' . $this->table . '.shift ASC, ' . $this->table . '.dayWeek ASC, ' . $this->table . '.position ASC')
             ->get()->getResult();
     }
+    public function getAllocationTeacherOcupationReplace($idTeacher)
+    {
+        return $this->select($this->table . '.id, pd.id_teacher,'.$this->table.'.dayWeek,'.$this->table.'.position, s.id_series')
+            ->join('tb_teacher_discipline pd', 'pd.id = ' . $this->table . '.id_teacher_discipline')
+            ->join('tb_discipline d', 'd.id = pd.id_discipline')
+            ->join('tb_school_schedule s', 's.id_allocation = ' . $this->table . '.id')           
+            ->where('pd.id_teacher', $idTeacher)
+            ->where($this->table . '.status', 'A')
+            ->where('pd.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.id_year_school', session('session_idYearSchool'))
+            ->where($this->table . '.situation', 'O')
+            ->get()->getResult();
+    }
     public function getAllocationTeacherFree(int $idTeacher)
     {
         return $this->select($this->table . '.id')

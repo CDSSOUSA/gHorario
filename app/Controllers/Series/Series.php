@@ -3,6 +3,8 @@
 namespace App\Controllers\Series;
 
 use App\Controllers\BaseController;
+use App\Controllers\Report\Schedule\Schedule;
+use App\Models\SchoolScheduleModel;
 use Exception;
 use App\Models\SeriesModel;
 
@@ -11,10 +13,12 @@ class Series extends BaseController
     public $erros = '';
     public $error = '';
     private $series;
+    private $schedule;
 
     public function __construct()
     {
         $this->series = new SeriesModel();
+        $this->schedule = new SchoolScheduleModel();
     }
     public function show($id)
     {
@@ -46,13 +50,29 @@ class Series extends BaseController
     }
     public function listSeriesByShift(string $shift)
     {
+        $datas = [];
         try {
 
             $data = $this->series->where('shift',$shift)
                                 ->where('status','A')
                                 ->orderBy('shift ASC, description ASC,classification ASC')
                                 ->findAll();
-            return $this->response->setJSON($data);
+
+            foreach($data as $item) {
+
+                $total = $this->schedule->getTotalOcupationSerie($item->id);
+
+                $datas [] = [
+                    'id' => $item->id,
+                    'description' =>$item->description,
+                    'classification' => $item->classification,
+                    'total' => $total,
+                    'shift' => $item->shift
+                ];
+                
+            }
+
+            return $this->response->setJSON($datas);
         } catch (Exception $e) {
             return $this->response->setJSON([
                 'response' => 'Erros',

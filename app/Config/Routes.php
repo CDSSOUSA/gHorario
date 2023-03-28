@@ -62,6 +62,7 @@ $routes->group('/horario/api',['namespace'=>'App\Controllers\Horario'],function 
     $routes->get('listDPS/(:any)/(:any)/(:any)/(:any)','ApiHorario::listDPS/$1/$2/$3/$4');    
     $routes->get('listSeries/(:any)','ApiHorario::listSeries/$1');    
     $routes->get('listDisciplines/(:any)','ApiHorario::getTotalScheduleByDiscipline/$1');    
+    $routes->post('replace','ApiHorario::replace');    
 });
 
 /* ROUTES PROFESSOR */
@@ -87,6 +88,7 @@ $routes->group('/discipline',['namespace'=>'App\Controllers\Discipline'],functio
 $routes->group('/teacher',['namespace'=>'App\Controllers\Professor'],function ($routes){
     // $routes->get('/','Professor::add');
     $routes->get('list','Teacher::list');
+    $routes->get('listOff/(:any)','Teacher::listOff/$1');
     $routes->get('show/(:any)','Teacher::show/$1');
     $routes->get('listTeacDisc/(:any)','Teacher::listTeacDisc/$1');
     $routes->get('listDisciplinesByTeacher/(:any)','Teacher::listDisciplinesByTeacher/$1');
