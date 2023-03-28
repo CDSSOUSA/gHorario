@@ -16,7 +16,8 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
  * Router Setup
  * --------------------------------------------------------------------
  */
-$routes->setDefaultNamespace('App\Controllers\Horario');
+//$routes->setDefaultNamespace('App\Controllers\Horario');
+$routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Horario');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
@@ -28,6 +29,7 @@ $routes->setAutoRoute(true);
  * Route Definitions
  * --------------------------------------------------------------------
  */
+$routes->post('/login', 'Login::login');
 
 //$routes->get('/pdf', 'Series::pdf');
 $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],function ($routes){

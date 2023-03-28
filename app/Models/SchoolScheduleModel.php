@@ -219,4 +219,11 @@ class SchoolScheduleModel extends Model
             ->join('tb_discipline d', 'td.id_discipline = d.id')
             ->find($id);
     }
+
+    public function deleteScheduleForAllocation(int $idAllocation)
+    {
+        $this->where('id_allocation',$idAllocation)
+             ->delete();   
+    }
+
 }

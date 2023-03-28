@@ -458,6 +458,7 @@ class ApiHorario extends ResourceController
 
                     $delete = $this->schedule->where('id', $data->id)
                         ->delete();
+                        
                     if ($delete) {
                         $response = [
                             'status' => 'OK',
@@ -566,9 +567,11 @@ class ApiHorario extends ResourceController
                     ->where('id_year_school', session('session_idYearSchool'))
                     ->update();
 
-            $this->schedule->where('id_allocation',$item->id)->delete();            
+            $this->schedule->deleteScheduleForAllocation($item->id);            
+                    
 
         }
+
         $response = [
             'status' => 'OK',
             'error' => false,
