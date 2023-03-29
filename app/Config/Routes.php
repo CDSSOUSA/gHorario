@@ -30,6 +30,7 @@ $routes->setAutoRoute(true);
  * --------------------------------------------------------------------
  */
 $routes->post('/login', 'Login::login');
+$routes->post('/login/validate', 'Login::validateToken');
 
 //$routes->get('/pdf', 'Series::pdf');
 $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],function ($routes){
