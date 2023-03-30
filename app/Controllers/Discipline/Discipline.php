@@ -176,18 +176,18 @@ class Discipline extends BaseController
             return $this->response->setJSON($response);
         }
         
-        if(!$this->validateToken->validateToken($tokenHeader)){
-            $response = [
-                'status' => 'ERROR',
-                'error' => true,
-                'code' => 500,
-                'msg' => '',
-                //'msgs' => $this->validator->getErrors()
-            ];
+        // if(!$this->validateToken->validateToken($tokenHeader)){
+        //     $response = [
+        //         'status' => 'ERROR',
+        //         'error' => true,
+        //         'code' => 500,
+        //         'msg' => '',
+        //         //'msgs' => $this->validator->getErrors()
+        //     ];
 
-            return $this->response->setJSON($response);
+        //     return $this->response->setJSON($response);
             
-        }
+        // }
 
         $data['abbreviation'] = mb_strtoupper($this->request->getPost('abbreviation'));
         $data['description'] = mb_strtoupper($this->request->getPost('description'));
@@ -223,18 +223,18 @@ class Discipline extends BaseController
     {
         $tokenHeader = $this->request->getHeaderLine('Authorization');
 
-        if(!$this->validateToken->validateToken($tokenHeader)){
-            $response = [
-                'status' => 'ERROR',
-                'error' => true,
-                'code' => 500,
-                'msg' => '',
-                //'msgs' => $this->validator->getErrors()
-            ];
+        // if(!$this->validateToken->validateToken($tokenHeader)){
+        //     $response = [
+        //         'status' => 'ERROR',
+        //         'error' => true,
+        //         'code' => 500,
+        //         'msg' => '',
+        //         //'msgs' => $this->validator->getErrors()
+        //     ];
 
-            return $this->response->setJSON($response);
+        //     return $this->response->setJSON($response);
             
-        }
+        // }
 
         if ($this->request->getMethod() !== 'post') {
             return redirect()->to('/admin/blog');

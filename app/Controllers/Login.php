@@ -3,17 +3,20 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Libraries\GenerateToken;
 use CodeIgniter\API\ResponseTrait;
 use Config\Services;
 use Exception;
 
 class Login extends BaseController
 {
-    private $validateToken;
+    private $tokenJWT;
+    private $service;
     public function __construct()
     {
-       
-        $this->validateToken = new Services();
+        $this->service = new Services();       
+        $this->tokenJWT = new GenerateToken();
+        $this->tokenJWT->setKey($this->service->getSecretKey());
     }
     use ResponseTrait;
 
@@ -77,8 +80,9 @@ class Login extends BaseController
                 'error' => false,
                 'code' => 200,
                 'msg' => '<p>Operação realizada com sucesso!</p>',
-                'tokenNew' => $this->generateJWT(),                
+                'tokenNew' => $this->tokenJWT->generate(),                
             ];
+            session()->set('token', $response['tokenNew']);
             //setcookie("token", $this->generateJWT());
             return $this->response->setJSON($response);
 
@@ -96,7 +100,7 @@ class Login extends BaseController
         //$tokenAccess = getenv('TOKEN.ACCESS');
         //$validateToken = $this->validateTokenJWT($token);
        
-        if(!$this->validateToken->validateToken($tokenHeader)){
+        if(!$this->tokenJWT->validate($tokenHeader)){
             throw new Exception('Error');
             // $response = [
             //     'status' => 'ERROR',
@@ -129,56 +133,56 @@ class Login extends BaseController
 
     }
 
-    protected function generateJWT()
-    {
-        $key = Services::getSecretKey();
-        $time = time();
+    // protected function generateJWT()
+    // {
+    //     $key = Services::getSecretKey();
+    //     $time = time();
 
-        $header = [
-            'alg' => 'HS256',
-            'typ' => 'JWT'
-        ];
+    //     $header = [
+    //         'alg' => 'HS256',
+    //         'typ' => 'JWT'
+    //     ];
 
-        $h = base64_encode(json_encode($header));
+    //     $h = base64_encode(json_encode($header));
 
-        $payload = [
-            //'aud' => base_url(),
-            'iat' => $time,
-            'exp' => $time + 60,
-            // 'data'=> [
-            //     'login' => $usuario['login'],
-            //     'id_system' => $usuario['id_system']
-            // ]
-        ];
+    //     $payload = [
+    //         //'aud' => base_url(),
+    //         'iat' => $time,
+    //         'exp' => $time + 60,
+    //         // 'data'=> [
+    //         //     'login' => $usuario['login'],
+    //         //     'id_system' => $usuario['id_system']
+    //         // ]
+    //     ];
 
-        //$jwt = JWT::encode($payload,$key, 'HS256');
-        $p = base64_encode(json_encode($payload));
+    //     //$jwt = JWT::encode($payload,$key, 'HS256');
+    //     $p = base64_encode(json_encode($payload));
 
-        $s = base64_encode(hash_hmac('sha256', $h . '.' . $p, $key, true));
+    //     $s = base64_encode(hash_hmac('sha256', $h . '.' . $p, $key, true));
 
-        $jwt = $h . "." . $p . "." . $s;
+    //     $jwt = $h . "." . $p . "." . $s;
 
-        return $jwt;
-    }
+    //     return $jwt;
+    // }
 
-    protected function validateTokenJWT($token)
-    {
-        $dados = explode('.', $token);
+    // protected function validateTokenJWT($token)
+    // {
+    //     $dados = explode('.', $token);
 
-        $header = $dados[0];
-        $payload = $dados[1];
-        $signature = $dados[2];
+    //     $header = $dados[0];
+    //     $payload = $dados[1];
+    //     $signature = $dados[2];
 
-        $key = Services::getSecretKey();
+    //     $key = Services::getSecretKey();
 
-        $validate = base64_encode(hash_hmac('sha256', $header . '.' . $payload, $key, true));
-        $time_exp = json_decode(base64_decode($payload));      
+    //     $validate = base64_encode(hash_hmac('sha256', $header . '.' . $payload, $key, true));
+    //     $time_exp = json_decode(base64_decode($payload));      
         
-        if ($signature == $validate && $time_exp->exp > time()) {            
+    //     if ($signature == $validate && $time_exp->exp > time()) {            
             
-            return true;
-        }
-        return false;
-    }
+    //         return true;
+    //     }
+    //     return false;
+    // }
     
 }

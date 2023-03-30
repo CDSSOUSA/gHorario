@@ -189,6 +189,12 @@ class Teacher extends BaseController
     public function listDisciplinesByTeacher($id)
     {
         $data = $this->listTeacDisc($id);
+        //$data['token']= session()->get('token');
+        foreach($data as $dat){
+            //$dat->data = $dat;
+            $dat->token = session()->get('token');
+
+        }
         return $this->response->setJSON($data);
     }
 
