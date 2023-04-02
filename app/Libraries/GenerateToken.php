@@ -8,7 +8,6 @@ class GenerateToken {
     private $time;
     private $header;
     private $payload;
-
     private $token; 
 
     public function setKey($key){
@@ -42,7 +41,7 @@ class GenerateToken {
         $this->payload = [
             //'aud' => base_url(),
             'iat' => $this->time,
-            'exp' => $this->time + 60,
+            'exp' => $this->time + 4800,
             // 'data'=> [
             //     'login' => $usuario['login'],
             //     'id_system' => $usuario['id_system']

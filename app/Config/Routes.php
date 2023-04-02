@@ -40,6 +40,10 @@ $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],functi
       
 });
 
+$routes->group('/config',['namespace'=>'App\Controllers'],function ($routes){
+    $routes->get('(:any)','Configuration::getConfigurationById/$1');
+});
+
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 //$routes->get('/(:any)', 'Horario::index/$1');
