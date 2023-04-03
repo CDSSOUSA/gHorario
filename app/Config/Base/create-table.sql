@@ -131,3 +131,19 @@ CREATE TABLE tb_school_schedule(
     CONSTRAINT id_series_fk FOREIGN KEY (id_series) REFERENCES tb_series(id),
     CONSTRAINT id_year_schedulefk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
 )ENGINE = INNODB;
+
+CREATE TABLE tb_config (
+	id INT AUTO_INCREMENT NOT NULL,
+	qtde_dayWeek SMALLINT,
+	start_dayWeek CHAR(1),
+	end_dayWeek CHAR(1),
+	qtde_position SMALLINT,	
+	id_year_school SMALLINT,
+    class_time SMALLINT,
+    shift VARCHAR(6),
+    status CHAR(1) COMMENT 'A-ATIVO I-INATIVO',
+    CONSTRAINT id_pk PRIMARY KEY (id),
+    CONSTRAINT id_year_config_fk FOREIGN KEY (id_year_school) REFERENCES tb_year_school (id)
+)ENGINE = INNODB;
+
+INSERT INTO tb_config (qtde_dayWeek, start_dayWeek, end_dayWeek, qtde_position, id_year_school, class_time, shift, status) VALUES (5,2,6,6,1,45,'M;T;N;','A');
