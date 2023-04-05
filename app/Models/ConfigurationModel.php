@@ -41,9 +41,9 @@ class ConfigurationModel extends Model
     protected $afterDelete          = [];
 
 
-    public function getConfigurationById(int $id_year_school)
+    public function getConfiguration()
     {
-        return $this->where('id_year_school', $id_year_school)
+        return $this->where('id_year_school', session('session_idYearSchool'))
                     ->where('status','A')
                     ->get()
                     ->getResultObject();

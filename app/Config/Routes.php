@@ -41,7 +41,7 @@ $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],functi
 });
 
 $routes->group('/config',['namespace'=>'App\Controllers'],function ($routes){
-    $routes->get('(:any)','Configuration::getConfigurationById/$1');
+    $routes->get('show','Configuration::getConfiguration');
     $routes->post('create','Configuration::createOrUpdate');
 });
 

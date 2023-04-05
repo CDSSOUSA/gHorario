@@ -14,10 +14,10 @@ class Configuration extends BaseController
     {
         $this->configurationModel = new ConfigurationModel();
     }
-    public function getConfigurationById(int $idYearSchool)
+    public function getConfiguration()
     {
         try {
-            $data = $this->configurationModel->getConfigurationById($idYearSchool);
+            $data = $this->configurationModel->getConfiguration();
             return $this->response->setJSON($data);
         } catch (Exception $e) {
             return $this->response->setJSON([
