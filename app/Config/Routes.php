@@ -42,6 +42,7 @@ $routes->group('/report',['namespace'=>'App\Controllers\Report\Schedule'],functi
 
 $routes->group('/config',['namespace'=>'App\Controllers'],function ($routes){
     $routes->get('(:any)','Configuration::getConfigurationById/$1');
+    $routes->post('create','Configuration::createOrUpdate');
 });
 
 // We get a performance increase by specifying the default

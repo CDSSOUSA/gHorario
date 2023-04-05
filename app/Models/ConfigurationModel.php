@@ -14,7 +14,7 @@ class ConfigurationModel extends Model
     protected $returnType           = 'object';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = [];
+    protected $allowedFields        = ['qtde_dayWeek', 'start_dayWeek', 'end_dayWeek', 'qtde_position','id_year_school','class_time','shift','status'];
 
     // Dates
     protected $useTimestamps        = false;
