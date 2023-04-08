@@ -154,6 +154,18 @@ $routes->group('/yearSchool',['namespace'=>'App\Controllers\YearSchool',/*'filte
     $routes->post('active', 'YearSchool::active');
    
 });
+
+$routes->group('/year',['namespace'=>'App\Controllers\YearSchool',/*'filter'=>'accessFilter'*/],function ($routes){
+   
+   
+    $routes->get('show/(:any)', 'YearSchool::show/$1');  
+    $routes->get('list', 'YearSchool::list'); 
+    $routes->get('active', 'YearSchool::getYearActive'); 
+    $routes->post('create', 'YearSchool::create');
+    $routes->post('update', 'YearSchool::update');
+   
+   
+});
 /* ROUTES ALLOCATION*/
 $routes->group('/allocation',['namespace'=>'App\Controllers\Allocation',/*'filter'=>'accessFilter'*/],function ($routes){
    

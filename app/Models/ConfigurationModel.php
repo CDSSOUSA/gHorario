@@ -48,4 +48,14 @@ class ConfigurationModel extends Model
                     ->get()
                     ->getResultObject();
     }
+
+    public function getConfigurationByIdYear(int $idYear)
+    {
+        return $this->select('qtde_dayWeek, start_dayWeek, qtde_position, end_dayWeek, class_time, shift')
+            ->where('id_year_school',$idYear)
+            ->where('status','A')
+            ->get()
+            ->getResult();
+
+    }
 }

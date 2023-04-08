@@ -101,4 +101,24 @@ class YearSchoolModel extends Model
        
         return $this->where('id',$id)->find()[0];
     }
+
+    public function disabledStatus ()
+    {
+        $update = $this->set('status','I')
+            ->where('status','A')
+            ->update();
+
+         if ($update) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getYearActive()
+    {
+        return $this->select('id')
+                ->where('status','A')
+                ->get()
+                ->getResult();
+    }
 }

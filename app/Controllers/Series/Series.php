@@ -38,7 +38,11 @@ class Series extends BaseController
     {
         try {
 
-            $data = $this->series->orderBy('shift ASC, description ASC ,classification ASC')->findAll();
+            $data = $this->series->orderBy('shift ASC, description ASC ,classification ASC')
+                                 ->where('status','A')
+                                 ->get()
+                                 ->getResult();
+                                 
             return $this->response->setJSON($data);
         } catch (Exception $e) {
             return $this->response->setJSON([

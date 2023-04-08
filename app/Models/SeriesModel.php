@@ -95,4 +95,16 @@ class SeriesModel extends Model
             ->get()
             ->getResult();
     }
+
+    public function getSeriesByIdYear($idYear)
+    {
+      $data = $this->select('description, classification, shift')
+            ->where('id_year_school',$idYear)
+            ->where('status','A')
+            ->get()
+            ->getResult();           
+
+            return $data;
+
+    }
 }

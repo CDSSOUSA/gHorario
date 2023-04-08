@@ -3,18 +3,29 @@
 namespace App\Controllers\YearSchool;
 
 use App\Controllers\BaseController;
+use App\Models\ConfigurationModel;
+use App\Models\SeriesModel;
+use App\Models\TeacDiscModel;
 use App\Models\YearSchoolModel;
+use CodeIgniter\API\ResponseTrait;
 use Exception;
 
 class YearSchool extends BaseController
 {
+    use ResponseTrait;
     public $erros = '';
     public $error = '';
     private $yearSchool;
+    private $series;
+    private $configuration;
+    private $teacDisc;
 
     public function __construct()
     {
         $this->yearSchool = new YearSchoolModel();
+        $this->series = new SeriesModel();
+        $this->configuration = new ConfigurationModel();
+        $this->teacDisc = new TeacDiscModel();
     }
     public function index()
     {
@@ -78,12 +89,7 @@ class YearSchool extends BaseController
                 'status' => 'ERROR',
                 'error' => true,
                 'code' => 400,
-                'msg' => '<div class="alert alert-danger alert-close alert-dismissible fade show" role="alert">
-                            <strong> <i class="fa fa-exclamation-triangle"></i>  Ops! </strong>Erro(s) no preenchimento do formulário! 
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>',
+                'msg' => $this->messageError,
                 'msgs' => $this->validator->getErrors()
             ];
 
@@ -91,20 +97,114 @@ class YearSchool extends BaseController
         }
 
         $data = $this->request->getPost();
-        $data['status'] = 'I';
+        $data['status'] = 'A';
 
-        $save = $this->yearSchool->save($data);
+        try {
 
-        if ($save) {
-            $response = [
-                'status' => 'OK',
-                'error' => false,
-                'code' => 200,
-                'msg' => '<p>Operação realizada com sucesso!</p>',
-                //'data' => $this->list()
-            ];
-            return $this->response->setJSON($response);
+            // $this->yearSchool->transStart();
+            // $update = $this->yearSchool->disabledStatus();
+            // $save = $this->yearSchool->save($data);
+            // $this->yearSchool->transComplete();
+
+
+            // if ($this->request->getPost('series') == 'S') {
+
+            //     $this->yearSchool->transStart();
+
+            //     $seriesMigration = $this->series->getSeriesByIdYear($data['id_active']);
+
+            //     $this->series->set('status', 'I')
+            //         ->where('id_year_school', $data['id_active'])
+            //         ->update();
+
+            //     $this->yearSchool->transComplete();
+
+
+            //     foreach ($seriesMigration as $item) {
+
+            //         $dataSerie['description'] = $item->description;
+            //         $dataSerie['classification'] = $item->classification;
+            //         $dataSerie['shift'] = $item->shift;
+            //         $dataSerie['id_year_school'] = $this->yearSchool->getInsertID();
+            //         $dataSerie['status'] = 'A';
+
+            //         $this->series->save($dataSerie);
+            //     }
+
+            //     $data['series'] = $seriesMigration;
+            // }
+
+            // if ($this->request->getPost('configuration') == 'S') {
+
+            //     $this->yearSchool->transStart();
+            //     $configurationMigration = $this->configuration->getConfigurationByIdYear($data['id_active']);
+
+            //     $this->configuration->set('status', 'I')
+            //         ->where('id_year_school', $data['id_active'])
+            //         ->update();
+            //     $this->yearSchool->transComplete();
+
+            //     foreach ($configurationMigration as $item) {
+
+            //         $dataConfiguration['qtde_dayWeek'] = $item->qtde_dayWeek;
+            //         $dataConfiguration['start_dayWeek'] = $item->start_dayWeek;
+            //         $dataConfiguration['end_dayWeek'] = $item->end_dayWeek;
+            //         $dataConfiguration['qtde_position'] = $item->qtde_position;
+            //         $dataConfiguration['class_time'] = $item->class_time;
+            //         $dataConfiguration['shift'] = $item->shift;
+            //         $dataConfiguration['id_year_school'] = $this->yearSchool->getInsertID();
+            //         $dataConfiguration['status'] = 'A';
+
+            //         $this->configuration->save($dataConfiguration);
+            //     }
+            //     $data['configuration'] = $configurationMigration;
+            // }
+
+            // if ($this->request->getPost('teacDisc') == 'S') {
+
+            //     $this->yearSchool->transStart();
+            //     $teacDiscMigration = $this->teacDisc->getTeacDiscByIdYear($data['id_active']);
+
+            //     $this->teacDisc->set('status', 'I')
+            //         ->where('id_year_school', $data['id_active'])
+            //         ->update();
+            //     $this->yearSchool->transComplete();
+            //     foreach ($teacDiscMigration as $item) {
+
+            //         $dataTeacDisc['id_teacher'] = $item->id_teacher;
+            //         $dataTeacDisc['id_discipline'] = $item->id_discipline;
+            //         $dataTeacDisc['amount'] = $item->amount;
+            //         $dataTeacDisc['color'] = $item->color;
+            //         $dataTeacDisc['id_year_school'] = $this->yearSchool->getInsertID();
+            //         $dataTeacDisc['status'] = 'A';
+
+            //         $this->teacDisc->save($dataTeacDisc);
+            //     }
+
+            //     $data['teacDisc'] = $teacDiscMigration;
+            // }
+
+            $save = true;
+            $update = true;
+
+            if ($save && $update) {
+                // $response = [
+                //     'status' => 'OK',
+                //     'error' => false,
+                //     'code' => 200,
+                //     'msg' => '<p>Operação realizada com sucesso!</p>',
+                //     'data' => $data
+                // ];
+                return $this->respondCreated([
+                    'success'=>'success',
+
+                ],'Operação realizada com sucesso!');
+                //return $this->response->setJSON($response);
+            }
+        } catch (Exception $e) {
+            return $this->failServerError('Ocorreu um erro inesperado, tente novamente!', $e->getCode(), $e->getMessage());
         }
+        return $this->failServerError('Nenhum registro encontrado!');
     }
     public function active()
     {
@@ -114,7 +214,7 @@ class YearSchool extends BaseController
             }
 
 
-            $data = $this->request->getPost();           
+            $data = $this->request->getPost();
 
             $update = $this->yearSchool->updateYearSchool($data);
             //$update = true;
@@ -185,21 +285,91 @@ class YearSchool extends BaseController
     public function list()
     {
         try {
-            $data = $this->yearSchool->findAll();
+            $data = $this->yearSchool->orderBy('description', 'DESC')->findAll();
 
             if ($data != null) {
                 return $this->response->setJSON($data);
             }
         } catch (Exception $e) {
-            return $this->response->setJSON([
-                'response' => 'Erros',
-                'msg'      => 'Não foi possível executar a operação',
-                'error'    => $e->getMessage()
-            ]);
+            return $this->failServerError('Ocorreu um erro inesperado!');
         }
-        return $this->response->setJSON([
-            'response' => 'Warning',
-            'msg'      => 'Nenhum registro encontrado para essa pesquisa!',
-        ]);
+        return $this->failServerError('Nenhum registro encontrado!');
+    }
+
+    public function getYearActive()
+    {
+        try {
+            $data = $this->yearSchool->getYearActive();
+
+            if ($data != null) {
+                return $this->response->setJSON($data);
+            }
+        } catch (Exception $e) {
+            return $this->failServerError('Ocorreu um erro inesperado!');
+        }
+        return $this->failServerError('Nenhum registro encontrado!');
+    }
+
+    public function show(int $id)
+    {
+        try {
+            $data = $this->yearSchool->find($id);
+
+            if ($data != null) {
+                return $this->response->setJSON($data);
+            }
+        } catch (Exception $e) {
+            return $this->failServerError('Ocorreu um erro inesperado!');
+        }
+        return $this->failServerError('Nenhum registro encontrado!');
+    }
+
+    public function update()
+    {
+        if ($this->request->getMethod() !== 'post') {
+            return redirect()->to('/admin/blog');
+        }
+
+        $val = $this->validate(
+            [
+                'description' => 'required|is_unique[tb_year_school.description,id,{id}]',
+
+            ],
+            [
+                'description' => [
+                    'required' => 'Preenchimento obrigatório!',
+                    'is_unique' => 'Ano já cadastrado!'
+                ],
+            ]
+        );
+
+        if (!$val) {
+
+            $response = [
+                'status' => 'ERROR',
+                'error' => true,
+                'code' => 400,
+                'msg' => $this->messageError,
+                'msgs' => $this->validator->getErrors()
+            ];
+
+            return $this->response->setJSON($response);
+        }
+
+        $data = $this->request->getPost();
+        //$data['status'] = 'I';
+
+        $save = $this->yearSchool->save($data);
+
+        if ($save) {
+            $response = [
+                'status' => 'OK',
+                'error' => false,
+                'code' => 200,
+                'msg' => '<p>Operação realizada com sucesso!</p>',
+                //'data' => $this->list()
+            ];
+            return $this->response->setJSON($response);
+        }
     }
 }

@@ -172,4 +172,14 @@ class TeacDiscModel extends Model
                     //dd($a);
                     return $a;
     }
+
+    public function getTeacDiscByIdYear($idYear)
+    {
+      return $this->select('id_teacher,id_discipline, amount, color')
+            ->where('id_year_school',$idYear)
+            ->where('status','A')
+            ->get()
+            ->getResult(); 
+
+    }
 }
